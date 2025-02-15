@@ -1,5 +1,6 @@
 /** LikeScratchJsLib */
 declare module "https://amami-harhid.github.io/scratch3LikeJsLib/build/likeScratch.js";
+
 /** LikeScratchJsLib */
 declare interface LikeScratchLib {
     /** LibのMain */
@@ -7,13 +8,18 @@ declare interface LikeScratchLib {
     /** Libの格納用  */
     Space: any;
 }
+declare const LikeScratchLib:LikeScratchLib;
 interface Entity {
     addImage(image: any) : Promise<any>;
     addSound(sound: any, option: any) : Promise<any>;
     startSoundUntilDone() : Promise<any>;
     while(condition: boolean|CallableFunction, func:CallableFunction) : Promise<any>;
-
+    whenRightNow(func:CallableFunction) :void;
+    whenFlag(func:CallableFunction) :void;
 }
+/**
+ * Class Stage
+ */
 interface Stage extends Entity{
 }
 interface Sprite extends Entity{

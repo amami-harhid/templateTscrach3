@@ -19,23 +19,29 @@ const Lib = likeScratchLib;
     };
     M.prepare = function () {
         return __awaiter(this, void 0, void 0, function* () {
-            S.stage = new M.Stage();
-            S.stage.addImage(M.images.Jurassic);
+            const stage = new M.Stage();
+            yield stage.addImage(M.images.Jurassic);
+            S.stage = stage;
         });
     };
     M.setting = function () {
         return __awaiter(this, void 0, void 0, function* () {
+            const stage = S.stage;
             // すぐに実行する。
-            S.stage.whenRightNow(function (stage) {
-                // ここでの『this』は Proxy(stage)である。
-                stage.addSound(M.sounds.Chill, { 'volume': 100 });
+            stage.whenRightNow(function (stage) {
+                return __awaiter(this, void 0, void 0, function* () {
+                    // ここでの『this』は Proxy(stage)である。
+                    yield stage.addSound(M.sounds.Chill, { 'volume': 100 });
+                });
             });
-            S.stage.whenFlag(function (stage) {
-                // 「終わるまで音を鳴らす」をずっと繰り返す
-                stage.while(true, (stage) => __awaiter(this, void 0, void 0, function* () {
-                    // 処理が終わるまで待つために await をつける
-                    yield stage.startSoundUntilDone();
-                }));
+            stage.whenFlag(function (stage) {
+                return __awaiter(this, void 0, void 0, function* () {
+                    // 「終わるまで音を鳴らす」をずっと繰り返す
+                    yield stage.while(true, () => __awaiter(this, void 0, void 0, function* () {
+                        // 処理が終わるまで待つために await をつける
+                        yield stage.startSoundUntilDone();
+                    }));
+                });
             });
         });
     };

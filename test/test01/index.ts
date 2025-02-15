@@ -1,6 +1,7 @@
 import 'https://amami-harhid.github.io/scratch3LikeJsLib/build/likeScratchLib.js';
 // @ts-ignore
 const Lib:LikeScratchLib = likeScratchLib;
+
 (function(M:Process, S:any){
 
     M.preload = async function() {
@@ -8,18 +9,20 @@ const Lib:LikeScratchLib = likeScratchLib;
         this.loadSound('../assets/Chill.wav','Chill');
     }
     M.prepare = async function() {
-        S.stage = new M.Stage();
-        S.stage.addImage( M.images.Jurassic );
+        const stage:Stage = new M.Stage();
+        await stage.addImage( M.images.Jurassic );
+        S.stage = stage;
     }
     M.setting = async function() {
+        const stage:Stage = S.stage;
         // すぐに実行する。
-        S.stage.whenRightNow( function(stage:Entity){
+        stage.whenRightNow( async function(stage:Entity){
             // ここでの『this』は Proxy(stage)である。
-            stage.addSound( M.sounds.Chill, { 'volume' : 100 } );
+            await stage.addSound( M.sounds.Chill, { 'volume' : 100 } );
         });
-        S.stage.whenFlag( function(stage: Entity){ 
+        stage.whenFlag( async function(stage: Entity){ 
             // 「終わるまで音を鳴らす」をずっと繰り返す
-            stage.while(true, async (stage: Entity)=>{
+            await stage.while(true, async ()=>{
                 // 処理が終わるまで待つために await をつける
                 await stage.startSoundUntilDone();
             });
