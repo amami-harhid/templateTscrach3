@@ -22,7 +22,7 @@ const Lib:LikeScratchLib = likeScratchLib;
         });
         stage.whenFlag( async function(stage: Entity){ 
             // 「終わるまで音を鳴らす」をずっと繰り返す
-            await stage.while(true, async ()=>{
+            await stage.while(true, async (stage:Entity)=>{
                 // 処理が終わるまで待つために await をつける
                 await stage.startSoundUntilDone();
             });
