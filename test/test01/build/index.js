@@ -9,33 +9,36 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import 'https://amami-harhid.github.io/scratch3LikeJsLib/build/likeScratchLib.js';
 // @ts-ignore
-const Lib = likeScratchLib;
-(function (M, S) {
-    M.preload = function () {
+const lib = likeScratchLib;
+(function (R, S) {
+    R.preload = function () {
         return __awaiter(this, void 0, void 0, function* () {
             this.loadImage('../assets/Jurassic.svg', 'Jurassic');
             this.loadSound('../assets/Chill.wav', 'Chill');
         });
     };
-    M.prepare = function () {
+    R.prepare = function () {
         return __awaiter(this, void 0, void 0, function* () {
-            const stage = new M.Stage();
-            yield stage.addImage(M.images.Jurassic);
-            S.stage = stage;
+            const _stage = new R.Stage();
+            yield _stage.addImage(R.images.Jurassic);
+            S.stage = _stage;
         });
     };
-    M.setting = function () {
+    R.setting = function () {
         return __awaiter(this, void 0, void 0, function* () {
-            const stage = S.stage;
+            const _stage = S.stage;
             // すぐに実行する。
-            stage.whenRightNow(function (stage) {
+            _stage.whenRightNow(function (stage) {
                 return __awaiter(this, void 0, void 0, function* () {
                     // ここでの『this』は Proxy(stage)である。
-                    yield stage.addSound(M.sounds.Chill, { 'volume': 100 });
+                    // 引数には『this』がわたされてくる。
+                    yield stage.addSound(R.sounds.Chill, { 'volume': 100 });
                 });
             });
-            stage.whenFlag(function (stage) {
+            _stage.whenFlag(function (stage) {
                 return __awaiter(this, void 0, void 0, function* () {
+                    // ここでの『this』は Proxy(stage)である。
+                    // 引数には『this』がわたされてくる。
                     // 「終わるまで音を鳴らす」をずっと繰り返す
                     yield stage.while(true, () => __awaiter(this, void 0, void 0, function* () {
                         // 処理が終わるまで待つために await をつける
@@ -45,5 +48,5 @@ const Lib = likeScratchLib;
             });
         });
     };
-})(Lib.Main, Lib.Space);
+})(lib.Runtime, lib.Space);
 //# sourceMappingURL=index.js.map

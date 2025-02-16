@@ -1,32 +1,36 @@
-import 'https://amami-harhid.github.io/scratch3LikeJsLib/build/likeScratchLib.js';
+import {Lib,Runtime,Stage} from '../../src/common/TypeLikeScratch';
+import '../../src/common/JsLibUrl';
 // @ts-ignore
-const Lib:LikeScratchLib = likeScratchLib;
+const lib:Lib = likeScratchLib;
 
-(function(M:Process, S:any){
+(function(R:Runtime, S:any){
 
-    M.preload = async function() {
+    R.preload = async function() {
         this.loadImage('../assets/Jurassic.svg','Jurassic');
         this.loadSound('../assets/Chill.wav','Chill');
     }
-    M.prepare = async function() {
-        const stage:Stage = new M.Stage();
-        await stage.addImage( M.images.Jurassic );
-        S.stage = stage;
+    R.prepare = async function() {
+        const _stage:Stage = new R.Stage();
+        await _stage.addImage( R.images.Jurassic );
+        S.stage = _stage;
     }
-    M.setting = async function() {
-        const stage:Stage = S.stage;
+    R.setting = async function() {
+        const _stage:Stage = S.stage;
         // すぐに実行する。
-        stage.whenRightNow( async function(stage:Entity){
+        _stage.whenRightNow( async function(stage:Stage){
             // ここでの『this』は Proxy(stage)である。
-            await stage.addSound( M.sounds.Chill, { 'volume' : 100 } );
+            // 引数には『this』がわたされてくる。
+            await stage.addSound( R.sounds.Chill, { 'volume' : 100 } );
         });
-        stage.whenFlag( async function(stage: Entity){ 
+        _stage.whenFlag( async function(stage:Stage){ 
+            // ここでの『this』は Proxy(stage)である。
+            // 引数には『this』がわたされてくる。
             // 「終わるまで音を鳴らす」をずっと繰り返す
-            await stage.while(true, async (stage:Entity)=>{
+            await stage.while(true, async ()=>{
                 // 処理が終わるまで待つために await をつける
                 await stage.startSoundUntilDone();
             });
         });
     };
 
-})(Lib.Main, Lib.Space);
+})(lib.Runtime, lib.Space);

@@ -107,7 +107,7 @@
 
     /* Completeness */
     // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
-    "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
+    "skipLibCheck": false                                 /* Skip type checking all .d.ts files. */
   },
   "include": ["src/**/*.ts"]  // ← 追記（コンパイルする対象ファイルの場所を指定）
 }

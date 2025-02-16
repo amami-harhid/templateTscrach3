@@ -1,6 +1,0 @@
-/**
- * プロセス
- */
-interface Process {
-
-}
