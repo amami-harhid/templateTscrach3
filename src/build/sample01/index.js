@@ -10,29 +10,28 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import "../common/JsLibUrl.js";
 // @ts-ignore
 const lib = likeScratchLib;
-console.log(lib.libs.Stage);
-(function (R, L, S) {
-    R.preload = function () {
+(function (M, L, P) {
+    M.preload = function () {
         return __awaiter(this, void 0, void 0, function* () {
             this.loadImage('../assets/Jurassic.svg', 'Jurassic');
             this.loadSound('../assets/Chill.wav', 'Chill');
         });
     };
-    R.prepare = function () {
+    M.prepare = function () {
         return __awaiter(this, void 0, void 0, function* () {
             const _stage = new L.Stage();
-            yield _stage.addImage(R.images.Jurassic);
-            S.stage = _stage;
+            yield _stage.addImage(M.images.Jurassic);
+            P.stage = _stage;
         });
     };
-    R.setting = function () {
+    M.setting = function () {
         return __awaiter(this, void 0, void 0, function* () {
-            const _stage = S.stage;
+            const _stage = P.stage;
             // すぐに実行する。
             _stage.whenRightNow((stage) => __awaiter(this, void 0, void 0, function* () {
                 // ここでの『this』は Proxy(stage)である。
                 // 引数には『this』がわたされてくる。
-                yield stage.addSound(R.sounds.Chill, { 'volume': 100 });
+                yield stage.addSound(M.sounds.Chill, { 'volume': 100 });
             }));
             _stage.whenFlag((stage) => __awaiter(this, void 0, void 0, function* () {
                 // ここでの『this』は Proxy(stage)である。
