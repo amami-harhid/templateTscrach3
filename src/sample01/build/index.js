@@ -7,7 +7,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { PG, ST, LIBS, IMAGES, SOUNDS } from "@common/JsLibUrl";
+import { PG, ST, LIBS, IMAGES, SOUNDS } from "./common/JsLibUrl.js";
+PG.title = "【Sample01】背景を表示する";
 PG.preload = function () {
     return __awaiter(this, void 0, void 0, function* () {
         this.loadImage('../assets/Jurassic.svg', 'Jurassic');
@@ -16,21 +17,19 @@ PG.preload = function () {
 };
 PG.prepare = function () {
     return __awaiter(this, void 0, void 0, function* () {
-        const _stage = new LIBS.Stage();
-        yield _stage.addImage(IMAGES.Jurassic);
-        ST.stage = _stage;
+        ST.stage = new LIBS.Stage();
+        yield ST.stage.addImage(IMAGES.Jurassic);
     });
 };
 PG.setting = function () {
     return __awaiter(this, void 0, void 0, function* () {
-        const _stage = ST.stage;
         // すぐに実行する。
-        _stage.whenRightNow((stage) => __awaiter(this, void 0, void 0, function* () {
+        ST.stage.whenRightNow((stage) => __awaiter(this, void 0, void 0, function* () {
             // ここでの『this』は Proxy(stage)である。
             // 引数には『this』がわたされてくる。
             yield stage.addSound(SOUNDS.Chill, { 'volume': 100 });
         }));
-        _stage.whenFlag((stage) => __awaiter(this, void 0, void 0, function* () {
+        ST.stage.whenFlag((stage) => __awaiter(this, void 0, void 0, function* () {
             // ここでの『this』は Proxy(stage)である。
             // 引数には『this』がわたされてくる。
             // 「終わるまで音を鳴らす」をずっと繰り返す

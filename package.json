@@ -4,8 +4,7 @@
   "description": "A collection of samples written in TypeScript for using scratch3LikeJsLib.",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --mode=development",
-    "start": "webpack serve --mode=development",
+    "build": ".\\node_modules\\.bin\\tsc -p ./tsconfig.json",
     "tsc": ".\\node_modules\\.bin\\tsc --init"
   },
   "author": "",

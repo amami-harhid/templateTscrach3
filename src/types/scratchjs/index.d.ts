@@ -1,5 +1,5 @@
 /** 実体(Entity) */
-declare interface Entity {
+declare interface S3Entity {
     /** イメージを追加する */
     addImage(image: any) : Promise<any>;
     /** サウンドを追加する */
@@ -14,21 +14,28 @@ declare interface Entity {
     whenFlag(func:CallableFunction) :void;
 }
 /** ステージ（実体[Entity]を継承）*/
-declare interface Stage extends Entity{
-    new(name:string): Stage;
+declare interface S3Stage extends S3Entity{
+    new(...args:any[]): S3Stage;
 }
 /** スプライト（実体[Entity]を継承）*/
-declare interface Sprite extends Entity{
+declare interface S3Sprite extends S3Entity{
+    new(...args:any[]): S3Sprite;
+}
+declare interface S3Libs {
+    Stage : S3Stage;
+    Sprite : S3Sprite;
 }
 
 /** LikeScratchJsLib */
-declare interface Runtime {
+declare interface PlayGround {
+    /** タイトル */
+    title: string;
     /** 事前ロード処理をするところ */
-    preload(m:Runtime) : Promise<any>;
+    preload(m:PlayGround) : Promise<any>;
     /** 事前準備処理をするところ */
-    prepare(m:Runtime) : Promise<any>;
+    prepare(m:PlayGround) : Promise<any>;
     /** 動作セッティングをするところ */
-    setting(m:Runtime) : Promise<any>;
+    setting(m:PlayGround) : Promise<any>;
     /**
      * 画像ローディング処理
      * @param url  画像データの場所
@@ -49,15 +56,34 @@ declare interface Runtime {
      * サウンドデータ格納先
      */
     sounds : any;
-    Stage : any;
 }
+/** 暫定データの格納用(Entityを入れられる) */
+declare type Storage = { [key:string] : S3Entity };
+/** 画像データ */
+declare interface Image {
+    name: string,
+    data: any
+}
+/** サウンドデータ */
+declare interface Sound {
+    /** サウンド名 */
+    name: string,
+    /** サウンドデータ */  
+    data: any
+}
+/** イメージ格納用 */
+declare type S3Images = { [key:string] : Image };
+/** サウンド格納用 */
+declare type S3Sounds = { [key:string] : Sound };
+
 /** LikeScratchJsLib */
-declare interface Lib {
-    /** LibのMain */
-    Runtime: Runtime;
-    /** Libの格納用  */
-    Space: any;
+declare interface LikeScratchLib {
+    PlayGround: PlayGround;
+    /** 暫定データの格納用  */
+    Storage: Storage;
+    Libs: S3Libs;
+    /** イメージ格納先 */
+    Images:S3Images;
+    Sounds:S3Sounds;
 }
-
-//export {Lib,Runtime,Entity,Stage,Sprite}
-
+export {LikeScratchLib, PlayGround, Storage, S3Libs, /** a */S3Images, S3Sounds, S3Stage, S3Sprite}
