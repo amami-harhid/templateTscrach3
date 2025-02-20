@@ -1,5 +1,5 @@
 /** LikeScratchJsLib */
-export interface PlayGround {
+export interface S3PlayGround {
     /** タイトル */
     title: string;
     /** 事前ロード処理をするところ */

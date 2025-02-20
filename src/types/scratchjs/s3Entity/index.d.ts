@@ -1,3 +1,4 @@
+import { S3SoundOption } from "@typeJS/scratchjs/s3SoundOption";
 /** 実体(Entity) */
 export interface S3Entity {
     /** イメージを追加する */
@@ -14,7 +15,13 @@ export interface S3Entity {
     whenRightNow(func:CallableFunction) :void;
     /** 旗が押されたら実行する */
     whenFlag(func:CallableFunction) :void;
+    /** クリックされたときに実行する */
+    whenClicked(func:CallableFunction) :void;
+    /** メッセージを受け取ったときに実行する */
+    whenBroadcastReceived(messageId:string, func:CallableFunction):void;
     /** サウンドを鳴らして終わるまで待つ(await必須) */
     startSoundUntilDone(): Promise<any>;
+    speech(words:string, properties: S3SoundOption, gender: string, locale: string) : void;
+    speechAndWait(words:string, properties: S3SoundOption, gender: string, locale: string) : Promise<any>;
 
 }

@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { PG, ST, LIBS, IMAGES, SOUNDS } from "./common/JsLibUrl.js";
+import { PG, LIBS, ST, IMAGES, SOUNDS } from "./importer.js";
 PG.title = "【Sample01】背景を表示する";
 PG.preload = function () {
     return __awaiter(this, void 0, void 0, function* () {
@@ -24,18 +24,18 @@ PG.prepare = function () {
 PG.setting = function () {
     return __awaiter(this, void 0, void 0, function* () {
         // すぐに実行する。
-        ST.stage.whenRightNow((stage) => __awaiter(this, void 0, void 0, function* () {
+        ST.stage.whenRightNow(($this) => __awaiter(this, void 0, void 0, function* () {
             // ここでの『this』は Proxy(stage)である。
             // 引数には『this』がわたされてくる。
-            yield stage.addSound(SOUNDS.Chill, { 'volume': 100 });
+            yield $this.addSound(SOUNDS.Chill, { 'volume': 100 });
         }));
         ST.stage.whenFlag((stage) => __awaiter(this, void 0, void 0, function* () {
             // ここでの『this』は Proxy(stage)である。
             // 引数には『this』がわたされてくる。
             // 「終わるまで音を鳴らす」をずっと繰り返す
-            yield stage.while(true, () => __awaiter(this, void 0, void 0, function* () {
+            yield stage.while(true, ($this) => __awaiter(this, void 0, void 0, function* () {
                 // 処理が終わるまで待つために await をつける
-                yield stage.startSoundUntilDone();
+                yield $this.startSoundUntilDone();
             }));
         }));
     });
