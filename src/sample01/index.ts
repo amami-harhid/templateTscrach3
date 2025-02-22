@@ -4,18 +4,18 @@ import type {S3Stage} from "@typeJS/scratchjs/s3Stage";
 
 Pg.title = "【Sample01】背景を表示する"
 
-Pg.preload = async function($this:S3PlayGround) {
+Pg.preload = function($this:S3PlayGround) {
     $this.Image.load('../assets/Jurassic.svg','Jurassic');
     $this.Sound.load('../assets/Chill.wav','Chill');
     $this.Image.load('../assets/Cat.svg','Cat');
 }
-Pg.prepare = async function() {
+Pg.prepare = function() {
     St.stage = new Lib.Stage();
     St.stage.Image.add( Images.Jurassic );
     St.cat = new Lib.Sprite("CAT");
     St.cat.Image.add( Images.Cat );
 }
-Pg.setting = async function() {
+Pg.setting = function() {
     // すぐに実行する。
     const stage:S3Stage = <S3Stage>(St.stage);
     stage.Event.whenRightNow( async ($this:S3Stage)=>{

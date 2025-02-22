@@ -12,11 +12,11 @@ export interface S3PlayGround {
     /** タイトル */
     title: string;
     /** 事前ロード処理をするところ */
-    preload(m:PlayGround) : Promise<any>;
+    preload(m:PlayGround) : void | Promise<any>;
     /** 事前準備処理をするところ */
-    prepare(m:PlayGround) : Promise<any>;
+    prepare(m:PlayGround) : void | Promise<any>;
     /** 動作セッティングをするところ */
-    setting(m:PlayGround) : Promise<any>;
+    setting(m:PlayGround) : void | Promise<any>;
     /** イメージ処理 */
     Image: S3PgImage;
     /** サウンド処理 */
