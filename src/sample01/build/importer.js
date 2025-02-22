@@ -1,9 +1,8 @@
-import "https://amami-harhid.github.io/scratch3LikeJsLib/build/likeScratchLib.js";
-// @ts-ignore
-const ScratchLib = likeScratchLib;
-export const PG = ScratchLib.PlayGround;
-export const LIBS = ScratchLib.Libs;
-export const ST = ScratchLib.Storage;
-export const IMAGES = ScratchLib.Images;
-export const SOUNDS = ScratchLib.Sounds;
+// @ts-ignore (モジュール型定義無しエラーを抑止）
+import { PlayGround, Library, Storage, ImagePool, SoundPool } from "https://amami-harhid.github.io/scratch3LikeJsLib/build/likeScratchLib.js";
+export const Pg = PlayGround;
+export const Lib = Library;
+export const St = Storage;
+export const Images = ImagePool;
+export const Sounds = SoundPool;
 //# sourceMappingURL=importer.js.map

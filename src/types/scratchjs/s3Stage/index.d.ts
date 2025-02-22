@@ -1,5 +1,18 @@
-import {S3Entity} from "@typeJS/scratchjs/s3Entity"
+import {S3ImageFunctions} from "@typeJS/scratchjs/s3ImageFunctions";
+import {S3SoundFunctions} from "@typeJS/scratchjs/s3SoundFunctions";
+import {S3ControlFunctions} from "@typeJS/scratchjs/s3ControlFunctions";
+import {S3EventFunctions} from "@typeJS/scratchjs/s3EventFunctions";
+
+/** イベント処理 */
+declare interface S3StageEventFunctions extends S3EventFunctions{
+
+}
+
 /** ステージ（実体[Entity]を継承）*/
 export interface S3Stage extends S3Entity{
-    new(...args:any[]): S3Stage;
+    new(): S3Stage;
+    Image: S3ImageFunctions;
+    Event: S3StageEventFunctions;
+    Control: S3ControlFunctions;
+    Sound: S3SoundFunctions;
 }

@@ -1,30 +1,36 @@
-import {PG,LIBS,ST,IMAGES,SOUNDS} from "./importer.js";
-import {S3Stage} from "@typeJS/scratchjs/s3Stage";
+import {Pg,Lib,St,Images,Sounds} from "./importer.js";
+import type {S3PlayGround} from "@typeJS/scratchjs/s3PlayGround";
+import type {S3Stage} from "@typeJS/scratchjs/s3Stage";
 
-PG.title = "【Sample01】背景を表示する"
+Pg.title = "【Sample01】背景を表示する"
 
-PG.preload = async function() {
-    this.loadImage('../assets/Jurassic.svg','Jurassic');
-    this.loadSound('../assets/Chill.wav','Chill');
+Pg.preload = async function($this:S3PlayGround) {
+    $this.Image.load('../assets/Jurassic.svg','Jurassic');
+    $this.Sound.load('../assets/Chill.wav','Chill');
+    $this.Image.load('../assets/Cat.svg','Cat');
 }
-PG.prepare = async function() {
-    ST.stage = new LIBS.Stage();
-    await ST.stage.addImage( IMAGES.Jurassic );
+Pg.prepare = async function() {
+    St.stage = new Lib.Stage();
+    St.stage.Image.add( Images.Jurassic );
+    St.cat = new Lib.Sprite("CAT");
+    St.cat.Image.add( Images.Cat );
 }
-PG.setting = async function() {
+Pg.setting = async function() {
     // すぐに実行する。
-    ST.stage.whenRightNow( async ($this:S3Stage)=>{
+    const stage:S3Stage = <S3Stage>(St.stage);
+    stage.Event.whenRightNow( async ($this:S3Stage)=>{
         // ここでの『this』は Proxy(stage)である。
         // 引数には『this』がわたされてくる。
-        await $this.addSound( SOUNDS.Chill, { 'volume' : 100 } );
+        await $this.Sound.add( Sounds.Chill, { 'volume' : 100} );
     });
-    ST.stage.whenFlag( async (stage:S3Stage)=>{ 
+    stage.Event.whenFlag( async (stage:S3Stage)=>{ 
         // ここでの『this』は Proxy(stage)である。
-        // 引数には『this』がわたされてくる。
+        // 引数には『this』がわたされ,変数名=stageで受け取る。
+
         // 「終わるまで音を鳴らす」をずっと繰り返す
-        await stage.while(true, async ($this:S3Stage)=>{
+        await stage.Control.forever(async ($this:S3Stage)=>{
             // 処理が終わるまで待つために await をつける
-            await $this.startSoundUntilDone();
+            await $this.Sound.playUntilDone();
         });
     });
 };

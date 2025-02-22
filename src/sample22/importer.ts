@@ -1,17 +1,14 @@
-import type {LikeScratchLib} from "@typeJS/scratchjs/likeScratchLib";
 import type {S3PlayGround} from "@typeJS/scratchjs/s3PlayGround";
 import type {S3Libs} from "@typeJS/scratchjs/s3Libs";
-import type {S3Images} from "@typeJS/scratchjs/s3Images";
+import type {S3ImagePool} from "@typeJS/scratchjs/s3ImagePool";
 import type {S3Storage} from "@typeJS/scratchjs/s3Storage";
-import type {S3Sounds} from "@typeJS/scratchjs/s3Sounds";
-// webpackで作成したJSからのexportを受ける方法が分からないので 
-// 代替策としてGlobal変数(likeScratchLib)にて受け取っている。
-import "https://amami-harhid.github.io/scratch3LikeJsLib/build/likeScratchLib.js";
+import type {S3SoundPool} from "@typeJS/scratchjs/s3SoundPool";
+import {PlayGround, Library, Storage, ImagePool, SoundPool} 
+// @ts-ignore (モジュール型定義無しエラーを抑止）
+from "https://amami-harhid.github.io/scratch3LikeJsLib/build/likeScratchLib.js";
 
-// @ts-ignore (likeScratchList未定義のエラーを抑止する)
-const ScratchLib:LikeScratchLib = window.likeScratchLib;
-export const Pg:S3PlayGround = ScratchLib.PlayGround;
-export const Libs:S3Libs = ScratchLib.Libs;
-export const St:S3Storage = ScratchLib.Storage;
-export const Images:S3Images = ScratchLib.Images;
-export const Sounds:S3Sounds = ScratchLib.Sounds;
+export const Pg:S3PlayGround = PlayGround;
+export const Lib:S3Libs = Library;
+export const St:S3Storage = Storage;
+export const Images:S3ImagePool = ImagePool;
+export const Sounds:S3SoundPool = SoundPool;

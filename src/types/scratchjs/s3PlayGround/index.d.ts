@@ -1,3 +1,12 @@
+declare interface S3PgImage {
+    /** ロード処理 */
+    load(path:string, name:string);
+} 
+declare interface S3PgSound {
+    /** ロード処理 */
+    load(path:string, name:string);
+} 
+
 /** LikeScratchJsLib */
 export interface S3PlayGround {
     /** タイトル */
@@ -8,16 +17,8 @@ export interface S3PlayGround {
     prepare(m:PlayGround) : Promise<any>;
     /** 動作セッティングをするところ */
     setting(m:PlayGround) : Promise<any>;
-    /**
-     * 画像ローディング処理
-     * @param url  画像データの場所
-     * @param name 画像に付与する名称 
-     */
-    loadImage(url:string, name:string) : void;
-    /**
-     * サウンドローディング処理
-     * @param url サウンドデータの場所
-     * @param name サウンドに付与する名称
-     */
-    loadSound(url:string, name:string) : void;
+    /** イメージ処理 */
+    Image: S3PgImage;
+    /** サウンド処理 */
+    Sound: S3PgSound;
 }
