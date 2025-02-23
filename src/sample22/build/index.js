@@ -19,7 +19,7 @@ Pg.preload = function preload($this) {
 Pg.prepare = function prepare($this) {
     return __awaiter(this, void 0, void 0, function* () {
         St.stage = new Lib.Stage();
-        St.stage.Sound.add(Images.Jurassic);
+        St.stage.Image.add(Images.Jurassic);
         St.cat = new Lib.Sprite("Cat", { scale: { x: 200, y: 200 } }); //サイズを２倍にしています
         St.cat.Image.add(Images.Cat);
     });
@@ -40,16 +40,16 @@ Pg.setting = function setting() {
                 this.__waitTouching = false;
                 const words = `なになに？どうしたの？`;
                 const properties = { 'pitch': 2, 'volume': 100 };
-                this.while(true, (_) => __awaiter(this, void 0, void 0, function* () {
-                    if (this.isMouseTouching()) {
-                        this.say(words);
-                        yield this.broadcastAndWait('SPEECH', words, properties, 'male');
+                this.C.while(true, (_) => __awaiter(this, void 0, void 0, function* () {
+                    if (this.Sensing.isMouseTouching()) {
+                        this.Looks.say(words);
+                        yield this.Event.broadcastAndWait('SPEECH', words, properties, 'male');
                         // 「送って待つ」を使うことで スピーチが終わるまで次のループに進まないため、
                         // 以下の「マウスタッチしている間、待つ」のコードが不要である。
                         //await Libs.waitWhile( ()=>this.isMouseTouching()); 
                     }
                     else {
-                        this.say(""); // フキダシを消す
+                        this.Looks.say(""); // フキダシを消す
                     }
                 }));
             });

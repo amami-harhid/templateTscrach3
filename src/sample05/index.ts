@@ -4,18 +4,19 @@ import type {S3Stage} from "@typeJS/scratchjs/s3Stage";
 
 Pg.title = "【Sample04】旗クリックで背景を表示する";
 
-const ImageNameJurassic = "Jurassic";
-let stage: S3Stage;
+let stage:S3Stage;
 
-Pg.preload = async function($pg:S3PlayGround) {
-    $pg.Image.load('../assets/Jurassic.svg', ImageNameJurassic);
+Pg.preload = async function($this:S3PlayGround) {
+    // ここでの『this』は M(Mainインスタンス) である。
+    $this.Image.load('../assets/Jurassic.svg','Jurassic');
 }
 Pg.prepare = async function() {
     stage = new Lib.Stage();
 }
 Pg.setting = async function() {
     // すぐに実行する。
-    stage.Event.whenRightNow( function($stage:S3Stage){
-        $stage.Image.add( ImageNameJurassic );
+    stage.Event.whenRightNow( function($this:S3Stage){
+        // ここでの『this』は Proxy(Stage)である。
+        $this.Image.add( "Jurassic" );
     });
 };

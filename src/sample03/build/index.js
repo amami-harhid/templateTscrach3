@@ -7,26 +7,28 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { Pg, Lib, St, Images } from "./importer.js";
-Pg.title = "【Sample02】旗クリックで背景を表示する";
-Pg.preload = function ($this) {
-    return __awaiter(this, void 0, void 0, function* () {
-        // ここでの『this』は M(Mainインスタンス) である。
-        $this.Image.load('../assets/Jurassic.svg', 'Jurassic');
-    });
+import { Pg, Lib, St, Images, Sounds } from "./importer.js";
+Pg.title = "【Sample03】旗クリックでずっと『終わるまで音を鳴らす』を繰り返す";
+Pg.preload = function () {
+    this.Image.load('../assets/Jurassic.svg', 'Jurassic');
+    this.Sound.load('../assets/Chill.wav', 'Chill');
 };
 Pg.prepare = function () {
-    return __awaiter(this, void 0, void 0, function* () {
-        St.stage = new Lib.Stage();
-    });
+    St.stage = new Lib.Stage();
+    St.stage.Image.add(Images.Jurassic);
 };
 Pg.setting = function () {
-    return __awaiter(this, void 0, void 0, function* () {
-        // すぐに実行する。
-        St.stage.Event.whenRightNow(function ($this) {
-            // ここでの『this』は Proxy(Stage)である。
-            $this.Image.add(Images.Jurassic);
-        });
+    // すぐに実行する。
+    St.stage.Event.whenRightNow(function ($this) {
+        // ここでの『this』は Proxy(stage)である。
+        $this.Sound.add(Sounds.Chill, { 'volume': 100 });
+    });
+    St.stage.Event.whenFlag(function ($this) {
+        // 「終わるまで音を鳴らす」をずっと繰り返す
+        $this.Control.forever((_) => __awaiter(this, void 0, void 0, function* () {
+            // 処理が終わるまで待つために await をつける
+            yield $this.Sound.playUntilDone();
+        }));
     });
 };
 //# sourceMappingURL=index.js.map
