@@ -8,6 +8,8 @@ import {S3ControlFunctions} from "@typeJS/scratchjs/s3ControlFunctions";
 import {S3ExtensionsFunctions} from "@typeJS/scratchjs/s3ExtensionsFunctions";
 import {S3SensingFunctions} from "@typeJS/scratchjs/s3SensingFunctions";
 import {S3EventFunctions} from "@typeJS/scratchjs/s3EventFunctions";
+import {S3SoundFunctions} from "@typeJS/scratchjs/s3SoundFunctions";
+import {S3LooksFunctions} from "@typeJS/scratchjs/s3LooksFunctions";
 
 /** イベント処理 */
 declare interface S3SpriteEventFunctions extends S3EventFunctions{
@@ -67,6 +69,9 @@ export interface S3Sprite extends S3Entity{
     Control: S3SpriteControlFunctions;
     Extensions: S3ExtensionsFunctions;
     Sensing: S3SpriteSensingFunctions;
+    Sound: S3SoundFunctions;
+    Looks: S3LooksFunctions;
+    
 
     /** 次のコスチュームにする */
     nextCostume(): void;

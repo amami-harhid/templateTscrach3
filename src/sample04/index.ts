@@ -2,7 +2,7 @@ import {Pg,Lib} from "./importer.js";
 import type {S3PlayGround} from "@typeJS/scratchjs/s3PlayGround";
 import type {S3Stage} from "@typeJS/scratchjs/s3Stage";
 
-Pg.title = "【Sample04】旗クリックで背景を表示する";
+Pg.title = "【Sample04】 旗をクリックした後、ステージをクリック（タッチ）したら音を鳴らす";
 
 const ImageNameJurassic = "Jurassic";
 let stage: S3Stage;
