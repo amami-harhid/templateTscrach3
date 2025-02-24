@@ -1,4 +1,4 @@
-export interface S3Looks {
+export interface S3LooksEffectiveType {
     /** 色の効果 */            COLOR: string;
     /** 魚眼レンズの効果 */     FISHEYE: string;
     /** 渦巻きの効果 */         WHIRL: string;
