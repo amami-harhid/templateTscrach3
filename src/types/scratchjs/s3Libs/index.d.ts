@@ -1,6 +1,7 @@
 import {S3Stage} from "@typeJS/scratchjs/s3Stage"
 import {S3Sprite} from "@typeJS/scratchjs/s3Sprite"
 import {S3Point} from "@typeJS/scratchjs/s3Point";
+import {S3Looks} from "@typeJS/scratchjs/s3Looks";
 /** 利用クラス格納ライブラリー */
 export interface S3Libs {
     /** ステージクラス */
@@ -11,5 +12,7 @@ export interface S3Libs {
     wait(ms:number): Promise<any>;
     /** 条件が成立する間、待つ (await必須) */
     waitWhile( condition: boolean|CallableFunction): Promise<any>;
+    /** 見た目効果 */
+    Looks: S3Looks;
     
 }

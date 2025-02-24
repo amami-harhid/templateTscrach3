@@ -1,3 +1,6 @@
+/**
+ * Sample06 スプライトをタッチしたらＢＧＭを繰返し鳴らす
+ */
 import {Pg,Lib} from "./importer.js";
 import type {S3PlayGround} from "@typeJS/scratchjs/s3PlayGround";
 import type {S3Stage} from "@typeJS/scratchjs/s3Stage";

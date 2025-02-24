@@ -1,0 +1,9 @@
+import { PlayGround, Library, Storage, ImagePool, SoundPool } 
+// @ts-ignore (モジュール型定義無しエラーを抑止）
+from "https://amami-harhid.github.io/scratch3LikeJsLib/build/likeScratchLib.js";
+export const Pg = PlayGround;
+export const Lib = Library;
+export const St = Storage;
+export const Images = ImagePool;
+export const Sounds = SoundPool;
+//# sourceMappingURL=importer.js.map

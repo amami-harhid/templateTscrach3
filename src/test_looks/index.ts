@@ -1,6 +1,5 @@
-import {S3Looks} from "@typeJS/scratchjs/s3Looks";
-export const EffectType = {
-    /** 色の効果 */            color: "color",
+const EffectType = {
+    /** 色の効果 */            color  : "color",
     /** 魚眼レンズの効果 */     fisheye: "fisheye",
     /** 渦巻きの効果 */         whirl: "whirl",
     /** ピクセル化の効果 */     pixelate: "pixelate",
@@ -8,15 +7,17 @@ export const EffectType = {
     /** 明るさの効果 */         brightness: "brightness",
     /** 幽霊の効果 */           ghost: "ghost",
 } as const;
-
 declare type EffectKeyType = keyof typeof EffectType;
+
 
 /** 見た目系メソッド */
 export interface S3LooksFunctions {
-    /** 画像効果を指定した値分変える */
-    changeEffectBy(effectType: string, value: number) : void;
-    /** 画像効果を指定した値にする */
-    setEffect(effectType: string, value: number): void;
-    /** 画像効果をなくす */
-    clearEffects(): void;
+    changeEffectBy(effectType: EffectKeyType, value: number) : void;
 }
+
+const f = function(effectType:EffectKeyType, value:number) :void {
+    console.log(effectType);
+    console.log(value);
+}
+
+f( EffectType.color , 10);
