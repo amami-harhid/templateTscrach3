@@ -34,7 +34,8 @@ Pg.prepare = async function prepare() {
 Pg.setting = async function setting() {
 
     stage.Event.whenFlag(async function($stage:S3Stage) {
-        $stage.Sound.add( Chill, { 'volume' : 50 } );
+        $stage.Sound.add( Chill );
+        $stage.Sound.setOption( Lib.SoundOption.VOLUME, 50);
     });
     stage.Event.whenFlag(async function($stage) {
         $stage.Control.forever(async _=>{
@@ -44,7 +45,8 @@ Pg.setting = async function setting() {
 
     cat.Event.whenFlag( async function($cat:S3Sprite) {
         // 音を登録する
-        $cat.Sound.add( Mya, { 'volume' : 20 } );
+        $cat.Sound.add( Mya );
+        $cat.Sound.setOption( Lib.SoundOption.VOLUME, 20);
     });
     cat.Event.whenFlag( async ($cat:S3Sprite)=> {
         // 初期化
@@ -75,7 +77,7 @@ Pg.setting = async function setting() {
     cat.Control.whenCloned(async function(clone:S3Sprite){
         clone.Motion.gotoXY({x:100, y:-100});
         clone.Looks.setSize({x:50, y:50});
-        clone.Looks.setEffect(Lib.LooksEffectiveType.COLOR, 50);
+        clone.Looks.setEffect(Lib.ImageEffective.COLOR, 50);
         clone.life = 5000;
         clone.Looks.show();
         // ずっと繰り返す

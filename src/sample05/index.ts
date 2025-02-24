@@ -24,7 +24,8 @@ Pg.preload = function($pg: S3PlayGround) {
 Pg.prepare = function() {
     stage = new Lib.Stage();
     stage.Image.add( Jurassic );
-    stage.Sound.add( Chill, { 'volume' : 100 } );
+    stage.Sound.add( Chill );
+    stage.Sound.setOption( Lib.SoundOption.VOLUME, 100)
 }
 Pg.setting = function() {
     // フラグをクリックしたときの動作

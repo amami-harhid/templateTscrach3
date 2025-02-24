@@ -31,7 +31,8 @@ Pg.prepare = async function prepare() {
 Pg.setting = async function setting() {
 
     stage.Event.whenFlag(async function( $stage:S3Stage ) {
-        $stage.Sound.add( Chill, { 'volume' : 50 } );
+        $stage.Sound.add( Chill );
+        $stage.Sound.setOption( Lib.SoundOption.VOLUME, 50);
     });
 
     stage.Event.whenFlag(async function( $stage:S3Stage ) {

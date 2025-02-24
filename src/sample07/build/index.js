@@ -7,26 +7,57 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { Pg, Lib, St, Images } from "./importer.js";
-Pg.title = "【Sample02】旗クリックで背景を表示する";
-Pg.preload = function ($this) {
+/**
+ * Sample07 スプライトを左右に動かす。端に触れたら跳ね返る
+ */
+import { Pg, Lib } from "./importer.js";
+Pg.title = "【Sample07】スプライトが横向きに動き、端に触れたら跳ね返";
+const Jurassic = "Jurassic";
+const Chill = "Chill";
+const Cat = "Cat";
+const SpriteCatName = "cat";
+let stage;
+let cat;
+Pg.preload = function preload($this) {
     return __awaiter(this, void 0, void 0, function* () {
-        // ここでの『this』は M(Mainインスタンス) である。
-        $this.Image.load('../assets/Jurassic.svg', 'Jurassic');
+        $this.Image.load('../assets/Jurassic.svg', Jurassic);
+        $this.Sound.load('../assets/Chill.wav', Chill);
+        $this.Image.load('../assets/cat.svg', Cat);
     });
 };
-Pg.prepare = function () {
+Pg.prepare = function prepare() {
     return __awaiter(this, void 0, void 0, function* () {
-        St.stage = new Lib.Stage();
+        stage = new Lib.Stage();
+        stage.Image.add(Jurassic);
+        stage.Sound.add(Chill);
+        stage.Sound.setOption(Lib.SoundOption.VOLUME, 100);
+        cat = new Lib.Sprite(SpriteCatName);
+        cat.Image.add(Cat);
     });
 };
-Pg.setting = function () {
+Pg.setting = function setting() {
     return __awaiter(this, void 0, void 0, function* () {
-        // すぐに実行する。
-        St.stage.Event.whenRightNow(function ($this) {
-            // ここでの『this』は Proxy(Stage)である。
-            $this.Image.add(Images.Jurassic);
-        });
+        // フラグクリック
+        stage.Event.whenFlag(($stage) => __awaiter(this, void 0, void 0, function* () {
+            // 「終わるまで音を鳴らす」をずっと繰り返す、スレッドを起動する
+            yield $stage.Control.while(true, (_) => __awaiter(this, void 0, void 0, function* () {
+                yield $stage.Sound.playUntilDone();
+            }));
+        }));
+        const catStep = 5;
+        // フラグクリック
+        cat.Event.whenFlag(($cat) => __awaiter(this, void 0, void 0, function* () {
+            // 初期化
+            $cat.Motion.gotoXY({ x: 0, y: 0 });
+            $cat.Motion.pointInDirection(90);
+        }));
+        cat.Event.whenFlag(($cat) => __awaiter(this, void 0, void 0, function* () {
+            // 「左右」に動く。端に触れたら跳ね返る。
+            yield $cat.Control.forever((_) => __awaiter(this, void 0, void 0, function* () {
+                $cat.Motion.moveSteps(catStep);
+                $cat.Motion.ifOnEdgeBounds();
+            }));
+        }));
     });
 };
 //# sourceMappingURL=index.js.map

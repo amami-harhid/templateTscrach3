@@ -32,14 +32,16 @@ Pg.setting = async function setting() {
 
     stage.Event.whenFlag(function($stage:S3Stage){
         // function(){} と書くとき、『this』は Proxy(stage)である
-        $stage.Sound.add( Chill, { 'volume' : 50 } );
+        $stage.Sound.add( Chill );
+        $stage.Sound.setOption( Lib.SoundOption.VOLUME, 50);
         $stage.Control.forever( async _=>{
             await $stage.Sound.playUntilDone();
         })
     });
-    cat.Event.whenFlag(function(){
+    cat.Event.whenFlag(function($cat:S3Sprite){
         // function(){} と書くとき、『this』は Proxy(cat)である
-        this.Sound.add( Mya, { 'volume' : 20 } );
+        $cat.Sound.add( Mya );
+        $cat.Sound.setOption( Lib.SoundOption.VOLUME, 20);
     });
     cat.Event.whenFlag( async ($cat:S3Sprite)=> {
         // 初期化

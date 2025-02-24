@@ -21,7 +21,8 @@ Pg.setting = function() {
     // すぐに実行する。
     stage.Event.whenRightNow( function($stage:S3Stage){
         // ここでの『this』は Proxy(stage)である。
-        $stage.Sound.add( SoundNameChill, { 'volume' : 100 } );
+        $stage.Sound.add( SoundNameChill );
+        $stage.Sound.setOption( Lib.SoundOption.VOLUME, 100);
     });
     stage.Event.whenFlag( function($stage:S3Stage){ 
         // 「終わるまで音を鳴らす」をずっと繰り返す

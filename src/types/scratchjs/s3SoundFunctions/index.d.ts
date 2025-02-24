@@ -6,13 +6,13 @@ declare interface S3SoundProperties {
 /** サウンドメソッド */
 export interface S3SoundFunctions {
     /** サウンド追加 */
-    add(sound: any, prop?: S3SoundProperties) : Promise<any>;
+    add(sound: any) : Promise<any>;
     switch(name: string): void;
     next(): void;
     play(): void;
     playUntilDone(): Promise<any>;
-    setVolume(vol: number): void;
-    setPitch(pitch: number): void;
+    /** サウンドオプション設定 */
+    setOption(key: string, value: number): void;
     stop(): void;
     stopImmediately(): void;
 }

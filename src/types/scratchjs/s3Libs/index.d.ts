@@ -1,7 +1,7 @@
 import {S3Stage} from "@typeJS/scratchjs/s3Stage"
 import {S3Sprite} from "@typeJS/scratchjs/s3Sprite"
 import {S3Point} from "@typeJS/scratchjs/s3Point";
-import {S3LooksEffectiveType} from "@typeJS/scratchjs/s3LooksEffectiveType";
+import {S3ImageEffective} from "@typeJS/scratchjs/s3ImageEffective";
 
 declare interface S3Env {
     /** 1FPS単位の時間(ms) */
@@ -22,6 +22,15 @@ declare interface S3RotationStyle {
     ALL_AROUND: string;
 }
 
+/** サウンドオプション */
+declare interface S3SoundOption {
+    /** ボリューム */
+    VOLUME : string;
+    /** ピッチ */
+    PITCH : string;
+}
+
+
 /** 計算ユーティリティ */
 declare interface S3MathUtils {
     /** デグリーからラジアンへ変換 */
@@ -41,7 +50,11 @@ export interface S3Libs {
     /** 条件が成立する間、待つ (await必須) */
     waitWhile( condition: boolean|CallableFunction): Promise<any>;
     /** 見た目効果 */
-    LooksEffectiveType: S3LooksEffectiveType;
+    ImageEffective: S3ImageEffective;
+    /** 回転方法 */
+    RotationStyle: S3RotationStyle;
+    /** サウンドオプション */
+    SoundOption: S3SoundOption;
     /** ステージのランダムな位置 */
     randomPoint: {x: number, y: number};
     /** 環境設定 */
@@ -59,6 +72,8 @@ export interface S3Libs {
     randomPoint(): {x: number, y: number};
     /** ランダムな向き */
     randomDirection(): number;
-    /** 回転方法 */
-    RotationStyle: S3RotationStyle;
+    /** ステージ幅 */
+    stageWidth : number;
+    /** ステージ高さ */
+    stageHeight : number;
 }

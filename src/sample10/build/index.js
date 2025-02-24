@@ -13,7 +13,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
  * クローンされたら動きだす（端に触れたらミャーとないて折り返す）
  */
 import { Pg, Lib } from "./importer.js";
-import { EffectType } from "/src/types/scratchjs/s3LooksFunctions";
 Pg.title = "【Sample10】スプライトに触ったらクローンを作る(5秒で死ぬ)";
 const Jurassic = "Jurassic";
 const Chill = "Chill";
@@ -42,7 +41,8 @@ Pg.setting = function setting() {
     return __awaiter(this, void 0, void 0, function* () {
         stage.Event.whenFlag(function ($stage) {
             return __awaiter(this, void 0, void 0, function* () {
-                $stage.Sound.add(Chill, { 'volume': 50 });
+                $stage.Sound.add(Chill);
+                $stage.Sound.setOption(Lib.SoundOption.VOLUME, 50);
             });
         });
         stage.Event.whenFlag(function ($stage) {
@@ -55,7 +55,8 @@ Pg.setting = function setting() {
         cat.Event.whenFlag(function ($cat) {
             return __awaiter(this, void 0, void 0, function* () {
                 // 音を登録する
-                $cat.Sound.add(Mya, { 'volume': 20 });
+                $cat.Sound.add(Mya);
+                $cat.Sound.setOption(Lib.SoundOption.VOLUME, 20);
             });
         });
         cat.Event.whenFlag(($cat) => __awaiter(this, void 0, void 0, function* () {
@@ -90,7 +91,7 @@ Pg.setting = function setting() {
             return __awaiter(this, void 0, void 0, function* () {
                 clone.Motion.gotoXY({ x: 100, y: -100 });
                 clone.Looks.setSize({ x: 50, y: 50 });
-                clone.Looks.setEffect(EffectType.color, 50);
+                clone.Looks.setEffect(Lib.ImageEffective.COLOR, 50);
                 clone.life = 5000;
                 clone.Looks.show();
                 // ずっと繰り返す

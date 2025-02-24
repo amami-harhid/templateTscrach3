@@ -32,11 +32,12 @@ Pg.prepare = async function prepare() {
 }
 Pg.setting = async function setting() {
 
-    stage.Event.whenFlag(async $stage=>{
+    stage.Event.whenFlag(async ($stage:S3Stage)=>{
         // ここでの『this』は P であるので、this.sounds は P.soundsと同じである。 
         // stageのインスタンスは 『stage』の変数で受け取っている。
-        await $stage.Sound.add( Chill, { 'volume' : 50 } );
-        await $stage.C.forever(async _=>{
+        await $stage.Sound.add( Chill );
+        $stage.Sound.setOption( Lib.SoundOption.VOLUME, 100);
+        await $stage.Control.forever(async _=>{
             // ＢＧＭを鳴らし続ける（終わるまで待つ）
             await $stage.Sound.playUntilDone();
         })

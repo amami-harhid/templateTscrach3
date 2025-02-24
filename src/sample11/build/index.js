@@ -8,17 +8,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 /**
- * Sample10
- * スプライトのクローンを作る（スプライトに触ったらクローンを作る）
- * クローンされたら動きだす（端に触れたらミャーとないて折り返す）
+ * Sample11
+ * スプライト（CAT)を １秒で「どこかの」場所へ移動する
  */
 import { Pg, Lib } from "./importer.js";
-import { EffectType } from "/src/types/scratchjs/s3LooksFunctions";
-Pg.title = "【Sample10】スプライトに触ったらクローンを作る(5秒で死ぬ)";
+Pg.title = "【Sample11】１秒で「どこかの」場所へ移動する";
 const Jurassic = "Jurassic";
 const Chill = "Chill";
 const Cat = "Cat";
-const Mya = "Mya";
 let stage;
 let cat;
 Pg.preload = function preload($this) {
@@ -33,16 +30,16 @@ Pg.prepare = function prepare() {
         stage = new Lib.Stage();
         stage.Image.add(Jurassic);
         cat = new Lib.Sprite("Cat");
+        cat.Motion.gotoXY({ x: 0, y: 0 });
         cat.Image.add(Cat);
-        cat.Motion.gotoXY({ x: 200, y: 150 });
-        cat.Motion.pointInDirection(90);
     });
 };
 Pg.setting = function setting() {
     return __awaiter(this, void 0, void 0, function* () {
         stage.Event.whenFlag(function ($stage) {
             return __awaiter(this, void 0, void 0, function* () {
-                $stage.Sound.add(Chill, { 'volume': 50 });
+                $stage.Sound.add(Chill);
+                $stage.Sound.setOption(Lib.SoundOption.VOLUME, 50);
             });
         });
         stage.Event.whenFlag(function ($stage) {
@@ -54,55 +51,13 @@ Pg.setting = function setting() {
         });
         cat.Event.whenFlag(function ($cat) {
             return __awaiter(this, void 0, void 0, function* () {
-                // 音を登録する
-                $cat.Sound.add(Mya, { 'volume': 20 });
-            });
-        });
-        cat.Event.whenFlag(($cat) => __awaiter(this, void 0, void 0, function* () {
-            // 初期化
-            $cat.Motion.gotoXY({ x: 200, y: 150 });
-            $cat.Motion.pointInDirection(90);
-        }));
-        const _changeDirection = 1;
-        cat.Event.whenFlag(function ($cat) {
-            return __awaiter(this, void 0, void 0, function* () {
-                // ずっと繰り返して回転する
-                $cat.Control.forever(_ => {
-                    $cat.Motion.turnRightDegrees(_changeDirection); // 外側Scope 参照可能
-                });
-            });
-        });
-        cat.Event.whenFlag(function ($cat) {
-            return __awaiter(this, void 0, void 0, function* () {
-                // 次をずっと繰り返す
-                // マウスカーソルでタッチしたら、クローンを作る
                 $cat.Control.forever((_) => __awaiter(this, void 0, void 0, function* () {
-                    if ($cat.Sensing.isMouseTouching()) {
-                        $cat.Control.clone();
-                    }
-                    // マウスタッチしないまで待つ
-                    yield Lib.waitWhile(() => $cat.Sensing.isMouseTouching());
+                    // 繰り返すごとに 1秒待つ
+                    yield Lib.wait(1000);
+                    // １秒でどこかへ行く
+                    const randomPoint = Lib.randomPoint;
+                    yield $cat.Motion.glideToPosition(1, randomPoint.x, randomPoint.y);
                 }));
-            });
-        });
-        const steps = 10;
-        cat.Control.whenCloned(function (clone) {
-            return __awaiter(this, void 0, void 0, function* () {
-                clone.Motion.gotoXY({ x: 100, y: -100 });
-                clone.Looks.setSize({ x: 50, y: 50 });
-                clone.Looks.setEffect(EffectType.color, 50);
-                clone.life = 5000;
-                clone.Looks.show();
-                // ずっと繰り返す
-                clone.Control.forever(_ => {
-                    clone.Motion.moveSteps(steps);
-                    // 端に触れたら
-                    clone.Motion.ifOnEdgeBounds();
-                    if (clone.Sensing.isTouchingEdge()) {
-                        // ミャーと鳴く。
-                        clone.Sound.play();
-                    }
-                });
             });
         });
     });

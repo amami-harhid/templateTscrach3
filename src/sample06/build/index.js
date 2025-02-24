@@ -7,26 +7,53 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { Pg, Lib, St, Images } from "./importer.js";
-Pg.title = "【Sample02】旗クリックで背景を表示する";
-Pg.preload = function ($this) {
+/**
+ * Sample06 スプライトをタッチしたらＢＧＭを繰返し鳴らす
+ */
+import { Pg, Lib } from "./importer.js";
+Pg.title = "【Sample06】スプライトをタッチしたらＢＧＭを繰返し鳴らす";
+const Jurassic = "Jurassic";
+const Chill = "Chill";
+const Cat = "Cat";
+const SpriteCatName = "cat";
+let stage;
+let cat;
+Pg.preload = function preload($pg) {
     return __awaiter(this, void 0, void 0, function* () {
-        // ここでの『this』は M(Mainインスタンス) である。
-        $this.Image.load('../assets/Jurassic.svg', 'Jurassic');
+        $pg.Image.load('../assets/Jurassic.svg', Jurassic);
+        $pg.Sound.load('../assets/Chill.wav', Chill);
+        $pg.Image.load('../assets/cat.svg', Cat);
     });
 };
-Pg.prepare = function () {
+Pg.prepare = function prepare() {
     return __awaiter(this, void 0, void 0, function* () {
-        St.stage = new Lib.Stage();
+        stage = new Lib.Stage();
+        stage.Image.add(Jurassic);
+        // スプライトを作り、コスチュームを１個登録する
+        cat = new Lib.Sprite(SpriteCatName);
+        cat.Image.add(Cat);
+        cat.Sound.add(Chill);
+        cat.Sound.setOption(Lib.SoundOption.VOLUME, 100);
+        cat.Looks.hide(); // 非表示
     });
 };
-Pg.setting = function () {
+Pg.setting = function setting() {
     return __awaiter(this, void 0, void 0, function* () {
-        // すぐに実行する。
-        St.stage.Event.whenRightNow(function ($this) {
-            // ここでの『this』は Proxy(Stage)である。
-            $this.Image.add(Images.Jurassic);
+        // フラグをクリックしたときの動作
+        stage.Event.whenFlag(_ => {
+            // アロー関数なので、ここでの『this』はPである
+            cat.Looks.show(); // 表示
         });
+        // スプライト（ネコ）をクリックしたときの動作
+        cat.Event.whenClicked((ネコ) => __awaiter(this, void 0, void 0, function* () {
+            // アロー関数なので、ここでの『this』はPである
+            // catのインスタンスは 『ネコ』として受け取っている。
+            // 「終わるまで音を鳴らす」をずっと繰り返す
+            ネコ.C.forever((_) => __awaiter(this, void 0, void 0, function* () {
+                // 処理が終わるまで待つために await をつける
+                yield ネコ.Sound.playUntilDone();
+            }));
+        }));
     });
 };
 //# sourceMappingURL=index.js.map

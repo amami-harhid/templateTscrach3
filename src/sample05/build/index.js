@@ -1,32 +1,41 @@
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-import { Pg, Lib, St, Images } from "./importer.js";
-Pg.title = "【Sample02】旗クリックで背景を表示する";
-Pg.preload = function ($this) {
-    return __awaiter(this, void 0, void 0, function* () {
-        // ここでの『this』は M(Mainインスタンス) である。
-        $this.Image.load('../assets/Jurassic.svg', 'Jurassic');
-    });
+/**
+ * Sample05 旗クリックでスプライトを表示する
+ */
+import { Pg, Lib } from "./importer.js";
+Pg.title = "【Sample05】旗クリックでスプライトを表示する";
+const Jurassic = "Jurassic";
+const Chill = "Chill";
+const Cat = "Cat";
+const SpriteCatName = "cat";
+let stage;
+let cat;
+Pg.preload = function ($pg) {
+    $pg.Image.load('../assets/Jurassic.svg', Jurassic);
+    $pg.Sound.load('../assets/Chill.wav', Chill);
+    $pg.Image.load('../assets/cat.svg', Cat);
 };
 Pg.prepare = function () {
-    return __awaiter(this, void 0, void 0, function* () {
-        St.stage = new Lib.Stage();
-    });
+    stage = new Lib.Stage();
+    stage.Image.add(Jurassic);
+    stage.Sound.add(Chill);
+    stage.Sound.setOption(Lib.SoundOption.VOLUME, 100);
 };
 Pg.setting = function () {
-    return __awaiter(this, void 0, void 0, function* () {
-        // すぐに実行する。
-        St.stage.Event.whenRightNow(function ($this) {
-            // ここでの『this』は Proxy(Stage)である。
-            $this.Image.add(Images.Jurassic);
-        });
+    // フラグをクリックしたときの動作
+    // whenFlagのなかでStageの『this』を使わずに、
+    // Pのthisとして使うのであれば、アロー式（引数省略）で書いて
+    // this.cat として明示的に使うことでもよい。
+    // ここでは、this.cat は P.catと同じ意味である。
+    stage.Event.whenFlag(_ => {
+        // 旗クリックしたタイミングでネコのスプライトを作り、
+        // コスチュームを１個登録する
+        cat = new Lib.Sprite(SpriteCatName);
+    });
+    stage.Event.whenFlag(_ => {
+        // コスチュームを１個登録する
+        // whenFlagを定義した順番に実行されるので、
+        // ここの『旗クリック』の処理ではネコのスプライトは作成済である。
+        cat.Image.add(Cat);
     });
 };
 //# sourceMappingURL=index.js.map
