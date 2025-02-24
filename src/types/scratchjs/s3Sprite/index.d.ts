@@ -47,8 +47,8 @@ declare interface S3MotionFunctions {
     gotoMousePosition(): void;
     /** 指定したスプライトの場所へ移動する */
     gotoSprite(target:S3Sprite): void;
-    /** 〇秒で指定した場所へ移動する */
-    glideToPosition(secs: number, x: number|{x:number, y:number}, y?:number):void;
+    /** 〇秒で指定した場所へ移動する(await必須) */
+    glideToPosition(secs: number, x: number|{x:number, y:number}, y?:number): Promise<any>;
     /** 〇度へ向ける */
     pointInDirection(degree: number) : void;
     /** 回転方法を〇にする */
@@ -108,12 +108,12 @@ declare interface S3SpriteLooksFunctions extends S3LooksFunctions{
     switchCostume(costume: string | number): void;
     /** 話す */
     say(/** 話すテキスト */text: string, properties: SayProperty): void;
-    /** 指定した秒数だけ話す */
-    sayForSecs(/** 話すテキスト */text: string, secs: number, properties: SayProperty):void;
+    /** 指定した秒数だけ話す(await 必須) */
+    sayForSecs(/** 話すテキスト */text: string, secs: number, properties: SayProperty): Promise<any>;
     /** 思う */
     think(/** 思うテキスト */text: string, properties: SayProperty):void;
-    /** 指定した秒数だけ思う */
-    thinkForSecs(/** 思うテキスト */text: string, secs: number, properties: SayProperty): void;
+    /** 指定した秒数だけ思う(await 必須) */
+    thinkForSecs(/** 思うテキスト */text: string, secs: number, properties: SayProperty): Promise<any>;
     /** 大きさを変える */
     changeSizeBy(x: number | SizeProperty, y?:number ):void;
     /** サイズを取得する */
