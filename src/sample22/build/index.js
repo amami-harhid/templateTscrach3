@@ -7,8 +7,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { Pg, Lib, St, Images, Sounds } from "./importer.js";
+import { Pg, Lib } from "./importer.js";
 Pg.title = "【Sample22】スピーチ機能：「お話しを終わるまで待つ」を続ける";
+const Jurassic = "Jurassic";
+const Chill = "Chill";
+const Cat = "Cat";
+let stage;
+let cat;
 Pg.preload = function preload($this) {
     return __awaiter(this, void 0, void 0, function* () {
         $this.Image.load('../assets/Jurassic.svg', 'Jurassic');
@@ -18,24 +23,25 @@ Pg.preload = function preload($this) {
 };
 Pg.prepare = function prepare($this) {
     return __awaiter(this, void 0, void 0, function* () {
-        St.stage = new Lib.Stage();
-        St.stage.Image.add(Images.Jurassic);
-        St.cat = new Lib.Sprite("Cat", { scale: { x: 200, y: 200 } }); //サイズを２倍にしています
-        St.cat.Image.add(Images.Cat);
+        stage = new Lib.Stage();
+        stage.Image.add(Jurassic);
+        cat = new Lib.Sprite("Cat", { scale: { x: 200, y: 200 } }); //サイズを２倍にしています
+        cat.Image.add(Cat);
     });
 };
 Pg.setting = function setting() {
     return __awaiter(this, void 0, void 0, function* () {
-        St.stage.Event.whenFlag(function ($this) {
+        stage.Event.whenFlag(function ($this) {
             return __awaiter(this, void 0, void 0, function* () {
-                yield $this.Sound.add(Sounds.Chill, { 'volume': 20 });
+                yield $this.Sound.add(Chill);
+                $this.Sound.setOption(Lib.SoundOption.VOLUME, 20);
                 yield $this.Control.while(true, () => __awaiter(this, void 0, void 0, function* () {
                     yield $this.Sound.playUntilDone();
                 }));
             });
         });
         // ネコにさわったらお話する
-        St.cat.Event.whenFlag(function () {
+        cat.Event.whenFlag(function () {
             return __awaiter(this, void 0, void 0, function* () {
                 this.__waitTouching = false;
                 const words = `なになに？どうしたの？`;
@@ -56,7 +62,7 @@ Pg.setting = function setting() {
         });
         // ネコをクリックしたらお話する
         let catSpeeking = false;
-        St.cat.Event.whenClicked(function ($this) {
+        cat.Event.whenClicked(function ($this) {
             return __awaiter(this, void 0, void 0, function* () {
                 const words = `そこそこ。そこがかゆいの。`;
                 const properties = { 'pitch': 1.7, 'volume': 500 };
@@ -67,7 +73,7 @@ Pg.setting = function setting() {
                 }
             });
         });
-        St.cat.Event.whenBroadcastReceived('SPEECH', function (words_1, properties_1) {
+        cat.Event.whenBroadcastReceived('SPEECH', function (words_1, properties_1) {
             return __awaiter(this, arguments, void 0, function* (words, properties, gender = 'male', locale = 'ja-JP') {
                 // speechAndWait に await をつけて、音声スピーチが終わるまで待つ。
                 const $this = this;

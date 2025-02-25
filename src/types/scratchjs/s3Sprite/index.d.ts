@@ -10,6 +10,7 @@ import {S3SensingFunctions} from "@typeJS/scratchjs/s3SensingFunctions";
 import {S3EventFunctions} from "@typeJS/scratchjs/s3EventFunctions";
 import {S3SoundFunctions} from "@typeJS/scratchjs/s3SoundFunctions";
 import {S3LooksFunctions} from "@typeJS/scratchjs/s3LooksFunctions";
+import {S3LotationStyle} from "@typeJS/scratchjs/s3Libs";
 
 /** イベント処理 */
 declare interface S3SpriteEventFunctions extends S3EventFunctions{
@@ -20,6 +21,8 @@ declare interface S3SpriteControlFunctions extends S3ControlFunctions{
     clone(option?:S3CloneOption): Promise<S3Sprite>
     /** クローンされたとき */
     whenCloned( func: CallableFunction ): void;
+    /** 削除する */
+    remove() : void;
 }
 
 declare interface S3CloneOption {
@@ -49,10 +52,14 @@ declare interface S3MotionFunctions {
     gotoSprite(target:S3Sprite): void;
     /** 〇秒で指定した場所へ移動する(await必須) */
     glideToPosition(secs: number, x: number|{x:number, y:number}, y?:number): Promise<any>;
+    /** マウスの位置へ向く */
+    pointToMouse() : void;
+    /** 指定したターゲットの位置へ向く */
+    pointToTarget(target: S3Sprite): void;
     /** 〇度へ向ける */
     pointInDirection(degree: number) : void;
     /** 回転方法を〇にする */
-    setRotationStyle() : void;
+    setRotationStyle(rotationStyle: S3LotationStyle  ) : void;
     /** 指定した位置へ移動 */
     gotoXY(x: number | {x:number,y:number}, y?:number) : void;
     /** 右側回転 */
@@ -107,13 +114,13 @@ declare interface S3SpriteLooksFunctions extends S3LooksFunctions{
     /** 指定した名前(または番号)でコスチュームを切り替える */
     switchCostume(costume: string | number): void;
     /** 話す */
-    say(/** 話すテキスト */text: string, properties: SayProperty): void;
+    say(/** 話すテキスト */text?: string, properties?: SayProperty): void;
     /** 指定した秒数だけ話す(await 必須) */
-    sayForSecs(/** 話すテキスト */text: string, secs: number, properties: SayProperty): Promise<any>;
+    sayForSecs(/** 話すテキスト */text: string, secs: number, properties?: SayProperty): Promise<any>;
     /** 思う */
-    think(/** 思うテキスト */text: string, properties: SayProperty):void;
+    think(/** 思うテキスト */text?: string, properties?: SayProperty):void;
     /** 指定した秒数だけ思う(await 必須) */
-    thinkForSecs(/** 思うテキスト */text: string, secs: number, properties: SayProperty): Promise<any>;
+    thinkForSecs(/** 思うテキスト */text: string, secs: number, properties?: SayProperty): Promise<any>;
     /** 大きさを変える */
     changeSizeBy(x: number | SizeProperty, y?:number ):void;
     /** サイズを取得する */
@@ -133,7 +140,7 @@ declare interface S3SpriteLooksFunctions extends S3LooksFunctions{
     /** 指定階層分、後ろにする */
     goBackwardLayers(layers: number): void;
     /** 自分自身の縦横表示サイズを得る */
-    getSelfDimensions() : {x: number, y: number};
+    drawingDimensions() : {width: number, height: number};
 }
 
 /** スプライト（実体[Entity]を継承）*/

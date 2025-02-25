@@ -8,7 +8,8 @@ export interface S3EventFunctions {
     whenClicked(func:CallableFunction) :void;
     /** メッセージを受け取ったときに実行する */
     whenBroadcastReceived(messageId:string, func:CallableFunction):void;
-
-    broadcastAndWait(messageId:string, ...args:any[]): Promise<any>;
-    broadcast(): void;
+    /** メッセージを送る */
+    broadcast(messageId:string, ...args?:any[]): void;
+    /** メッセージを送って待つ */
+    broadcastAndWait(messageId:string, ...args?:any[]): Promise<any>;
 }
