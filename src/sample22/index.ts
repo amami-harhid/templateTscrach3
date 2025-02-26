@@ -36,20 +36,19 @@ Pg.setting = async function setting() {
     })
     
     // ネコにさわったらお話する
-    cat.Event.whenFlag( async function(){
-        this.__waitTouching = false;
+    cat.Event.whenFlag( async function($this:S3Sprite){
         const words = `なになに？どうしたの？`;
         const properties = {'pitch': 2, 'volume': 100}
-        this.C.while(true, async _=>{
-            if( this.Sensing.isMouseTouching() ) {
-                this.Looks.say(words);
-                await this.Event.broadcastAndWait('SPEECH', words, properties, 'male');
+        $this.Control.while(true, async _=>{
+            if( $this.Sensing.isMouseTouching() ) {
+                $this.Looks.say(words);
+                await $this.Event.broadcastAndWait('SPEECH', words, properties, 'male');
                 
                 // 「送って待つ」を使うことで スピーチが終わるまで次のループに進まないため、
                 // 以下の「マウスタッチしている間、待つ」のコードが不要である。
                 //await Libs.waitWhile( ()=>this.isMouseTouching()); 
             }else{
-                this.Looks.say(""); // フキダシを消す
+                $this.Looks.say(""); // フキダシを消す
             }
         });
     });

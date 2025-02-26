@@ -93,7 +93,10 @@ declare interface S3SpriteSensingFunctions extends S3SensingFunctions {
     /** 指定したスプライトが触れたとき */
     isTouchingTargetToTarget(sprite:S3Sprite): boolean;
     /** 触れているスプライトを取得する */
-    getTouchingTarget(): [S3Sprite];
+    getTouchingTarget(): S3Sprite[];
+    /** 指定したターゲットに触れているか否かを返す */
+    ifTouchingTarget(target: S3Sprite): boolean;
+
 }
 
 /** フキダシのプロパティ */

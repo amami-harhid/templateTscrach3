@@ -21,7 +21,7 @@ let cat: S3Sprite;
 Pg.preload = async function preload($this: S3PlayGround) {
     $this.Image.load('../assets/Jurassic.svg', Jurassic);
     $this.Sound.load('../assets/Chill.wav', Chill);
-    $this.Image.load('../assets/cat.svg', Cat);
+    $this.Image.load('../assets/ball-a.svg', Cat);
     $this.Sound.load('../assets/Cat.wav', Mya);
 }
 Pg.prepare = async function prepare() {
@@ -36,7 +36,7 @@ Pg.setting = async function setting() {
         // ここでの『this』は P であるので、this.sounds は P.soundsと同じである。 
         // stageのインスタンスは 『stage』の変数で受け取っている。
         await $stage.Sound.add( Chill );
-        $stage.Sound.setOption( Lib.SoundOption.VOLUME, 100);
+        $stage.Sound.setOption( Lib.SoundOption.VOLUME, 20);
         await $stage.Control.forever(async _=>{
             // ＢＧＭを鳴らし続ける（終わるまで待つ）
             await $stage.Sound.playUntilDone();
@@ -46,13 +46,14 @@ Pg.setting = async function setting() {
     const catStep = 10;
 
     cat.Event.whenFlag( async _cat=>{
-        _cat.Sound.add( Mya, { 'volume' : 50 } );
+        await _cat.Sound.add( Mya );
+        _cat.Sound.setOption( Lib.SoundOption.VOLUME, 50);
     });
     
     cat.Event.whenFlag( async (_cat:S3Sprite)=> {
         // 初期化
         _cat.Motion.gotoXY({x:0, y:0});
-        _cat.Motion.pointInDirection( 90 );
+        _cat.Motion.pointInDirection( 40 );
     });
 
     cat.Event.whenFlag( async (_cat:S3Sprite)=>{

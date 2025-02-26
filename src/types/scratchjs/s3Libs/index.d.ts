@@ -52,10 +52,17 @@ export interface S3Libs {
     Stage : S3Stage;
     /** スプライトクラス */
     Sprite : S3Sprite;
-    /** 指定したミリ秒経過するまで待つ (await必須) */
+    /**
+     * 指定したミリ秒経過するまで待つ (await必須)
+     * @param ms ﾐﾘ秒
+     */
     wait(ms:number): Promise<any>;
-    /** 条件が成立する間、待つ (await必須) */
-    waitWhile( condition: boolean|CallableFunction): Promise<any>;
+    /**
+     * 条件が成立する間、待つ (await必須)
+     * conditionの例： ()=> x>10 
+     * @param condition 条件 
+     */
+    waitWhile( condition: CallableFunction): Promise<any>;
     /** 見た目効果 */
     ImageEffective: S3ImageEffective;
     /** 回転方法 */
@@ -72,8 +79,25 @@ export interface S3Libs {
     /** 計算ユーティリティ */
     MathUtils : S3MathUtils;
 
-    keyIsDown(key?: string) : boolean;
-    /** レンダリング率 */
+    /**
+     * 指定した範囲の中でランダムな値を返す
+     * @param min 
+     * @param max 
+     * @param forceAsDecimal True時には強制的に小数値として扱う。省略時はFalse。
+     */
+    getRandomValueInRange( min: number, max: number, forceAsDecimal?: boolean): number;
+    /**
+     * 指定したキーが押されているとき true
+     * @param key 指定するキー
+     */
+    keyIsDown(key: string) : boolean;
+    /**
+     * 何かのキーが押されているとき true
+     */
+    anyKeyIsDown() : boolean;
+    /**
+     * レンダリング率
+     */
     renderRate: {x: number, y: number};
     /** マウスの位置 */
     mousePosition: {x: number, y: number};
