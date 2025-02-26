@@ -37,6 +37,7 @@ Pg.prepare = async function prepare() {
     ball = new Lib.Sprite("cat");
     ball.Image.add( BallA );
     ball.Motion.setY(-100);
+    ball.Looks.setSize(50, 50);
     paddle = new Lib.Sprite("paddle");
     paddle.Image.add( Paddle );
     paddle.Motion.setXY(0, -140);
