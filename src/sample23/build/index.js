@@ -1,3 +1,7 @@
+/**
+ * sample23
+ * ボールがパドルに触れたら跳ね返る
+ */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -7,10 +11,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-/**
- * sample23
- * ボールがパドルに触れたら跳ね返る
- */
+// Size変更した直後のdrawingDimensionsは変更適用後を取得できない
+// これはバグかも。--> スレッド１回ループしたら適用されるっぽい。
+// Size変更時は update() をかけるべきかも。
 import { Pg, Lib } from "./importer.js";
 Pg.title = "【Sample23】ボールがパドルに触れたら跳ね返る";
 const NeonTunnel = "NeonTunnel";
@@ -116,9 +119,6 @@ Pg.setting = function setting() {
         block.Event.whenFlag(($this) => __awaiter(this, void 0, void 0, function* () {
             yield $this.Sound.add(Pew);
             const pos = $this.Motion.getCurrentPosition();
-            // Size変更した直後のdrawingDimensionsは変更適用後を取得できない
-            // これはバグかも。--> スレッド１回ループしたら適用されるっぽい。
-            // Size変更時は update() をかけるべきかも。
             const demension = $this.Looks.drawingDimensions();
             let y = 0;
             $this.Control.repeat(5, () => {

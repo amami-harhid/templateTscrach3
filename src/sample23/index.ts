@@ -2,6 +2,11 @@
  * sample23
  * ボールがパドルに触れたら跳ね返る
  */
+
+// Size変更した直後のdrawingDimensionsは変更適用後を取得できない
+// これはバグかも。--> スレッド１回ループしたら適用されるっぽい。
+// Size変更時は update() をかけるべきかも。
+
 import {Pg,Lib} from "./importer.js";
 import type {S3PlayGround} from "@typeJS/scratchjs/s3PlayGround";
 import type {S3Stage} from "@typeJS/scratchjs/s3Stage";
@@ -103,9 +108,6 @@ Pg.setting = async function setting() {
     block.Event.whenFlag(async ($this:S3Sprite)=>{      
         await $this.Sound.add(Pew);
         const pos = $this.Motion.getCurrentPosition();
-        // Size変更した直後のdrawingDimensionsは変更適用後を取得できない
-        // これはバグかも。--> スレッド１回ループしたら適用されるっぽい。
-        // Size変更時は update() をかけるべきかも。
         const demension = $this.Looks.drawingDimensions();
         let y=0;
         $this.Control.repeat(5, ()=>{
