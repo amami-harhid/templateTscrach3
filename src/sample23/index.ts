@@ -46,7 +46,7 @@ Pg.prepare = async function prepare() {
     stage.Image.add( NeonTunnel );
     ball = new Lib.Sprite("cat");
     ball.Image.add( BallA );
-    ball.Motion.setY(-100);
+    ball.Motion.setXY(0,-100);
     ball.Looks.setSize(50, 50);
     paddle = new Lib.Sprite("paddle");
     paddle.Image.add( Paddle );
@@ -76,11 +76,13 @@ Pg.setting = async function setting() {
     })
     const BallSpeed = 10;
     const InitDirection = 25;
-    ball.Event.whenFlag( async function($this:S3Sprite){
+    ball.Event.whenBroadcastReceived('Start', async function(){
+        const $this:S3Sprite = ball;
         score = 0;
         $this.Motion.pointInDirection(InitDirection);
+        $this.Motion.setXY(0,-100);
         await $this.Control.waitUntil(()=>Lib.anyKeyIsDown());
-        $this.Control.forever(async ()=>{
+        await $this.Control.forever(async ()=>{
             $this.Motion.moveSteps(BallSpeed);
             $this.Motion.ifOnEdgeBounds();
             if($this.Sensing.isTouchingEdge()){
@@ -89,15 +91,17 @@ Pg.setting = async function setting() {
             }
         });
     });
-    ball.Event.whenFlag( async function($this:S3Sprite){
-        $this.Control.forever(async ()=>{
+    ball.Event.whenBroadcastReceived('Start', async function(){
+        const $this:S3Sprite = ball;
+        await $this.Control.forever(async ()=>{
             if($this.Sensing.isTouchingTarget(block)){
                 $this.Motion.turnRightDegrees( Lib.getRandomValueInRange(-5, 5)+180 );
             }
         });
     });
-    ball.Event.whenFlag( async function($this:S3Sprite){
-        $this.Control.forever(async ()=>{
+    ball.Event.whenBroadcastReceived('Start', async function(){
+        const $this:S3Sprite = ball;
+        await $this.Control.forever(async ()=>{
             if($this.Sensing.isTouchingTarget(paddle)){
                 $this.Motion.turnRightDegrees( Lib.getRandomValueInRange(-2, 2)+180 );
                 $this.Motion.moveSteps(BallSpeed*2);
@@ -106,7 +110,7 @@ Pg.setting = async function setting() {
         });
     });
     line.Event.whenFlag(async function($this:S3Sprite){
-        $this.Control.forever(async ()=>{
+        await $this.Control.forever(async ()=>{
             if( $this.Sensing.isTouchingTarget(ball)){
                 // Ball に触れたとき
                 $this.Event.broadcast(GameOver);
@@ -114,8 +118,12 @@ Pg.setting = async function setting() {
             }
         });
     });
-    paddle.Event.whenFlag(async function($this: S3Sprite){
-        $this.Control.forever(async ()=>{
+    paddle.Event.whenBroadcastReceived('Start', async function(){
+        console.log('paddle start')
+        const $this:S3Sprite = paddle;
+        // whenBroadcastReceivedのなかで foreverが使えない様子
+        // whenFlagなどの中では使える。バグです。
+        await $this.Control.forever(async ()=>{
             const mousePos = Lib.mousePosition;
             const selfPosition = $this.Motion.getCurrentPosition();
             $this.Motion.moveTo(mousePos.x, selfPosition.y);
@@ -125,23 +133,25 @@ Pg.setting = async function setting() {
 
     });
     let blockCount = 0;
-    block.Event.whenFlag(async ($this:S3Sprite)=>{      
+    block.Event.whenFlag(async ($this:S3Sprite)=>{
         await $this.Sound.add(Pew);
         $this.Looks.setSize({x:50, y:50});
         const pos = $this.Motion.getCurrentPosition();
         const demension = $this.Looks.drawingDimensions();
         let y=0;
         blockCount = 0;
-        $this.Control.repeat(1, ()=>{
+        await $this.Control.repeat(3, async ()=>{
             let x=0;
-            $this.Control.repeat(1, ()=>{
+            await $this.Control.repeat(10, async ()=>{
                 const blkPos = { x: pos.x + x*demension.width, y: pos.y + (-y)*demension.height };
-                $this.Control.clone({position: blkPos});
+                await $this.Control.clone({position: blkPos});
                 x+=1;
             });
             y+=1;
-        })
+        });
+        $this.Event.broadcast('Start');
     });
+
     block.Control.whenCloned(async ($this:S3Sprite)=>{
         blockCount+=1;
         $this.Looks.show();
