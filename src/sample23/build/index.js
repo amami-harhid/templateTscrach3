@@ -50,7 +50,7 @@ Pg.prepare = function prepare() {
         paddle.Motion.setXY(0, -140);
         block = new Lib.Sprite("block");
         block.Image.add(Block);
-        block.Looks.setSize({ x: 50, y: 50 });
+        //    block.Looks.setSize({x:50, y:50});
         block.Motion.setXY(-220, 180);
         block.Looks.hide();
         line = new Lib.Sprite("line");
@@ -73,6 +73,7 @@ Pg.setting = function setting() {
         const InitDirection = 25;
         ball.Event.whenFlag(function ($this) {
             return __awaiter(this, void 0, void 0, function* () {
+                score = 0;
                 $this.Motion.pointInDirection(InitDirection);
                 yield $this.Control.waitUntil(() => Lib.anyKeyIsDown());
                 $this.Control.forever(() => __awaiter(this, void 0, void 0, function* () {
@@ -87,7 +88,15 @@ Pg.setting = function setting() {
         });
         ball.Event.whenFlag(function ($this) {
             return __awaiter(this, void 0, void 0, function* () {
-                score = 0;
+                $this.Control.forever(() => __awaiter(this, void 0, void 0, function* () {
+                    if ($this.Sensing.isTouchingTarget(block)) {
+                        $this.Motion.turnRightDegrees(Lib.getRandomValueInRange(-5, 5) + 180);
+                    }
+                }));
+            });
+        });
+        ball.Event.whenFlag(function ($this) {
+            return __awaiter(this, void 0, void 0, function* () {
                 $this.Control.forever(() => __awaiter(this, void 0, void 0, function* () {
                     if ($this.Sensing.isTouchingTarget(paddle)) {
                         $this.Motion.turnRightDegrees(Lib.getRandomValueInRange(-40, 40) + 180);
@@ -118,6 +127,7 @@ Pg.setting = function setting() {
         });
         block.Event.whenFlag(($this) => __awaiter(this, void 0, void 0, function* () {
             yield $this.Sound.add(Pew);
+            $this.Looks.setSize({ x: 50, y: 50 });
             const pos = $this.Motion.getCurrentPosition();
             const demension = $this.Looks.drawingDimensions();
             let y = 0;
@@ -136,13 +146,12 @@ Pg.setting = function setting() {
             yield $this.Control.forever(() => __awaiter(this, void 0, void 0, function* () {
                 if ($this.Sensing.isTouchingTarget(ball)) {
                     score += 1;
-                    console.log('Touching score=' + score);
+                    //console.log('Touching score='+score);
                     $this.Sound.play();
                     $this.Looks.hide();
                     Lib.Loop.break();
                 }
             }));
-            //await Lib.wait(0.5*1000);
             $this.Control.remove();
         }));
     });
