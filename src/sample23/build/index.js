@@ -23,8 +23,11 @@ const Paddle = "Paddle";
 const Block = "Block";
 const Line = "Line";
 const Pew = "Pew";
+const YouWon = "YouWon";
+const GameOver = "GameOver";
 let stage;
 let ball, paddle, block, line;
+let title;
 let score = 0;
 Pg.preload = function preload($this) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -35,6 +38,8 @@ Pg.preload = function preload($this) {
         $this.Image.load('../assets/button3-b.svg', Block);
         $this.Image.load('../assets/line.svg', Line);
         $this.Sound.load('../assets/Pew.wav', Pew);
+        $this.Image.load('./assets/YouWon.svg', YouWon);
+        $this.Image.load('./assets/GameOver.svg', GameOver);
     });
 };
 Pg.prepare = function prepare() {
@@ -56,6 +61,10 @@ Pg.prepare = function prepare() {
         line = new Lib.Sprite("line");
         line.Image.add(Line);
         line.Motion.setXY(0, -170);
+        title = new Lib.Sprite("title");
+        title.Image.add(YouWon);
+        title.Image.add(GameOver);
+        title.Looks.hide();
     });
 };
 Pg.setting = function setting() {
@@ -80,7 +89,7 @@ Pg.setting = function setting() {
                     $this.Motion.moveSteps(BallSpeed);
                     $this.Motion.ifOnEdgeBounds();
                     if ($this.Sensing.isTouchingEdge()) {
-                        const randomDegree = Lib.getRandomValueInRange(-15, 15);
+                        const randomDegree = Lib.getRandomValueInRange(-25, 25);
                         $this.Motion.turnRightDegrees(randomDegree);
                     }
                 }));
@@ -99,9 +108,9 @@ Pg.setting = function setting() {
             return __awaiter(this, void 0, void 0, function* () {
                 $this.Control.forever(() => __awaiter(this, void 0, void 0, function* () {
                     if ($this.Sensing.isTouchingTarget(paddle)) {
-                        $this.Motion.turnRightDegrees(Lib.getRandomValueInRange(-40, 40) + 180);
-                        $this.Motion.moveSteps(BallSpeed);
-                        yield Lib.wait(0.5 * 1000);
+                        $this.Motion.turnRightDegrees(Lib.getRandomValueInRange(-2, 2) + 180);
+                        $this.Motion.moveSteps(BallSpeed * 2);
+                        yield Lib.wait(0.2 * 1000);
                     }
                 }));
             });
@@ -111,7 +120,8 @@ Pg.setting = function setting() {
                 $this.Control.forever(() => __awaiter(this, void 0, void 0, function* () {
                     if ($this.Sensing.isTouchingTarget(ball)) {
                         // Ball に触れたとき
-                        Pg.Control.stopAll();
+                        $this.Event.broadcast(GameOver);
+                        Lib.Loop.break();
                     }
                 }));
             });
@@ -122,18 +132,22 @@ Pg.setting = function setting() {
                     const mousePos = Lib.mousePosition;
                     const selfPosition = $this.Motion.getCurrentPosition();
                     $this.Motion.moveTo(mousePos.x, selfPosition.y);
+                    //const ballPosition = ball.Motion.getCurrentPosition();
+                    //$this.Motion.moveTo(ballPosition.x, selfPosition.y);
                 }));
             });
         });
+        let blockCount = 0;
         block.Event.whenFlag(($this) => __awaiter(this, void 0, void 0, function* () {
             yield $this.Sound.add(Pew);
             $this.Looks.setSize({ x: 50, y: 50 });
             const pos = $this.Motion.getCurrentPosition();
             const demension = $this.Looks.drawingDimensions();
             let y = 0;
-            $this.Control.repeat(5, () => {
+            blockCount = 0;
+            $this.Control.repeat(1, () => {
                 let x = 0;
-                $this.Control.repeat(10, () => {
+                $this.Control.repeat(1, () => {
                     const blkPos = { x: pos.x + x * demension.width, y: pos.y + (-y) * demension.height };
                     $this.Control.clone({ position: blkPos });
                     x += 1;
@@ -142,6 +156,7 @@ Pg.setting = function setting() {
             });
         }));
         block.Control.whenCloned(($this) => __awaiter(this, void 0, void 0, function* () {
+            blockCount += 1;
             $this.Looks.show();
             yield $this.Control.forever(() => __awaiter(this, void 0, void 0, function* () {
                 if ($this.Sensing.isTouchingTarget(ball)) {
@@ -152,7 +167,23 @@ Pg.setting = function setting() {
                     Lib.Loop.break();
                 }
             }));
+            if (score == blockCount) {
+                $this.Event.broadcast(YouWon);
+            }
             $this.Control.remove();
+        }));
+        title.Event.whenFlag(($this) => __awaiter(this, void 0, void 0, function* () {
+            $this.Looks.hide();
+        }));
+        title.Event.whenBroadcastReceived(YouWon, () => __awaiter(this, void 0, void 0, function* () {
+            title.Looks.switchCostume(YouWon);
+            title.Looks.show();
+            Pg.Control.stopAll();
+        }));
+        title.Event.whenBroadcastReceived(GameOver, () => __awaiter(this, void 0, void 0, function* () {
+            title.Looks.switchCostume(GameOver);
+            title.Looks.show();
+            Pg.Control.stopAll();
         }));
     });
 };
