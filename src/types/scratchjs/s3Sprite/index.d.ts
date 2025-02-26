@@ -23,6 +23,8 @@ declare interface S3SpriteControlFunctions extends S3ControlFunctions{
     whenCloned( func: CallableFunction ): void;
     /** 削除する */
     remove() : void;
+    /** スプライトが生きている */
+    alive() : boolean;
 }
 
 declare interface S3CloneOption {
@@ -95,7 +97,7 @@ declare interface S3SpriteSensingFunctions extends S3SensingFunctions {
     /** 触れているスプライトを取得する */
     getTouchingTarget(): S3Sprite[];
     /** 指定したターゲットに触れているか否かを返す */
-    ifTouchingTarget(target: S3Sprite): boolean;
+    isTouchingTarget(target: S3Sprite): boolean;
 
 }
 

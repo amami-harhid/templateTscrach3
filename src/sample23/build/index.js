@@ -17,31 +17,41 @@ const NeonTunnel = "NeonTunnel";
 const Chill = "Chill";
 const BallA = "BallA";
 const Paddle = "Paddle";
+const Block = "Block";
+const Line = "Line";
+const Pew = "Pew";
 let stage;
-let ball, paddle;
+let ball, paddle, block, line;
 let score = 0;
-/**
- * 【課題】
- * ball のコスチュームにすると 端に触れたときに動きが止まりがち
- * これはバグである
- */
 Pg.preload = function preload($this) {
     return __awaiter(this, void 0, void 0, function* () {
         $this.Image.load('../assets/Neon Tunnel.png', NeonTunnel);
         $this.Sound.load('../assets/Chill.wav', Chill);
         $this.Image.load('../assets/ball-a.svg', BallA);
         $this.Image.load('../assets/paddle.svg', Paddle);
+        $this.Image.load('../assets/button3-b.svg', Block);
+        $this.Image.load('../assets/line.svg', Line);
+        $this.Sound.load('../assets/Pew.wav', Pew);
     });
 };
 Pg.prepare = function prepare() {
     return __awaiter(this, void 0, void 0, function* () {
         stage = new Lib.Stage();
         stage.Image.add(NeonTunnel);
-        ball = new Lib.Sprite("Cat");
+        ball = new Lib.Sprite("cat");
         ball.Image.add(BallA);
-        paddle = new Lib.Sprite("Paddle");
+        ball.Motion.setY(-100);
+        paddle = new Lib.Sprite("paddle");
         paddle.Image.add(Paddle);
-        paddle.Looks.hide();
+        paddle.Motion.setXY(0, -140);
+        block = new Lib.Sprite("block");
+        block.Image.add(Block);
+        block.Looks.setSize({ x: 50, y: 50 });
+        block.Motion.setXY(-220, 180);
+        block.Looks.hide();
+        line = new Lib.Sprite("line");
+        line.Image.add(Line);
+        line.Motion.setXY(0, -170);
     });
 };
 Pg.setting = function setting() {
@@ -56,9 +66,11 @@ Pg.setting = function setting() {
             });
         });
         const BallSpeed = 10;
+        const InitDirection = 25;
         ball.Event.whenFlag(function ($this) {
             return __awaiter(this, void 0, void 0, function* () {
-                $this.Motion.pointInDirection(40);
+                $this.Motion.pointInDirection(InitDirection);
+                yield $this.Control.waitUntil(() => Lib.anyKeyIsDown());
                 $this.Control.forever(() => __awaiter(this, void 0, void 0, function* () {
                     $this.Motion.moveSteps(BallSpeed);
                     $this.Motion.ifOnEdgeBounds();
@@ -72,33 +84,66 @@ Pg.setting = function setting() {
         ball.Event.whenFlag(function ($this) {
             return __awaiter(this, void 0, void 0, function* () {
                 score = 0;
-                $this.Event.whenBroadcastReceived("TOUCH", () => {
-                    score += 1;
-                    const randomDegree = Lib.getRandomValueInRange(150, 200);
-                    $this.Motion.turnRightDegrees(randomDegree);
-                });
+                $this.Control.forever(() => __awaiter(this, void 0, void 0, function* () {
+                    if ($this.Sensing.isTouchingTarget(paddle)) {
+                        $this.Motion.turnRightDegrees(Lib.getRandomValueInRange(-40, 40) + 180);
+                        $this.Motion.moveSteps(BallSpeed);
+                        yield Lib.wait(0.5 * 1000);
+                    }
+                }));
+            });
+        });
+        line.Event.whenFlag(function ($this) {
+            return __awaiter(this, void 0, void 0, function* () {
+                $this.Control.forever(() => __awaiter(this, void 0, void 0, function* () {
+                    if ($this.Sensing.isTouchingTarget(ball)) {
+                        // Ball に触れたとき
+                        Pg.Control.stopAll();
+                    }
+                }));
             });
         });
         paddle.Event.whenFlag(function ($this) {
             return __awaiter(this, void 0, void 0, function* () {
                 $this.Control.forever(() => __awaiter(this, void 0, void 0, function* () {
-                    $this.Control.clone();
-                    yield Lib.wait(2 * 1000);
+                    const mousePos = Lib.mousePosition;
+                    const selfPosition = $this.Motion.getCurrentPosition();
+                    $this.Motion.moveTo(mousePos.x, selfPosition.y);
                 }));
             });
         });
-        paddle.Control.whenCloned(function ($clone) {
-            return __awaiter(this, void 0, void 0, function* () {
-                $clone.Motion.gotoRandomPosition();
-                $clone.Looks.show();
-                $clone.Control.forever(() => __awaiter(this, void 0, void 0, function* () {
-                    if ($clone.Sensing.ifTouchingTarget(ball)) {
-                        $clone.Event.broadcast('TOUCH');
-                        $clone.Control.remove();
-                    }
-                }));
+        block.Event.whenFlag(($this) => __awaiter(this, void 0, void 0, function* () {
+            yield $this.Sound.add(Pew);
+            const pos = $this.Motion.getCurrentPosition();
+            // Size変更した直後のdrawingDimensionsは変更適用後を取得できない
+            // これはバグかも。--> スレッド１回ループしたら適用されるっぽい。
+            // Size変更時は update() をかけるべきかも。
+            const demension = $this.Looks.drawingDimensions();
+            let y = 0;
+            $this.Control.repeat(5, () => {
+                let x = 0;
+                $this.Control.repeat(10, () => {
+                    const blkPos = { x: pos.x + x * demension.width, y: pos.y + (-y) * demension.height };
+                    $this.Control.clone({ position: blkPos });
+                    x += 1;
+                });
+                y += 1;
             });
-        });
+        }));
+        block.Control.whenCloned(($this) => __awaiter(this, void 0, void 0, function* () {
+            $this.Looks.show();
+            yield $this.Control.forever(() => __awaiter(this, void 0, void 0, function* () {
+                if ($this.Sensing.isTouchingTarget(ball)) {
+                    score += 1;
+                    console.log('Touching score=' + score);
+                    $this.Sound.play();
+                    $this.Looks.hide();
+                    Lib.Loop.break();
+                }
+            }));
+            //await Lib.wait(0.5*1000);
+            $this.Control.remove();
+        }));
     });
 };
 //# sourceMappingURL=index.js.map

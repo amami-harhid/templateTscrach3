@@ -7,6 +7,11 @@ declare interface S3PgSound {
     load(path:string, name:string);
 } 
 
+declare interface S3StageControl {
+    // 全て停止
+    stopAll(): void;
+}
+
 /** LikeScratchJsLib */
 export interface S3PlayGround {
     /** タイトル */
@@ -21,4 +26,6 @@ export interface S3PlayGround {
     Image: S3PgImage;
     /** サウンド処理 */
     Sound: S3PgSound;
+
+    Control: S3StageControl;
 }

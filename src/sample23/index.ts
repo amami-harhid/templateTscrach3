@@ -13,32 +13,41 @@ const NeonTunnel:string = "NeonTunnel";
 const Chill:string = "Chill";
 const BallA:string = "BallA";
 const Paddle:string = "Paddle";
+const Block:string = "Block";
+const Line:string = "Line";
+const Pew: string = "Pew";
 
 let stage: S3Stage;
-let ball: S3Sprite, paddle: S3Sprite;
+let ball: S3Sprite, paddle: S3Sprite, block:S3Sprite, line:S3Sprite;
 
 let score = 0;
-
-/**
- * 【課題】
- * ball のコスチュームにすると 端に触れたときに動きが止まりがち
- * これはバグである
- */
 
 Pg.preload = async function preload($this:S3PlayGround) {
     $this.Image.load('../assets/Neon Tunnel.png', NeonTunnel );
     $this.Sound.load('../assets/Chill.wav', Chill );
     $this.Image.load('../assets/ball-a.svg', BallA );
     $this.Image.load('../assets/paddle.svg', Paddle );
+    $this.Image.load('../assets/button3-b.svg', Block );
+    $this.Image.load('../assets/line.svg', Line );
+    $this.Sound.load('../assets/Pew.wav', Pew);
 }
 Pg.prepare = async function prepare() {
     stage = new Lib.Stage();
     stage.Image.add( NeonTunnel );
-    ball = new Lib.Sprite("Cat");
+    ball = new Lib.Sprite("cat");
     ball.Image.add( BallA );
-    paddle = new Lib.Sprite("Paddle");
+    ball.Motion.setY(-100);
+    paddle = new Lib.Sprite("paddle");
     paddle.Image.add( Paddle );
-    paddle.Looks.hide();
+    paddle.Motion.setXY(0, -140);
+    block = new Lib.Sprite( "block");
+    block.Image.add( Block );
+    block.Looks.setSize({x:50, y:50});
+    block.Motion.setXY(-220,180);
+    block.Looks.hide();
+    line = new Lib.Sprite( "line" );
+    line.Image.add( Line );
+    line.Motion.setXY(0, -170);
 }
 
 Pg.setting = async function setting() {
@@ -51,8 +60,10 @@ Pg.setting = async function setting() {
         });
     })
     const BallSpeed = 10;
+    const InitDirection = 25;
     ball.Event.whenFlag( async function($this:S3Sprite){
-        $this.Motion.pointInDirection(40);
+        $this.Motion.pointInDirection(InitDirection);
+        await $this.Control.waitUntil(()=>Lib.anyKeyIsDown());
         $this.Control.forever(async ()=>{
             $this.Motion.moveSteps(BallSpeed);
             $this.Motion.ifOnEdgeBounds();
@@ -64,30 +75,61 @@ Pg.setting = async function setting() {
     });
     ball.Event.whenFlag( async function($this:S3Sprite){
         score = 0;
-        $this.Event.whenBroadcastReceived("TOUCH",()=>{
-            score += 1;
-            const randomDegree = Lib.getRandomValueInRange(150, 200);
-            $this.Motion.turnRightDegrees(randomDegree);
-        });
-    });
-
-    paddle.Event.whenFlag( async function($this:S3Sprite){       
         $this.Control.forever(async ()=>{
-            $this.Control.clone();
-            await Lib.wait(2*1000);
-        });
-    });
-    paddle.Control.whenCloned(async function($clone: S3Sprite){
-        $clone.Motion.gotoRandomPosition();
-        $clone.Looks.show();
-        $clone.Control.forever(async ()=>{
-            if( $clone.Sensing.ifTouchingTarget(ball)){
-                $clone.Event.broadcast('TOUCH');
-                $clone.Control.remove();
+            if($this.Sensing.isTouchingTarget(paddle)){
+                $this.Motion.turnRightDegrees( Lib.getRandomValueInRange(-40, 40)+180 );
+                $this.Motion.moveSteps(BallSpeed);
+                await Lib.wait(0.5 * 1000);
             }
         });
+    });
+    line.Event.whenFlag(async function($this:S3Sprite){
+        $this.Control.forever(async ()=>{
+            if( $this.Sensing.isTouchingTarget(ball)){
+                // Ball に触れたとき
+                Pg.Control.stopAll();
+            }
+        });
+    });
+    paddle.Event.whenFlag(async function($this: S3Sprite){
+        $this.Control.forever(async ()=>{
+            const mousePos = Lib.mousePosition;
+            const selfPosition = $this.Motion.getCurrentPosition();
+            $this.Motion.moveTo(mousePos.x, selfPosition.y);
+        });
 
     });
-    
+    block.Event.whenFlag(async ($this:S3Sprite)=>{      
+        await $this.Sound.add(Pew);
+        const pos = $this.Motion.getCurrentPosition();
+        // Size変更した直後のdrawingDimensionsは変更適用後を取得できない
+        // これはバグかも。--> スレッド１回ループしたら適用されるっぽい。
+        // Size変更時は update() をかけるべきかも。
+        const demension = $this.Looks.drawingDimensions();
+        let y=0;
+        $this.Control.repeat(5, ()=>{
+            let x=0;
+            $this.Control.repeat(10, ()=>{
+                const blkPos = { x: pos.x + x*demension.width, y: pos.y + (-y)*demension.height };
+                $this.Control.clone({position: blkPos});
+                x+=1;
+            });
+            y+=1;
+        })
+    });
+    block.Control.whenCloned(async ($this:S3Sprite)=>{
+        $this.Looks.show();
+        await $this.Control.forever(async ()=>{
+            if($this.Sensing.isTouchingTarget(ball)){
+                score += 1;
+                console.log('Touching score='+score);
+                $this.Sound.play();
+                $this.Looks.hide();
+                Lib.Loop.break();
+            }    
+        })
+        //await Lib.wait(0.5*1000);
+        $this.Control.remove();
+    })
 
 }
