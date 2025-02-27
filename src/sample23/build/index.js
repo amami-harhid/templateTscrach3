@@ -48,7 +48,7 @@ Pg.prepare = function prepare() {
         stage.Image.add(NeonTunnel);
         ball = new Lib.Sprite("cat");
         ball.Image.add(BallA);
-        ball.Motion.setY(-100);
+        ball.Motion.setXY(0, -100);
         ball.Looks.setSize(50, 50);
         paddle = new Lib.Sprite("paddle");
         paddle.Image.add(Paddle);
@@ -80,12 +80,14 @@ Pg.setting = function setting() {
         });
         const BallSpeed = 10;
         const InitDirection = 25;
-        ball.Event.whenFlag(function ($this) {
+        ball.Event.whenBroadcastReceived('Start', function () {
             return __awaiter(this, void 0, void 0, function* () {
+                const $this = ball;
                 score = 0;
                 $this.Motion.pointInDirection(InitDirection);
+                $this.Motion.setXY(0, -100);
                 yield $this.Control.waitUntil(() => Lib.anyKeyIsDown());
-                $this.Control.forever(() => __awaiter(this, void 0, void 0, function* () {
+                yield $this.Control.forever(() => __awaiter(this, void 0, void 0, function* () {
                     $this.Motion.moveSteps(BallSpeed);
                     $this.Motion.ifOnEdgeBounds();
                     if ($this.Sensing.isTouchingEdge()) {
@@ -95,18 +97,20 @@ Pg.setting = function setting() {
                 }));
             });
         });
-        ball.Event.whenFlag(function ($this) {
+        ball.Event.whenBroadcastReceived('Start', function () {
             return __awaiter(this, void 0, void 0, function* () {
-                $this.Control.forever(() => __awaiter(this, void 0, void 0, function* () {
+                const $this = ball;
+                yield $this.Control.forever(() => __awaiter(this, void 0, void 0, function* () {
                     if ($this.Sensing.isTouchingTarget(block)) {
                         $this.Motion.turnRightDegrees(Lib.getRandomValueInRange(-5, 5) + 180);
                     }
                 }));
             });
         });
-        ball.Event.whenFlag(function ($this) {
+        ball.Event.whenBroadcastReceived('Start', function () {
             return __awaiter(this, void 0, void 0, function* () {
-                $this.Control.forever(() => __awaiter(this, void 0, void 0, function* () {
+                const $this = ball;
+                yield $this.Control.forever(() => __awaiter(this, void 0, void 0, function* () {
                     if ($this.Sensing.isTouchingTarget(paddle)) {
                         $this.Motion.turnRightDegrees(Lib.getRandomValueInRange(-2, 2) + 180);
                         $this.Motion.moveSteps(BallSpeed * 2);
@@ -117,7 +121,7 @@ Pg.setting = function setting() {
         });
         line.Event.whenFlag(function ($this) {
             return __awaiter(this, void 0, void 0, function* () {
-                $this.Control.forever(() => __awaiter(this, void 0, void 0, function* () {
+                yield $this.Control.forever(() => __awaiter(this, void 0, void 0, function* () {
                     if ($this.Sensing.isTouchingTarget(ball)) {
                         // Ball に触れたとき
                         $this.Event.broadcast(GameOver);
@@ -126,9 +130,11 @@ Pg.setting = function setting() {
                 }));
             });
         });
-        paddle.Event.whenFlag(function ($this) {
+        paddle.Event.whenBroadcastReceived('Start', function () {
             return __awaiter(this, void 0, void 0, function* () {
-                $this.Control.forever(() => __awaiter(this, void 0, void 0, function* () {
+                console.log('paddle start');
+                const $this = paddle;
+                yield $this.Control.forever(() => __awaiter(this, void 0, void 0, function* () {
                     const mousePos = Lib.mousePosition;
                     const selfPosition = $this.Motion.getCurrentPosition();
                     $this.Motion.moveTo(mousePos.x, selfPosition.y);
@@ -145,15 +151,16 @@ Pg.setting = function setting() {
             const demension = $this.Looks.drawingDimensions();
             let y = 0;
             blockCount = 0;
-            $this.Control.repeat(1, () => {
+            yield $this.Control.repeat(3, () => __awaiter(this, void 0, void 0, function* () {
                 let x = 0;
-                $this.Control.repeat(1, () => {
+                yield $this.Control.repeat(10, () => __awaiter(this, void 0, void 0, function* () {
                     const blkPos = { x: pos.x + x * demension.width, y: pos.y + (-y) * demension.height };
-                    $this.Control.clone({ position: blkPos });
+                    yield $this.Control.clone({ position: blkPos });
                     x += 1;
-                });
+                }));
                 y += 1;
-            });
+            }));
+            $this.Event.broadcast('Start');
         }));
         block.Control.whenCloned(($this) => __awaiter(this, void 0, void 0, function* () {
             blockCount += 1;
