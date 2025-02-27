@@ -11,9 +11,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-// Size変更した直後のdrawingDimensionsは変更適用後を取得できない
-// これはバグかも。--> スレッド１回ループしたら適用されるっぽい。
-// Size変更時は update() をかけるべきかも。
+// whenBroadcastReceivedのなかで foreverが使えない様子
+// whenFlagなどの中では使える。バグです。
 import { Pg, Lib } from "./importer.js";
 Pg.title = "【Sample23】ボールがパドルに触れたら跳ね返る";
 const NeonTunnel = "NeonTunnel";
@@ -48,7 +47,7 @@ Pg.prepare = function prepare() {
         stage.Image.add(NeonTunnel);
         ball = new Lib.Sprite("cat");
         ball.Image.add(BallA);
-        ball.Motion.setXY(0, -100);
+        //ball.Motion.setXY(0,-100);
         ball.Looks.setSize(50, 50);
         paddle = new Lib.Sprite("paddle");
         paddle.Image.add(Paddle);
@@ -78,11 +77,16 @@ Pg.setting = function setting() {
                 }));
             });
         });
+        ball.Event.whenFlag(function ($this) {
+            return __awaiter(this, void 0, void 0, function* () {
+                $this.Motion.setXY(0, -100);
+            });
+        });
         const BallSpeed = 10;
         const InitDirection = 25;
         ball.Event.whenBroadcastReceived('Start', function () {
             return __awaiter(this, void 0, void 0, function* () {
-                const $this = ball;
+                const $this = this;
                 score = 0;
                 $this.Motion.pointInDirection(InitDirection);
                 $this.Motion.setXY(0, -100);
@@ -99,7 +103,7 @@ Pg.setting = function setting() {
         });
         ball.Event.whenBroadcastReceived('Start', function () {
             return __awaiter(this, void 0, void 0, function* () {
-                const $this = ball;
+                const $this = this;
                 yield $this.Control.forever(() => __awaiter(this, void 0, void 0, function* () {
                     if ($this.Sensing.isTouchingTarget(block)) {
                         $this.Motion.turnRightDegrees(Lib.getRandomValueInRange(-5, 5) + 180);
@@ -109,7 +113,7 @@ Pg.setting = function setting() {
         });
         ball.Event.whenBroadcastReceived('Start', function () {
             return __awaiter(this, void 0, void 0, function* () {
-                const $this = ball;
+                const $this = this;
                 yield $this.Control.forever(() => __awaiter(this, void 0, void 0, function* () {
                     if ($this.Sensing.isTouchingTarget(paddle)) {
                         $this.Motion.turnRightDegrees(Lib.getRandomValueInRange(-2, 2) + 180);
@@ -133,7 +137,7 @@ Pg.setting = function setting() {
         paddle.Event.whenBroadcastReceived('Start', function () {
             return __awaiter(this, void 0, void 0, function* () {
                 console.log('paddle start');
-                const $this = paddle;
+                const $this = this;
                 // whenBroadcastReceivedのなかで foreverが使えない様子
                 // whenFlagなどの中では使える。バグです。
                 yield $this.Control.forever(() => __awaiter(this, void 0, void 0, function* () {
@@ -184,16 +188,20 @@ Pg.setting = function setting() {
         title.Event.whenFlag(($this) => __awaiter(this, void 0, void 0, function* () {
             $this.Looks.hide();
         }));
-        title.Event.whenBroadcastReceived(YouWon, () => __awaiter(this, void 0, void 0, function* () {
-            title.Looks.switchCostume(YouWon);
-            title.Looks.show();
-            Pg.Control.stopAll();
-        }));
-        title.Event.whenBroadcastReceived(GameOver, () => __awaiter(this, void 0, void 0, function* () {
-            title.Looks.switchCostume(GameOver);
-            title.Looks.show();
-            Pg.Control.stopAll();
-        }));
+        title.Event.whenBroadcastReceived(YouWon, function () {
+            return __awaiter(this, void 0, void 0, function* () {
+                title.Looks.switchCostume(YouWon);
+                title.Looks.show();
+                Pg.Control.stopAll();
+            });
+        });
+        title.Event.whenBroadcastReceived(GameOver, function () {
+            return __awaiter(this, void 0, void 0, function* () {
+                title.Looks.switchCostume(GameOver);
+                title.Looks.show();
+                Pg.Control.stopAll();
+            });
+        });
     });
 };
 //# sourceMappingURL=index.js.map
