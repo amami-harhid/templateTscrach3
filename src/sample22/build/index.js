@@ -14,14 +14,14 @@ const Chill = "Chill";
 const Cat = "Cat";
 let stage;
 let cat;
-Pg.preload = function preload($this) {
+Pg.preload = function preload() {
     return __awaiter(this, void 0, void 0, function* () {
-        $this.Image.load('../assets/Jurassic.svg', 'Jurassic');
-        $this.Sound.load('../assets/Chill.wav', 'Chill');
-        $this.Image.load('../assets/cat.svg', 'Cat');
+        this.Image.load('../assets/Jurassic.svg', 'Jurassic');
+        this.Sound.load('../assets/Chill.wav', 'Chill');
+        this.Image.load('../assets/cat.svg', 'Cat');
     });
 };
-Pg.prepare = function prepare($this) {
+Pg.prepare = function prepare() {
     return __awaiter(this, void 0, void 0, function* () {
         stage = new Lib.Stage();
         stage.Image.add(Jurassic);
@@ -31,43 +31,43 @@ Pg.prepare = function prepare($this) {
 };
 Pg.setting = function setting() {
     return __awaiter(this, void 0, void 0, function* () {
-        stage.Event.whenFlag(function ($this) {
+        stage.Event.whenFlag(function () {
             return __awaiter(this, void 0, void 0, function* () {
-                yield $this.Sound.add(Chill);
-                $this.Sound.setOption(Lib.SoundOption.VOLUME, 20);
-                yield $this.Control.while(true, () => __awaiter(this, void 0, void 0, function* () {
-                    yield $this.Sound.playUntilDone();
+                yield this.Sound.add(Chill);
+                this.Sound.setOption(Lib.SoundOption.VOLUME, 20);
+                yield this.Control.while(true, () => __awaiter(this, void 0, void 0, function* () {
+                    yield this.Sound.playUntilDone();
                 }));
             });
         });
         // ネコにさわったらお話する
-        cat.Event.whenFlag(function ($this) {
+        cat.Event.whenFlag(function () {
             return __awaiter(this, void 0, void 0, function* () {
                 const words = `なになに？どうしたの？`;
                 const properties = { 'pitch': 2, 'volume': 100 };
-                $this.Control.while(true, (_) => __awaiter(this, void 0, void 0, function* () {
-                    if ($this.Sensing.isMouseTouching()) {
-                        $this.Looks.say(words);
-                        yield $this.Event.broadcastAndWait('SPEECH', words, properties, 'male');
+                this.Control.while(true, (_) => __awaiter(this, void 0, void 0, function* () {
+                    if (this.Sensing.isMouseTouching()) {
+                        this.Looks.say(words);
+                        yield this.Event.broadcastAndWait('SPEECH', words, properties, 'male');
                         // 「送って待つ」を使うことで スピーチが終わるまで次のループに進まないため、
                         // 以下の「マウスタッチしている間、待つ」のコードが不要である。
                         //await Libs.waitWhile( ()=>this.isMouseTouching()); 
                     }
                     else {
-                        $this.Looks.say(""); // フキダシを消す
+                        this.Looks.say(""); // フキダシを消す
                     }
                 }));
             });
         });
         // ネコをクリックしたらお話する
         let catSpeeking = false;
-        cat.Event.whenClicked(function ($this) {
+        cat.Event.whenClicked(function () {
             return __awaiter(this, void 0, void 0, function* () {
                 const words = `そこそこ。そこがかゆいの。`;
                 const properties = { 'pitch': 1.7, 'volume': 500 };
                 if (catSpeeking === false) {
                     catSpeeking = true;
-                    yield $this.Event.broadcastAndWait('SPEECH', words, properties, 'female');
+                    yield this.Event.broadcastAndWait('SPEECH', words, properties, 'female');
                     catSpeeking = false;
                 }
             });
@@ -75,8 +75,7 @@ Pg.setting = function setting() {
         cat.Event.whenBroadcastReceived('SPEECH', function (words_1, properties_1) {
             return __awaiter(this, arguments, void 0, function* (words, properties, gender = 'male', locale = 'ja-JP') {
                 // speechAndWait に await をつけて、音声スピーチが終わるまで待つ。
-                const $this = this;
-                yield $this.Extensions.speechAndWait(words, properties, gender, locale);
+                yield this.Extensions.speechAndWait(words, properties, gender, locale);
             });
         });
     });

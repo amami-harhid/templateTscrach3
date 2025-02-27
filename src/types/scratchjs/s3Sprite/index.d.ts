@@ -14,6 +14,7 @@ import {S3LotationStyle} from "@typeJS/scratchjs/s3Libs";
 
 /** イベント処理 */
 declare interface S3SpriteEventFunctions extends S3EventFunctions{
+
 }
 /** スプライトの制御用 */
 declare interface S3SpriteControlFunctions extends S3ControlFunctions{

@@ -2,6 +2,7 @@
  * sample23
  * ボールがパドルに触れたら跳ね返る
  */
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -11,8 +12,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-// whenBroadcastReceivedのなかで foreverが使えない様子
-// whenFlagなどの中では使える。バグです。
 import { Pg, Lib } from "./importer.js";
 Pg.title = "【Sample23】ボールがパドルに触れたら跳ね返る";
 const NeonTunnel = "NeonTunnel";

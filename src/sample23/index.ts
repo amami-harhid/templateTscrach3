@@ -2,7 +2,7 @@
  * sample23
  * ボールがパドルに触れたら跳ね返る
  */
-
+"use strict";
 import {Pg,Lib} from "./importer.js";
 import type {S3PlayGround} from "@typeJS/scratchjs/s3PlayGround";
 import type {S3Stage} from "@typeJS/scratchjs/s3Stage";
@@ -62,21 +62,20 @@ Pg.prepare = async function prepare() {
 }
 
 Pg.setting = async function setting() {
-
-    stage.Event.whenFlag(async function($this:S3Stage){
-        await $this.Sound.add( Chill );
-        $this.Sound.setOption(Lib.SoundOption.VOLUME, 5);
-        await $this.Control.while(true, async ()=>{
-            await $this.Sound.playUntilDone();
+    stage.Event.whenFlag(async function(this:S3Stage){
+        await this.Sound.add( Chill );
+        this.Sound.setOption(Lib.SoundOption.VOLUME, 5);
+        await this.Control.while(true, async ()=>{
+            await this.Sound.playUntilDone();
         });
     });
-    ball.Event.whenFlag(async function($this:S3Sprite){
-        $this.Motion.setXY(0,-100);
+    ball.Event.whenFlag(async function(this:S3Sprite){
+        this.Motion.setXY(0,-100);
     });
     
     const BallSpeed = 10;
     const InitDirection = 25;
-    ball.Event.whenBroadcastReceived('Start', async function(){
+    ball.Event.whenBroadcastReceived('Start', async function(this:S3Sprite){
         const $this:S3Sprite = this;
         score = 0;
         $this.Motion.pointInDirection(InitDirection);
@@ -91,7 +90,7 @@ Pg.setting = async function setting() {
             }
         });
     });
-    ball.Event.whenBroadcastReceived('Start', async function(){
+    ball.Event.whenBroadcastReceived('Start', async function(this:S3Sprite){
         const $this:S3Sprite = this;
         await $this.Control.forever(async ()=>{
             if($this.Sensing.isTouchingTarget(block)){
@@ -99,7 +98,7 @@ Pg.setting = async function setting() {
             }
         });
     });
-    ball.Event.whenBroadcastReceived('Start', async function(){
+    ball.Event.whenBroadcastReceived('Start', async function(this:S3Sprite){
         const $this:S3Sprite = this;
         await $this.Control.forever(async ()=>{
             if($this.Sensing.isTouchingTarget(paddle)){
@@ -118,8 +117,7 @@ Pg.setting = async function setting() {
             }
         });
     });
-    paddle.Event.whenBroadcastReceived('Start', async function(){
-        console.log('paddle start')
+    paddle.Event.whenBroadcastReceived('Start', async function(this:S3Sprite){
         const $this:S3Sprite = this;
         // whenBroadcastReceivedのなかで foreverが使えない様子
         // whenFlagなどの中では使える。バグです。
@@ -151,14 +149,13 @@ Pg.setting = async function setting() {
         });
         $this.Event.broadcast('Start');
     });
-
     block.Control.whenCloned(async ($this:S3Sprite)=>{
+        console.log(this);
         blockCount+=1;
         $this.Looks.show();
         await $this.Control.forever(async ()=>{
             if($this.Sensing.isTouchingTarget(ball)){
                 score += 1;
-                //console.log('Touching score='+score);
                 $this.Sound.play();
                 $this.Looks.hide();
                 Lib.Loop.break();

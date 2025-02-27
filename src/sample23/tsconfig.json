@@ -3,7 +3,7 @@
   "include": ["./*.ts"],
   "compilerOptions": {
     "outDir": "./build",
-    "noImplicitThis": false,   // 暗黙的なthisの型推定を「禁止」しない。
+    "noImplicitThis": true,   // 暗黙的なthisの型推定を「禁止」する。
     "noImplicitAny": false    // 暗黙的な「any」型を許可。
   }
 }
