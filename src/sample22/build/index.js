@@ -41,21 +41,20 @@ Pg.setting = function setting() {
             });
         });
         // ネコにさわったらお話する
-        cat.Event.whenFlag(function () {
+        cat.Event.whenFlag(function ($this) {
             return __awaiter(this, void 0, void 0, function* () {
-                this.__waitTouching = false;
                 const words = `なになに？どうしたの？`;
                 const properties = { 'pitch': 2, 'volume': 100 };
-                this.C.while(true, (_) => __awaiter(this, void 0, void 0, function* () {
-                    if (this.Sensing.isMouseTouching()) {
-                        this.Looks.say(words);
-                        yield this.Event.broadcastAndWait('SPEECH', words, properties, 'male');
+                $this.Control.while(true, (_) => __awaiter(this, void 0, void 0, function* () {
+                    if ($this.Sensing.isMouseTouching()) {
+                        $this.Looks.say(words);
+                        yield $this.Event.broadcastAndWait('SPEECH', words, properties, 'male');
                         // 「送って待つ」を使うことで スピーチが終わるまで次のループに進まないため、
                         // 以下の「マウスタッチしている間、待つ」のコードが不要である。
                         //await Libs.waitWhile( ()=>this.isMouseTouching()); 
                     }
                     else {
-                        this.Looks.say(""); // フキダシを消す
+                        $this.Looks.say(""); // フキダシを消す
                     }
                 }));
             });
