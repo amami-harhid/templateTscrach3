@@ -134,6 +134,8 @@ Pg.setting = function setting() {
             return __awaiter(this, void 0, void 0, function* () {
                 console.log('paddle start');
                 const $this = paddle;
+                // whenBroadcastReceivedのなかで foreverが使えない様子
+                // whenFlagなどの中では使える。バグです。
                 yield $this.Control.forever(() => __awaiter(this, void 0, void 0, function* () {
                     const mousePos = Lib.mousePosition;
                     const selfPosition = $this.Motion.getCurrentPosition();
