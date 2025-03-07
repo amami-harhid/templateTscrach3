@@ -16,10 +16,10 @@ const SpriteCatName = "cat";
 let stage: S3Stage;
 let cat: S3Sprite;
 
-Pg.preload = async function preload($pg:S3PlayGround) {
-    $pg.Image.load('../assets/Jurassic.svg', Jurassic);
-    $pg.Sound.load('../assets/Chill.wav', Chill);
-    $pg.Image.load('../assets/cat.svg', Cat);
+Pg.preload = async function preload(this:S3PlayGround) {
+    this.Image.load('../assets/Jurassic.svg', Jurassic);
+    this.Sound.load('../assets/Chill.wav', Chill);
+    this.Image.load('../assets/cat.svg', Cat);
 }
 Pg.prepare = async function prepare() {
     stage = new Lib.Stage();
@@ -27,26 +27,27 @@ Pg.prepare = async function prepare() {
     // スプライトを作り、コスチュームを１個登録する
     cat = new Lib.Sprite( SpriteCatName );
     cat.Image.add( Cat );
-    cat.Sound.add( Chill );
-    cat.Sound.setOption( Lib.SoundOption.VOLUME, 100 );
+    await cat.Sound.add( Chill );
+    await cat.Sound.setOption( Lib.SoundOption.VOLUME, 10 );
     cat.Looks.hide(); // 非表示
 }
 Pg.setting = async function setting() {
 
     // フラグをクリックしたときの動作
-    stage.Event.whenFlag( _=> {
+    stage.Event.whenFlag( function(){
         // アロー関数なので、ここでの『this』はPである
         cat.Looks.show(); // 表示
     });
 
     // スプライト（ネコ）をクリックしたときの動作
-    cat.Event.whenClicked( async (ネコ) => {
-        // アロー関数なので、ここでの『this』はPである
+    cat.Event.whenClicked( async function*(this:S3Sprite){
+        // 『this』は cat である
         // catのインスタンスは 『ネコ』として受け取っている。
         // 「終わるまで音を鳴らす」をずっと繰り返す
-        ネコ.C.forever(async _=>{
+        while(true){
             // 処理が終わるまで待つために await をつける
-            await ネコ.Sound.playUntilDone();
-        });
+            await this.Sound.playUntilDone();
+            yield;
+        }
     });
 }

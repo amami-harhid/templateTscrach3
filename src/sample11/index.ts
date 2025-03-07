@@ -16,10 +16,10 @@ const Cat:string = "Cat";
 let stage: S3Stage;
 let cat: S3Sprite;
 
-Pg.preload = async function preload($this: S3PlayGround) {
-    $this.Image.load('../assets/Jurassic.svg', Jurassic);
-    $this.Sound.load('../assets/Chill.wav', Chill);
-    $this.Image.load('../assets/cat.svg', Cat);
+Pg.preload = async function preload(this: S3PlayGround) {
+    this.Image.load('../assets/Jurassic.svg', Jurassic);
+    this.Sound.load('../assets/Chill.wav', Chill);
+    this.Image.load('../assets/cat.svg', Cat);
 }
 Pg.prepare = async function prepare() {
     stage = new Lib.Stage();
@@ -30,23 +30,25 @@ Pg.prepare = async function prepare() {
 }
 Pg.setting = async function setting() {
 
-    stage.Event.whenFlag(async function( $stage:S3Stage ) {
-        $stage.Sound.add( Chill );
-        $stage.Sound.setOption( Lib.SoundOption.VOLUME, 50);
+    stage.Event.whenFlag(async function( this:S3Stage ) {
+        await this.Sound.add( Chill );
+        await this.Sound.setOption( Lib.SoundOption.VOLUME, 10);
     });
 
-    stage.Event.whenFlag(async function( $stage:S3Stage ) {
-        $stage.Control.forever(async _=>{
-            await $stage.Sound.playUntilDone();
-        });
+    stage.Event.whenFlag(async function*( this:S3Stage ) {
+        while(true){
+            await this.Sound.playUntilDone();
+            yield;
+        }
     });
-    cat.Event.whenFlag(async function( $cat:S3Sprite ) {
-        $cat.Control.forever(async _=>{
+    cat.Event.whenFlag(async function*( this:S3Sprite ) {
+        while(true){
             // 繰り返すごとに 1秒待つ
             await Lib.wait(1000);
             // １秒でどこかへ行く
             const randomPoint = Lib.randomPoint;
-            await $cat.Motion.glideToPosition(1,  randomPoint.x, randomPoint.y);
-        })
+            await this.Motion.glideToPosition(1,  randomPoint.x, randomPoint.y);
+            yield;
+        }
     });
 }

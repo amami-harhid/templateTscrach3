@@ -12,7 +12,7 @@ export interface S3SoundFunctions {
     play(): void;
     playUntilDone(): Promise<any>;
     /** サウンドオプション設定 */
-    setOption(key: string, value: number): void;
+    setOption(key: string, value: number): Promise<any>;
     stop(): void;
     stopImmediately(): void;
 }

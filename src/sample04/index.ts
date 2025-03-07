@@ -7,15 +7,15 @@ Pg.title = "【Sample04】 旗をクリックした後、ステージをクリ�
 const ImageNameJurassic = "Jurassic";
 let stage: S3Stage;
 
-Pg.preload = async function($pg:S3PlayGround) {
-    $pg.Image.load('../assets/Jurassic.svg', ImageNameJurassic);
+Pg.preload = async function(this:S3PlayGround) {
+    this.Image.load('../assets/Jurassic.svg', ImageNameJurassic);
 }
 Pg.prepare = async function() {
     stage = new Lib.Stage();
 }
 Pg.setting = async function() {
     // すぐに実行する。
-    stage.Event.whenRightNow( function($stage:S3Stage){
-        $stage.Image.add( ImageNameJurassic );
+    stage.Event.whenRightNow( function(this:S3Stage){
+        this.Image.add( ImageNameJurassic );
     });
 };

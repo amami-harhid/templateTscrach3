@@ -30,46 +30,49 @@ Pg.prepare = async function prepare() {
 const direction01 = 1;
 Pg.setting = async function setting() {
 
-    stage.Event.whenFlag(function($stage:S3Stage){
-        // function(){} と書くとき、『this』は Proxy(stage)である
-        $stage.Sound.add( Chill );
-        $stage.Sound.setOption( Lib.SoundOption.VOLUME, 50);
-        $stage.Control.forever( async _=>{
-            await $stage.Sound.playUntilDone();
-        })
+    stage.Event.whenFlag(async function*(this:S3Stage){
+        // 『this』は Proxy(stage)である
+        this.Sound.add( Chill );
+        this.Sound.setOption( Lib.SoundOption.VOLUME, 50);
+        while(true){
+            await this.Sound.playUntilDone();
+            yield;
+        };
     });
-    cat.Event.whenFlag(function($cat:S3Sprite){
-        // function(){} と書くとき、『this』は Proxy(cat)である
-        $cat.Sound.add( Mya );
-        $cat.Sound.setOption( Lib.SoundOption.VOLUME, 20);
+    cat.Event.whenFlag(async function(this:S3Sprite){
+        // 『this』は Proxy(cat)である
+        await this.Sound.add( Mya );
+        await this.Sound.setOption( Lib.SoundOption.VOLUME, 20);
     });
-    cat.Event.whenFlag( async ($cat:S3Sprite)=> {
+    cat.Event.whenFlag( function(this:S3Sprite){
         // 初期化
-        $cat.Motion.gotoXY({x:0, y:0});
-        $cat.Motion.pointInDirection( 90 );
+        this.Motion.gotoXY({x:0, y:0});
+        this.Motion.pointInDirection( 90 );
     });
 
     // { }の外側のスコープを参照できる
     const direction02 = 1;
-    cat.Event.whenFlag( async function($cat:S3Sprite) {
-        $cat.Control.forever( _=>{
-            $cat.Motion.turnRightDegrees(direction01+direction02);
-        });
+    cat.Event.whenFlag( function*(this:S3Sprite) {
+        while(true){
+            this.Motion.turnRightDegrees(direction01+direction02);
+            yield;
+        }
     });
-    cat.Event.whenClicked(async function ($cat:S3Sprite) {
-        $cat.Control.clone();
+    cat.Event.whenClicked(function (this:S3Sprite) {
+        this.Control.clone();
     });
 
     const catStep = 10;
-    cat.Control.whenCloned( async function($cat:S3Sprite) {
-        $cat.Looks.show();
-        $cat.Control.forever( _=>{
-            $cat.Motion.moveSteps(catStep);
-            $cat.Motion.ifOnEdgeBounds();
-            if($cat.Sensing.isTouchingEdge() ){
+    cat.Control.whenCloned( async function*(this:S3Sprite) {
+        this.Looks.show();
+        while(true){
+            this.Motion.moveSteps(catStep);
+            this.Motion.ifOnEdgeBounds();
+            if(this.Sensing.isTouchingEdge() ){
                 // ミャーと鳴く。
-                $cat.Sound.play()
+                this.Sound.play()
             }        
-        });
+            yield;
+        }
     });
 }

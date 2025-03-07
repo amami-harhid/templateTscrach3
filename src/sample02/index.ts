@@ -8,15 +8,15 @@ const Jurassic = "Jurassic";
 
 let stage:S3Stage;
 
-Pg.preload = function($pg:S3PlayGround) {
-    $pg.Image.load('../assets/Jurassic.svg', Jurassic);
+Pg.preload = function(this:S3PlayGround) {
+    this.Image.load('../assets/Jurassic.svg', Jurassic);
 }
 Pg.prepare = function() {
     stage = new Lib.Stage();
 }
 Pg.setting = function() {
     // すぐに実行する。
-    stage.Event.whenRightNow( function($stage:S3Stage){
-        $stage.Image.add( Jurassic );
+    stage.Event.whenRightNow( async function(this:S3Stage){
+        this.Image.add( Jurassic );
     });
 };

@@ -17,10 +17,10 @@ const Cat:string = "Cat";
 let stage: S3Stage;
 let cat: S3Sprite;
 
-Pg.preload = async function preload($this: S3PlayGround) {
-    $this.Image.load('../assets/Jurassic.svg', Jurassic);
-    $this.Sound.load('../assets/Chill.wav', Chill);
-    $this.Image.load('../assets/cat.svg', Cat);
+Pg.preload = async function preload(this: S3PlayGround) {
+    this.Image.load('../assets/Jurassic.svg', Jurassic);
+    this.Sound.load('../assets/Chill.wav', Chill);
+    this.Image.load('../assets/cat.svg', Cat);
 }
 Pg.prepare = async function prepare() {
     stage = new Lib.Stage();
@@ -34,24 +34,21 @@ Pg.setting = async function setting() {
     // ここはfunction式の中なので 【this】= P である
     // ここをアロー式にすると 【this】= window となる
 
-    stage.Event.whenFlag(async function( $this:S3Stage ) {
-        // function() の中なので、【this】はstageである。
-        await $this.Sound.add( Chill );
-        $this.Sound.setOption( Lib.SoundOption.VOLUME, 50 );
-    });
-
-    stage.Event.whenFlag(async function( $this:S3Stage ) {
+    stage.Event.whenFlag(async function*( this:S3Stage ) {
         // function() の中なので、【this】はProxy(stage)である。
-        $this.Control.while(true, async _=>{
-            await $this.Sound.playUntilDone();
-        });
+        await this.Sound.add( Chill );
+        await this.Sound.setOption( Lib.SoundOption.VOLUME, 50 );
+        while(true){
+            await this.Sound.playUntilDone();
+            yield;
+        }
     });
-    stage.Event.whenClicked(async ()=> {
+    stage.Event.whenClicked(function() {
         // アロー関数の中なので、【this】は 上の階層 の this = P である。
         const mousePosition = Lib.mousePosition;
         cat.Motion.gotoXY(mousePosition)
     });
-    cat.Event.whenFlag(async ( $this:S3Sprite ) => {
-        $this.Motion.gotoXY({x:0, y:0});
+    cat.Event.whenFlag(function( this:S3Sprite ){
+        this.Motion.gotoXY({x:0, y:0});
     });
 }

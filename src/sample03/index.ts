@@ -9,9 +9,9 @@ const SoundNameChill = "Chill";
 
 let stage:S3Stage;
 
-Pg.preload = function($pg:S3PlayGround) {
-    $pg.Image.load('../assets/Jurassic.svg', ImageNameJurassic);
-    $pg.Sound.load('../assets/Chill.wav', SoundNameChill);
+Pg.preload = function(this:S3PlayGround) {
+    this.Image.load('../assets/Jurassic.svg', ImageNameJurassic);
+    this.Sound.load('../assets/Chill.wav', SoundNameChill);
 }
 Pg.prepare = function() {
     stage = new Lib.Stage();
@@ -19,16 +19,17 @@ Pg.prepare = function() {
 }
 Pg.setting = function() {
     // すぐに実行する。
-    stage.Event.whenRightNow( function($stage:S3Stage){
+    stage.Event.whenRightNow( async function(this:S3Stage){
         // ここでの『this』は Proxy(stage)である。
-        $stage.Sound.add( SoundNameChill );
-        $stage.Sound.setOption( Lib.SoundOption.VOLUME, 100);
+        await this.Sound.add( SoundNameChill );
+        await this.Sound.setOption( Lib.SoundOption.VOLUME, 100);
     });
-    stage.Event.whenFlag( function($stage:S3Stage){ 
+    stage.Event.whenFlag( async function*(this:S3Stage){ 
         // 「終わるまで音を鳴らす」をずっと繰り返す
-        $stage.Control.forever( async _=>{
+        while(true){
             // 処理が終わるまで待つために await をつける
-            await $stage.Sound.playUntilDone();
-        });
+            await this.Sound.playUntilDone();
+            yield;
+        }
     });
 };

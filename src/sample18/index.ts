@@ -22,12 +22,12 @@ const Pew:string = "Pew";
 let stage: S3Stage;
 let cross: S3Sprite;
 
-Pg.preload = async function preload($play: S3PlayGround) {
-    $play.Image.load('../assets/Jurassic.svg', Jurassic );
-    $play.Sound.load('../assets/Chill.wav', Chill );
-    $play.Image.load('../assets/cross1.svg', Cross01 );
-    $play.Image.load('../assets/cross2.svg', Cross02 );
-    $play.Sound.load('../assets/Pew.wav', Pew );
+Pg.preload = async function preload(this: S3PlayGround) {
+    this.Image.load('../assets/Jurassic.svg', Jurassic );
+    this.Sound.load('../assets/Chill.wav', Chill );
+    this.Image.load('../assets/cross1.svg', Cross01 );
+    this.Image.load('../assets/cross2.svg', Cross02 );
+    this.Sound.load('../assets/Pew.wav', Pew );
 }
 
 Pg.prepare = async function prepare() {
@@ -43,78 +43,82 @@ Pg.prepare = async function prepare() {
 }
 Pg.setting = async function setting() {
 
-    stage.Event.whenFlag(async function( $this: S3Stage ) {
-        // function() の中なので、【this】はstageである。
-        $this.Sound.add( Chill ).then(me=>{
-            me.Sound.setOption( Lib.SoundOption.VOLUME, 50 );
-        });
-    });
-    cross.Event.whenFlag(async function( $this: S3Sprite ){
-        await $this.Sound.add( Pew );
-        $this.Sound.setOption( Lib.SoundOption.VOLUME, 10 );
-        $this.Sound.setOption( Lib.SoundOption.PITCH, 150 );
+    stage.Event.whenFlag(async function*( this: S3Stage) {
+        // function() の中なので、【this】はProxy(stage)である。
+        await this.Sound.add( Chill );
+        await this.Sound.setOption( Lib.SoundOption.VOLUME, 50 );
+        while(true){
+            await this.Sound.playUntilDone();
+            yield;
+        }
     });
 
-    stage.Event.whenFlag(async function( $this: S3Stage) {
-        // function() の中なので、【this】はProxy(stage)である。
-        $this.Control.forever( async _=>{
-            await $this.Sound.playUntilDone();
-        });
+    cross.Event.whenFlag(async function( this: S3Sprite ){
+        await this.Sound.add( Pew );
+        await this.Sound.setOption( Lib.SoundOption.VOLUME, 10 );
+        await this.Sound.setOption( Lib.SoundOption.PITCH, 150 );
     });
 
     const MoveSteps = 15;
-    cross.Event.whenFlag(async function( $this: S3Sprite ){
-        $this.Motion.pointInDirection( 90 );
-        $this.Control.forever( async _=>{
+    cross.Event.whenFlag( function*( this: S3Sprite ){
+        this.Motion.pointInDirection( 90 );
+        while(true){
             if(Lib.keyIsDown('RightArrow')){
-                $this.Motion.moveSteps(MoveSteps);
+                this.Motion.moveSteps(MoveSteps);
             }
             if(Lib.keyIsDown('LeftArrow')){
-                $this.Motion.moveSteps(-MoveSteps);
+                this.Motion.moveSteps(-MoveSteps);
             }
-        });
+            yield;
+        }
     });
-    cross.Event.whenFlag(async function( $this: S3Sprite ){
-        $this.Control.while(true, async _=>{
+    cross.Event.whenFlag( function*( this: S3Sprite ){
+        while(true){
             // 矢印キーを押しながら、スペースキーを検知させたい
             if(Lib.keyIsDown('Space')){
-                $this.Sound.play();
+                this.Sound.play();
                 const options = {scale:{x:20,y:20}, direction:0}
-                $this.Control.clone(options);
+                this.Control.clone(options);
                 //次をコメントアウトしているときは キー押下中連続してクローン作る  
                 //await Libs.waitWhile( ()=>Libs.keyIsDown('Space'));
             }
-        });
+            yield;
+        }
     });
-    cross.Control.whenCloned(async function( clone: S3Sprite ){
+    cross.Control.whenCloned( function( this: S3Sprite ){
+        const clone = this;
         const {height} = clone.Looks.drawingDimensions();
         clone.Motion.changeY( height / 2);
         clone.Looks.nextCostume();
         clone.Looks.show();
     });
-    cross.Control.whenCloned( async function( clone: S3Sprite ) {
+    cross.Control.whenCloned( function*( this: S3Sprite ) {
         // while の後に処理があるときは await 忘れないようにしましょう
-        await clone.Control.forever( async _=>{
+        const clone = this;
+        while(true){
             clone.Motion.changeY(+10); // 10だけ上にする
             if(clone.Sensing.isTouchingEdge()){
-                Lib.Loop.break();
+                break;
             }
-        });
+            yield;
+        }
         clone.Control.remove();
     });
     const TURN_RIGHT_DEGREE= 25;
-    cross.Control.whenCloned( async function( clone: S3Sprite ) {
+    cross.Control.whenCloned( async function*( this: S3Sprite ) {
+        const clone = this;
         // while の後に処理があるときは await 忘れないようにしましょう
         clone.Sound.setOption( Lib.SoundOption.VOLUME, 100 );
         clone.Sound.setOption( Lib.SoundOption.PITCH, 90 );
-        await clone.Control.forever( async _=>{
+        while(true){
             clone.Motion.turnRightDegrees(TURN_RIGHT_DEGREE);
             if(clone.Sensing.isTouchingEdge()){
                 clone.Sound.play();
                 await Lib.wait(500)
-                Lib.Loop.break();
+                break;
             }
-        });
+            yield;
+        }
         clone.Control.remove();
     });
 }

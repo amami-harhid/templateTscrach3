@@ -32,21 +32,18 @@ Pg.prepare = async function prepare() {
 }
 Pg.setting = async function setting() {
 
-    stage.Event.whenFlag(async function( $this:S3Stage ) {
-        // function() の中なので、【this】はstageである。
-        await $this.Sound.add( Chill );
-        $this.Sound.setOption( Lib.SoundOption.VOLUME, 50);
-    });
-
-    stage.Event.whenFlag(async function( $this:S3Stage ) {
+    stage.Event.whenFlag( async function*( this:S3Stage ) {
         // function() の中なので、【this】はProxy(stage)である。
-        $this.Control.forever( async _=>{
-            await $this.Sound.playUntilDone();
-        });
+        await this.Sound.add( Chill );
+        await this.Sound.setOption( Lib.SoundOption.VOLUME, 50);
+        while(true){
+            await this.Sound.playUntilDone();
+            yield;            
+        }
     });
     
-    cat.Event.whenFlag(async function( $this: S3Sprite ){
-        $this.Motion.gotoXY({x:0, y:0});
+    cat.Event.whenFlag( function( this: S3Sprite ){
+        this.Motion.gotoXY({x:0, y:0});
     })
 
     // ms の値
@@ -57,28 +54,28 @@ Pg.setting = async function setting() {
     // ネコの速度
     const catStep = 5;
 
-    cat.Event.whenFlag(async function(){
+    cat.Event.whenFlag( async function(){
         _5SecondsTimerOn = false;
         await Lib.wait(ms1000+ms5000);
         _5SecondsTimerOn = true;
     });
 
-    cat.Event.whenFlag(async function( $this:S3Sprite ){
+    cat.Event.whenFlag( async function*( this:S3Sprite ){
         // 1秒待ってからマウスカーソルを追跡する
         await Lib.wait(ms1000);
-        $this.Control.forever( async _=>{
+        while(true){
             // マウスの方向へ向く
-            $this.Motion.pointToMouse();
+            this.Motion.pointToMouse();
             if(_5SecondsTimerOn){
                 // 枠内にあった最後の場所
                 const mousePosition = Lib.mousePosition;
                 // マウスカーソルの場所へ1秒かけて移動する
-                await $this.Motion.glideToPosition( 1, mousePosition.x, mousePosition.y );
+                await this.Motion.glideToPosition( 1, mousePosition.x, mousePosition.y );
             }else{
-                $this.Motion.moveSteps(catStep);
+                this.Motion.moveSteps(catStep);
             }
-    
-        });
+            yield;
+        }
     });
 
 }

@@ -22,15 +22,15 @@ let stage: S3Stage;
 let cross: S3Sprite;
 let butterfly: S3Sprite;
 
-Pg.preload = async function preload($this: S3PlayGround) {
-    $this.Image.load('../assets/Jurassic.svg', Jurassic );
-    $this.Sound.load('../assets/Chill.wav', Chill );
-    $this.Image.load('../assets/cross1.svg', Cross01 );
-    $this.Image.load('../assets/cross2.svg', Cross02 );
-    $this.Image.load('../assets/butterfly1.svg', Butterfly01 );
-    $this.Image.load('../assets/butterfly2.svg', Butterfly02 );
+Pg.preload = async function(this: S3PlayGround) {
+    this.Image.load('../assets/Jurassic.svg', Jurassic );
+    this.Sound.load('../assets/Chill.wav', Chill );
+    this.Image.load('../assets/cross1.svg', Cross01 );
+    this.Image.load('../assets/cross2.svg', Cross02 );
+    this.Image.load('../assets/butterfly1.svg', Butterfly01 );
+    this.Image.load('../assets/butterfly2.svg', Butterfly02 );
 }
-Pg.prepare = async function prepare() {
+Pg.prepare = async function() {
     stage = new Lib.Stage();
     stage.Image.add( Jurassic );
 
@@ -44,36 +44,39 @@ Pg.prepare = async function prepare() {
     butterfly.Image.add( Butterfly02 );
     butterfly.Looks.hide();
 }
-Pg.setting = async function setting() {
+Pg.setting = async function() {
 
-    stage.Event.whenFlag(async function( $this:S3Stage ) {
-        // function() の中なので、【this】はstageである。
-        await $this.Sound.add( Chill );
-        $this.Sound.setOption( Lib.SoundOption.VOLUME, 20 )
+    stage.Event.whenFlag( async function*( this:S3Stage ) {
         // function() の中なので、【this】はProxy(stage)である。
-        $this.Control.forever( async _=>{
-            await $this.Sound.playUntilDone();
-        });
+        await this.Sound.add( Chill );
+        await this.Sound.setOption( Lib.SoundOption.VOLUME, 20 )
+        while(true){
+            await this.Sound.playUntilDone();
+            yield;
+        }
     });
 
     const ChangeDirection = 1;
-    cross.Event.whenFlag(async function( $this: S3Sprite ){
-        $this.Control.forever(async _=>{
-            $this.Motion.turnRightDegrees(ChangeDirection);
-        });
+    cross.Event.whenFlag( function*( this: S3Sprite ){
+        while(true){
+            this.Motion.turnRightDegrees(ChangeDirection);
+            yield;
+        }
     });
-    cross.Event.whenFlag(async function( $this: S3Sprite ){
-        $this.Control.forever(async _=>{
-            if ( $this.Sensing.isMouseTouching() ) {
-                $this.Looks.nextCostume();
-                await Lib.waitWhile( ()=>$this.Sensing.isMouseTouching());
-                $this.Looks.nextCostume();
+    cross.Event.whenFlag( async function*( this: S3Sprite ){
+        while(true){
+            if ( this.Sensing.isMouseTouching() ) {
+                this.Looks.nextCostume();
+                await Lib.waitWhile( ()=>this.Sensing.isMouseTouching());
+                this.Looks.nextCostume();
             }
-        });
+            yield;
+        }
     });
-    cross.Event.whenFlag(async function( $cross: S3Sprite ){
-        $cross.Control.forever( async _=>{
-            if ( $cross.Sensing.isMouseTouching() ) {
+    cross.Event.whenFlag(async function*( this: S3Sprite ){
+        const self:S3Sprite = this;
+        while(true){
+            if ( self.Sensing.isMouseTouching() ) {
                 const mousePosition = Lib.mousePosition;
                 butterfly.Motion.gotoXY(mousePosition);
                 const scale = {x: 15, y: 15}
@@ -85,33 +88,35 @@ Pg.setting = async function setting() {
                 //await Libs.waitUntil( this.isNotMouseTouching, this); // 「マウスポインターが触らない」迄待つ。
                 await Lib.wait(100); // 100ミリ秒待つ。 <== クローン発生する間隔
             }
-        });
+            yield;
+        }
     });
-    butterfly.Control.whenCloned( function( $this: S3Sprite ) {
-        const clone = $this;
-        clone.Control.forever( async _=>{
+    butterfly.Control.whenCloned( async function*( this: S3Sprite ) {
+        const clone = this;
+        while(true){
             if(clone.life > 0 ){
                 this.Looks.nextCostume();
                 await Lib.wait(50);    
             }else{
-                Lib.Loop.break();
+                break;
             }
-        });
+            yield;
+        }
     });
-    butterfly.Control.whenCloned( function( $this: S3Sprite ) {
-        const clone = $this;
+    butterfly.Control.whenCloned( async function*( this: S3Sprite ) {
+        const clone = this;
         clone.Looks.show();
         clone.life = 5000; // ミリ秒。クローンが生きている時間。（およその時間）
-        clone.Control.forever( async _=>{
+        while(true){
             // ランダムな場所
             const randomPoint = Lib.randomPoint;
             // １秒でどこかに行く。
-            await $this.Motion.glideToPosition(5, randomPoint.x, randomPoint.y);
+            await this.Motion.glideToPosition(5, randomPoint.x, randomPoint.y);
             // ライフがゼロになったら「繰り返し」を抜ける
-            if( $this.life < 0) {
-                Lib.Loop.break();
+            if( this.life < 0) {
+                break;
             }        
-        });
-    
+            yield;
+        }
     });
 }
