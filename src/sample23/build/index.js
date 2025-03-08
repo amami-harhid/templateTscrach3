@@ -54,7 +54,7 @@ Pg.prepare = async function prepare() {
 Pg.setting = async function setting() {
     stage.Event.whenFlag(async function* () {
         await this.Sound.add(Chill);
-        this.Sound.setOption(Lib.SoundOption.VOLUME, 5);
+        await this.Sound.setOption(Lib.SoundOption.VOLUME, 5);
         while (true) {
             await this.Sound.playUntilDone();
             yield;
