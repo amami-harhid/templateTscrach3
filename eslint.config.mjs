@@ -21,110 +21,8 @@
 import globals from "globals";
 import pluginJs from "@eslint/js";
 import tseslint from "typescript-eslint";
-const awaitSetOptoinRule = {
-  meta: {
-    type: 'problem',
-    fixable: 'code',
-    schema: [],
-    messages: {
-      AwaitNeededId: 'await をつけてください',
-    },
-  },
-  create(context){
-    return {
-      Identifier(node) {
-        if(node.type == 'Identifier' &&
-          (node.name == 'setOption' ||
-           node.name == 'playUntilDone')
-        ) {
-          if(node.parent.type == 'MemberExpression') {  
-            const parent = node.parent;
-            if(parent.object && parent.object.property 
-                  && parent.object.property.name == 'Sound') {
-              // (xxx.Sound.setOption) --> parent_parent 
-              const parent_parent = node.parent.parent;
-              if(parent_parent.type == 'CallExpression'){
-              // (await xxx.Sound.setOption) --> parent_parent_parent 
-              const parent_parent_parent = parent_parent.parent;
-                if(parent_parent_parent.type!='AwaitExpression'){
-                  // AwaitExpression でない場合( await がついていない場合)
-                  context.report({
-                    node,
-                    messageId: "AwaitNeededId",
-                    fix(fixer) {
-                       return fixer.insertTextBefore(parent_parent, "await ");
-                    }
-                  })
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-}
-const eventAsyncRule = {
-  meta: {
-      type: 'problem',
-      fixable: 'code',
-      schema: [],
-      messages: {
-        EventFunctionId: 'async をつけてください',
-      },
-    },
-    create(context){
-      return {
-        ExpressionStatement(node){
-          if( node.expression && node.expression.callee && node.expression.callee.object){
-            const calee = node.expression.callee;
-            const caleeObj = calee.object;
-            if(caleeObj){
-              const caleeObjProperty = caleeObj.property;
-              if(caleeObjProperty && caleeObjProperty.name == 'Event'){
-                const calleeProperty = calee.property;
-                if(calleeProperty && calleeProperty.name == 'whenFlag'){
-                  const _arguments = node.expression.arguments;
-                  if(_arguments && Array.isArray(_arguments) && _arguments.length>0){
-                    const functionExpression = _arguments[0];
-                    if(functionExpression.type == 'FunctionExpression' 
-                          && functionExpression.async == false){
-                      // Eventへ渡すファンクションがasyncでないとき
-                      context.report({
-                        node,
-                        messageId: "EventFunctionId",
-                        data: {
-                          notAsync: functionExpression.async,
-                        },
-                        fix(fixer) {
-                           return fixer.insertTextBefore(functionExpression, "async ");
-                        }
-                      })
-                    }     
-                  }
-                }
-              }
-            }
-          }
-        },
-      }
-    },
-}
-const awaitSetOptonRulesPlugin = { 
-  meta:{
-    name: 'await-setOption-plugin',
-    version: '0.0.1',
-  },
-  rules: { "await-setOption-plugin": awaitSetOptoinRule },
-};
-
-const evnetAsyncRulesPlugin = { 
-  meta:{
-    name: 'event-async-plugin',
-    version: '0.0.1',
-  },
-  rules: { "event-async-plugin": eventAsyncRule },
-};
+import {awaitSetOptonRulesPlugin} from "./elintPlugin/eslintAwaitSetOptoinRulePlugin.js";
+import {eventAsyncRulesPlugin} from "./elintPlugin/eslintEventAsyncRulePlugin.js"
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
@@ -136,7 +34,7 @@ export default [
     languageOptions: { globals: globals.browser },
     plugins: {
       setOption : awaitSetOptonRulesPlugin,
-      eventAsync: evnetAsyncRulesPlugin,
+      eventAsync: eventAsyncRulesPlugin,
     },
     rules: {
       "no-this-alias": ["off"],

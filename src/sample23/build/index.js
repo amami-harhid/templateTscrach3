@@ -157,13 +157,13 @@ Pg.setting = async function setting() {
         this.Looks.hide();
     });
     title.Event.whenBroadcastReceived(YouWon, async function () {
-        title.Looks.switchCostume(YouWon);
-        title.Looks.show();
+        this.Looks.switchCostume(YouWon);
+        this.Looks.show();
         Pg.Control.stopAll();
     });
     title.Event.whenBroadcastReceived(GameOver, async function () {
-        title.Looks.switchCostume(GameOver);
-        title.Looks.show();
+        this.Looks.switchCostume(GameOver);
+        this.Looks.show();
         Pg.Control.stopAll();
     });
 };

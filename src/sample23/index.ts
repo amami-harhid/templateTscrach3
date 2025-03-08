@@ -168,14 +168,14 @@ Pg.setting = async function setting() {
     title.Event.whenFlag(async function(this:S3Sprite){
         this.Looks.hide();
     })
-    title.Event.whenBroadcastReceived(YouWon, async function(){
-        title.Looks.switchCostume(YouWon);
-        title.Looks.show();
+    title.Event.whenBroadcastReceived(YouWon, async function(this:S3Sprite){
+        this.Looks.switchCostume(YouWon);
+        this.Looks.show();
         Pg.Control.stopAll();
     });
-    title.Event.whenBroadcastReceived(GameOver, async function(){
-        title.Looks.switchCostume(GameOver);
-        title.Looks.show();
+    title.Event.whenBroadcastReceived(GameOver, async function(this:S3Sprite){
+        this.Looks.switchCostume(GameOver);
+        this.Looks.show();
         Pg.Control.stopAll();
     });
 
