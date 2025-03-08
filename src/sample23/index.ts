@@ -120,8 +120,6 @@ Pg.setting = async function setting() {
         }
     });
     paddle.Event.whenBroadcastReceived('Start', async function*(this:S3Sprite){
-        // whenBroadcastReceivedのなかで foreverが使えない様子
-        // whenFlagなどの中では使える。バグです。
         while(true){
             const mousePos = Lib.mousePosition;
             const selfPosition = this.Motion.getCurrentPosition();
