@@ -1,16 +1,69 @@
 'use strict'
 /**
- * no-restricted-syntax
+ * 【no-restricted-syntax】 
  * (1) while構文の最後の行はyieldでなければならない
- * (2) do...while構文の最後の行はyieldでなければならない --> 2025/3/8 現在、チェックできていない
+ * (2) do...while構文の最後の行はyieldでなければならない
  * (3) for構文の最後の行はyieldでなければならない
- * (4) for...of, for...inは任意とするのでエラーにはしない。
- * (5) Array#forEachは yieldが使えないのでエラーにはしない。
+ * (4) for...of, for...inは任意とするのでエラーにはしない（対象外）
+ * (5) Array#forEachは yieldが使えないのでエラーにはしない（対象外）
+ * 
+ * 【plugin】
+ * (1) 【warning】xxx.Sound.setOption(), xxx.Sound.playUntilDone() に awaitをつける
+ * (2) 【Error】HatEventメソッドの引数とするFunctionには asyncをつける
+ * ※ plugin定義の外だしをしたい(importをして利用)が、うまくいかないので(1)(2)をだらだらと書いている
+ * pluginはもっと増やしたいのでそのうち何とかしないといけない。
+ * 
+ * 【不思議なこと】
+ * do{...}while(true)の形、条件式に固定でtrueを書いた直後はエラーになる。
+ * yieldをいれるとtrueの部分がエラーにならない。
+ * 結果オーライだが原因というか仕組みが分からないので気持ち悪いところがある。
  */
 import globals from "globals";
 import pluginJs from "@eslint/js";
 import tseslint from "typescript-eslint";
-
+const awaitSetOptoinRule = {
+  meta: {
+    type: 'problem',
+    fixable: 'code',
+    schema: [],
+    messages: {
+      AwaitSetOptionId: 'await をつけてください',
+    },
+  },
+  create(context){
+    return {
+      Identifier(node) {
+        if(node.type == 'Identifier' &&
+          (node.name == 'setOption' ||
+           node.name == 'playUntilDone')
+        ) {
+          if(node.parent.type == 'MemberExpression') {  
+            const parent = node.parent;
+            if(parent.object && parent.object.property 
+                  && parent.object.property.name == 'Sound') {
+              // (xxx.Sound.setOption) --> parent_parent 
+              const parent_parent = node.parent.parent;
+              if(parent_parent.type == 'CallExpression'){
+              // (await xxx.Sound.setOption) --> parent_parent_parent 
+              const parent_parent_parent = parent_parent.parent;
+                if(parent_parent_parent.type!='AwaitExpression'){
+                  // AwaitExpression でない場合( await がついていない場合)
+                  context.report({
+                    node,
+                    messageId: "AwaitSetOptionId",
+                    fix(fixer) {
+                       return fixer.insertTextBefore(parent_parent, "await ");
+                    }
+                  })
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+}
 const eventAsyncRule = {
   meta: {
       type: 'problem',
@@ -47,22 +100,24 @@ const eventAsyncRule = {
                            return fixer.insertTextBefore(functionExpression, "async ");
                         }
                       })
-      
-                    }
-                      
+                    }     
                   }
                 }
-                  
               }
             }
           }
-
-
         },
-
       }
     },
 }
+const awaitSetOptonRulesPlugin = { 
+  meta:{
+    name: 'await-setOption-plugin',
+    version: '0.0.1',
+  },
+  rules: { "await-setOption-plugin": awaitSetOptoinRule },
+};
+
 const evnetAsyncRulesPlugin = { 
   meta:{
     name: 'event-async-plugin',
@@ -80,6 +135,7 @@ export default [
     files: ["**/*.ts"],
     languageOptions: { globals: globals.browser },
     plugins: {
+      setOption : awaitSetOptonRulesPlugin,
       eventAsync: evnetAsyncRulesPlugin,
     },
     rules: {
@@ -116,12 +172,7 @@ export default [
         }
       ],
       'eventAsync/event-async-plugin': 'error',
-      // "no-constant-condition": [
-      //   "error", 
-      //   {
-      //     "checkLoops" :  "all",
-      //   }
-      // ],
+      'setOption/await-setOption-plugin': 'warn'
 
     }
   },
