@@ -27,7 +27,7 @@ const awaitSetOptoinRule = {
     fixable: 'code',
     schema: [],
     messages: {
-      AwaitSetOptionId: 'await をつけてください',
+      AwaitNeededId: 'await をつけてください',
     },
   },
   create(context){
@@ -50,7 +50,7 @@ const awaitSetOptoinRule = {
                   // AwaitExpression でない場合( await がついていない場合)
                   context.report({
                     node,
-                    messageId: "AwaitSetOptionId",
+                    messageId: "AwaitNeededId",
                     fix(fixer) {
                        return fixer.insertTextBefore(parent_parent, "await ");
                     }
