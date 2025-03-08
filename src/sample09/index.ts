@@ -20,6 +20,7 @@ Pg.preload = async function preload($this: S3PlayGround) {
     $this.Image.load('../assets/Jurassic.svg', Jurassic);
     $this.Sound.load('../assets/Chill.wav', Chill);
     $this.Image.load('../assets/cat.svg', Cat);
+    $this.Sound.load('../assets/Cat.wav', Mya);
 }
 Pg.prepare = async function prepare() {
     stage = new Lib.Stage();
@@ -32,8 +33,8 @@ Pg.setting = async function setting() {
 
     stage.Event.whenFlag(async function*(this:S3Stage){
         // 『this』は Proxy(stage)である
-        this.Sound.add( Chill );
-        this.Sound.setOption( Lib.SoundOption.VOLUME, 50);
+        await this.Sound.add( Chill );
+        await this.Sound.setOption( Lib.SoundOption.VOLUME, 50);
         while(true){
             await this.Sound.playUntilDone();
             yield;

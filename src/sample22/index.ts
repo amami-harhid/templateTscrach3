@@ -27,19 +27,20 @@ Pg.prepare = async function prepare(this:S3PlayGround) {
 
 Pg.setting = async function setting() {
 
-    stage.Event.whenFlag(async function(this:S3Stage){
+    stage.Event.whenFlag(async function*(this:S3Stage){
         await this.Sound.add( Chill );
         this.Sound.setOption(Lib.SoundOption.VOLUME, 20);
-        await this.Control.while(true, async ()=>{
+        while(true){
             await this.Sound.playUntilDone();
-        });
+            yield;
+        }
     })
     
     // ネコにさわったらお話する
-    cat.Event.whenFlag( async function(this:S3Sprite){
+    cat.Event.whenFlag( async function*(this:S3Sprite){
         const words = `なになに？どうしたの？`;
         const properties = {'pitch': 2, 'volume': 100}
-        this.Control.while(true, async _=>{
+        while(true){
             if( this.Sensing.isMouseTouching() ) {
                 this.Looks.say(words);
                 await this.Event.broadcastAndWait('SPEECH', words, properties, 'male');
@@ -50,7 +51,8 @@ Pg.setting = async function setting() {
             }else{
                 this.Looks.say(""); // フキダシを消す
             }
-        });
+            yield;
+        }
     });
     // ネコをクリックしたらお話する
     let catSpeeking = false;
@@ -64,7 +66,13 @@ Pg.setting = async function setting() {
         }
     });
     
-    cat.Event.whenBroadcastReceived('SPEECH', async function(this:S3Sprite, words:string, properties:any, gender:string='male', locale:string='ja-JP') {
+    cat.Event.whenBroadcastReceived('SPEECH', 
+                    async function(this:S3Sprite, 
+                                    words:string, 
+                                    properties:{'pitch': number, 'volume': number}, 
+                                    gender:string='male', 
+                                    locale:string='ja-JP'
+                                ) {
         // speechAndWait に await をつけて、音声スピーチが終わるまで待つ。
         await this.Extensions.speechAndWait(words, properties, gender, locale);
     });

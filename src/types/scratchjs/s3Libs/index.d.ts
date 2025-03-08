@@ -109,4 +109,6 @@ export interface S3Libs {
     stageWidth : number;
     /** ステージ高さ */
     stageHeight : number;
+
+    FunctionChecker : any;
 }

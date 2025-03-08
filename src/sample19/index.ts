@@ -43,7 +43,8 @@ Pg.prepare = async function prepare() {
 Pg.setting = async function setting() {
 
     const WALK_STEP = 1;
-    cat.Event.whenFlag( function*( this: S3Sprite ) {
+    cat.Event.whenFlag( async function*( this: S3Sprite ) {
+        console.log("#001")
         while(true){
             this.Motion.ifOnEdgeBounds();
             this.Motion.moveSteps(WALK_STEP);
@@ -110,7 +111,8 @@ Pg.setting = async function setting() {
             yield;
         }
     });
-    cat2.Event.whenFlag( function*( this: S3Sprite ) {
+    cat2.Event.whenFlag( async function*( this: S3Sprite ) {
+        console.log("#002")
         while(true){
             this.Motion.ifOnEdgeBounds();
             this.Motion.moveSteps(WALK_STEP);

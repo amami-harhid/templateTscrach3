@@ -46,8 +46,8 @@ export default [
       'no-unused-vars': [
         'error', 
         { 
-          'argsIgnorePattern': ["^_$"] , // 引数
-          "varsIgnorePattern": "^_$",  // 変数
+          'argsIgnorePattern': ["^_$","args"] , // 引数
+          "varsIgnorePattern": ["^_$", "^__"],  // 変数
           "caughtErrorsIgnorePattern": "^_$",  // errorハンドリング
           "destructuredArrayIgnorePattern": "^_$"  // 配列内の変数参照
         }
