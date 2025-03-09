@@ -76,13 +76,14 @@ export default [
           "message": "(ScratchLib)for構文の最後はyieldを書いてください"
         }
       ],
-      'no-unused-vars': [
-        'error', 
-        { 
-          'argsIgnorePattern': "^_$" , // 引数
-          "varsIgnorePattern": "^_$",  // 変数
-          "caughtErrorsIgnorePattern": "^_$",  // errorハンドリング
-          "destructuredArrayIgnorePattern": "^_$"  // 配列内の変数参照
+      'no-unused-vars': 'warn',
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        {
+          "argsIgnorePattern": "^_",
+          "varsIgnorePattern": "^_",
+          "caughtErrorsIgnorePattern": "^_",
+          "destructuredArrayIgnorePattern": "^_"
         }
       ],
       'awaitControl/await-control-plugin': 'error',

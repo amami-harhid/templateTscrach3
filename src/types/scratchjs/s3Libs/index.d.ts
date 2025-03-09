@@ -112,4 +112,6 @@ export interface S3Libs {
     stageHeight : number;
 
     FunctionChecker : any;
+    /** 指定した回数分のイテレーター */
+    times(n: number):  Iterable<number>; 
 }

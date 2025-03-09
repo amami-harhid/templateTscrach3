@@ -44,6 +44,33 @@ const eventAsyncRule = {
                     }     
                   }
                 }
+                
+                if(calleeProperty && 
+                  (
+                    calleeProperty.name == 'whenBroadcastReceived'
+                  )
+                ){
+                  const _arguments = node.expression.arguments;
+                  if(_arguments && Array.isArray(_arguments) && 
+                        _arguments.length>1){
+                    const functionExpression = _arguments[1];
+                    if(functionExpression.type == 'FunctionExpression' 
+                          && functionExpression.async == false){
+                      // Eventへ渡すファンクションがasyncでないとき
+                      context.report({
+                        node,
+                        messageId: "EventFunctionId",
+                        data: {
+                          notAsync: functionExpression.async,
+                        },
+                        fix(fixer) {
+                           return fixer.insertTextBefore(functionExpression, "async ");
+                        }
+                      })
+                    }     
+                  }
+                }
+                
               }
             }
           }
