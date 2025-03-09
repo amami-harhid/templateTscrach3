@@ -44,12 +44,12 @@ Pg.setting = async function setting() {
     const catStep = 5;
     cat.Event.whenFlag(async function () {
         _5SecondsTimerOn = false;
-        await Lib.wait(ms1000 + ms5000);
+        await this.Control.wait(ms1000 + ms5000);
         _5SecondsTimerOn = true;
     });
     cat.Event.whenFlag(async function* () {
         // 1秒待ってからマウスカーソルを追跡する
-        await Lib.wait(ms1000);
+        await this.Control.wait(ms1000);
         while (true) {
             // マウスの方向へ向く
             this.Motion.pointToMouse();

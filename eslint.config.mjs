@@ -8,10 +8,12 @@
  * (5) Array#forEachは yieldが使えないのでエラーにはしない（対象外）
  * 
  * 【plugin】
- * (1) 【warning】xxx.Sound.setOption(), xxx.Sound.playUntilDone() に awaitをつける
- * (2) 【Error】HatEventメソッドの引数とするFunctionには asyncをつける
- * ※ plugin定義の外だしをしたい(importをして利用)が、うまくいかないので(1)(2)をだらだらと書いている
- * pluginはもっと増やしたいのでそのうち何とかしないといけない。
+ * (1) 【Error】xxx.Sound.～ の awaitを必要とするメソッドに awaitを強制する
+ * (2) 【Error】xxx.Event.～ の awaitを必要とするメソッドに awaitを強制する
+ * (3) 【Error】xxx.Extensions.～ の awaitを必要とするメソッドに awaitを強制する
+ * (4) 【Error】xxx.Looks.～ の awaitを必要とするメソッドに awaitを強制する
+ * (5) 【Error】xxx.Control.～ の awaitを必要とするメソッドに awaitを強制する
+ * (6) 【Error】HatEventメソッドの引数とするFunctionには asyncをつける
  * 
  * 【不思議なこと】
  * do{...}while(true)の形、条件式に固定でtrueを書いた直後はエラーになる。
@@ -21,8 +23,13 @@
 import globals from "globals";
 import pluginJs from "@eslint/js";
 import tseslint from "typescript-eslint";
-import {awaitSetOptonRulesPlugin} from "./elintPlugin/eslintAwaitSetOptoinRulePlugin.js";
-import {eventAsyncRulesPlugin} from "./elintPlugin/eslintEventAsyncRulePlugin.js"
+import {awaitControlRulesPlugin} from "./elintPlugin/eslintAwaitControlRulePlugin.js";
+import {awaitSoundRulesPlugin} from "./elintPlugin/eslintAwaitSoundRulePlugin.js";
+import {awaitEventRulesPlugin } from "./elintPlugin/eslintAwaitEventRulePlugin.js";
+import {awaitExtensionsRulesPlugin} from "./elintPlugin/eslintAwaitExtensionsRulePlugin.js";
+import {awaitLooksRulesPlugin} from "./elintPlugin/eslintAwaitLooksRulePlugin.js";
+import {awaitLibRulesPlugin} from "./elintPlugin/eslintAwaitLibRulePlugin.js";
+import {eventAsyncRulesPlugin} from "./elintPlugin/eslintEventAsyncRulePlugin.js";
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
@@ -33,8 +40,13 @@ export default [
     files: ["**/*.ts"],
     languageOptions: { globals: globals.browser },
     plugins: {
-      setOption : awaitSetOptonRulesPlugin,
       eventAsync: eventAsyncRulesPlugin,
+      awaitControl : awaitControlRulesPlugin,
+      awaitEvent : awaitEventRulesPlugin,
+      awaitExtensions: awaitExtensionsRulesPlugin,
+      awaitLooks : awaitLooksRulesPlugin,
+      awaitLib : awaitLibRulesPlugin,
+      awaitSound : awaitSoundRulesPlugin,
     },
     rules: {
       "no-this-alias": ["off"],
@@ -69,9 +81,13 @@ export default [
           "destructuredArrayIgnorePattern": "^_$"  // 配列内の変数参照
         }
       ],
+      'awaitControl/await-control-plugin': 'error',
+      'awaitEvent/await-event-plugin': 'error',
+      'awaitExtensions/await-extensions-plugin': 'error',
+      'awaitLib/await-lib-plugin': 'error',
+      'awaitLooks/await-looks-plugin': 'error',
+      'awaitSound/await-sound-plugin': 'error',
       'eventAsync/event-async-plugin': 'error',
-      'setOption/await-setOption-plugin': 'warn'
-
     }
   },
   pluginJs.configs.recommended,

@@ -18,7 +18,12 @@ const eventAsyncRule = {
               const caleeObjProperty = caleeObj.property;
               if(caleeObjProperty && caleeObjProperty.name == 'Event'){
                 const calleeProperty = calee.property;
-                if(calleeProperty && calleeProperty.name == 'whenFlag'){
+                if(calleeProperty && 
+                  calleeProperty.name == 'whenFlag' &&
+                  calleeProperty.name == 'whenRightNow' &&
+                  calleeProperty.name == 'whenCloned'  &&
+                  calleeProperty.name == 'whenClicked'
+                ){
                   const _arguments = node.expression.arguments;
                   if(_arguments && Array.isArray(_arguments) && _arguments.length>0){
                     const functionExpression = _arguments[0];
@@ -49,7 +54,7 @@ const eventAsyncRule = {
 export const eventAsyncRulesPlugin = { 
   meta:{
     name: 'event-async-plugin',
-    version: '0.0.1',
+    version: '0.1.0',
   },
   rules: { "event-async-plugin": eventAsyncRule },
 };

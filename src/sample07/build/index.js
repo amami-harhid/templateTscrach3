@@ -17,8 +17,8 @@ Pg.preload = async function preload() {
 Pg.prepare = async function prepare() {
     stage = new Lib.Stage();
     stage.Image.add(Jurassic);
-    stage.Sound.add(Chill);
-    stage.Sound.setOption(Lib.SoundOption.VOLUME, 100);
+    await stage.Sound.add(Chill);
+    await stage.Sound.setOption(Lib.SoundOption.VOLUME, 100);
     cat = new Lib.Sprite(SpriteCatName);
     cat.Image.add(Cat);
 };

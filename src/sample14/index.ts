@@ -54,15 +54,15 @@ Pg.setting = async function setting() {
     // ネコの速度
     const catStep = 5;
 
-    cat.Event.whenFlag( async function(){
+    cat.Event.whenFlag( async function( this:S3Sprite ){
         _5SecondsTimerOn = false;
-        await Lib.wait(ms1000+ms5000);
+        await this.Control.wait(ms1000+ms5000);
         _5SecondsTimerOn = true;
     });
 
     cat.Event.whenFlag( async function*( this:S3Sprite ){
         // 1秒待ってからマウスカーソルを追跡する
-        await Lib.wait(ms1000);
+        await this.Control.wait(ms1000);
         while(true){
             // マウスの方向へ向く
             this.Motion.pointToMouse();

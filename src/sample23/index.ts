@@ -65,7 +65,7 @@ Pg.setting = async function setting() {
     stage.Event.whenFlag(async function*(this:S3Stage){
         await this.Sound.add( Chill );
         await this.Sound.setOption(Lib.SoundOption.VOLUME, 5);
-        while(true){
+        for(;;){
             await this.Sound.playUntilDone();
             yield;
         }
@@ -81,7 +81,7 @@ Pg.setting = async function setting() {
         this.Motion.pointInDirection(InitDirection);
         this.Motion.setXY(0,-100);
         await this.Control.waitUntil(()=>Lib.anyKeyIsDown());
-        while(true){
+        for(;;){
             this.Motion.moveSteps(BallSpeed);
             this.Motion.ifOnEdgeBounds();
             if(this.Sensing.isTouchingEdge()){
@@ -100,17 +100,17 @@ Pg.setting = async function setting() {
         }
     });
     ball.Event.whenBroadcastReceived('Start', async function*(this:S3Sprite){
-        while(true){
+        for(;;){
             if( this.Sensing.isTouchingTarget(paddle)){
                 this.Motion.turnRightDegrees( Lib.getRandomValueInRange(-2, 2)+180 );
                 this.Motion.moveSteps(BallSpeed*2);
-                await Lib.wait(0.2 * 1000);
+                await this.Control.wait(0.2 * 1000);
             }
             yield;
         }
     });
     line.Event.whenFlag(async function*(this:S3Sprite){
-        while(true){
+        for(;;){
             if( this.Sensing.isTouchingTarget(ball)){
                 // Ball に触れたとき
                 this.Event.broadcast(GameOver);
@@ -148,7 +148,6 @@ Pg.setting = async function setting() {
         this.Event.broadcast('Start');
     });
     block.Control.whenCloned(async function*(this:S3Sprite){
-        console.log(this);
         blockCount+=1;
         this.Looks.show();
         while(true){

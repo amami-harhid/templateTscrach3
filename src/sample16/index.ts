@@ -62,7 +62,7 @@ Pg.setting = async function setting() {
     const WAIT_TIME = 5000;//5秒
     stage.Event.whenFlag( async function*( this: S3Stage ){
         while(true){
-            await Lib.wait(WAIT_TIME);
+            await this.Control.wait(WAIT_TIME);
             cat1.Motion.gotoXY({x:-Lib.stageWidth/4, y:+Lib.stageHeight/4 });
             cat2.Motion.gotoXY({x:0, y:0 });
             cat3.Motion.gotoXY({x:Lib.stageWidth/4, y:-Lib.stageHeight/4 });

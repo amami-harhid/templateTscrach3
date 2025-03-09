@@ -21,11 +21,11 @@ Pg.preload = function(this: S3PlayGround) {
     this.Sound.load('../assets/Chill.wav', Chill);
     this.Image.load('../assets/cat.svg', Cat);
 }
-Pg.prepare = function() {
+Pg.prepare = async function() {
     stage = new Lib.Stage();
     stage.Image.add( Jurassic );
-    stage.Sound.add( Chill );
-    stage.Sound.setOption( Lib.SoundOption.VOLUME, 100)
+    await stage.Sound.add( Chill );
+    await stage.Sound.setOption( Lib.SoundOption.VOLUME, 100)
 }
 Pg.setting = function() {
     // フラグをクリックしたときの動作
@@ -33,12 +33,12 @@ Pg.setting = function() {
     // Pのthisとして使うのであれば、アロー式（引数省略）で書いて
     // this.cat として明示的に使うことでもよい。
     // ここでは、this.cat は P.catと同じ意味である。
-    stage.Event.whenFlag( function() {
+    stage.Event.whenFlag( async function() {
         // 旗クリックしたタイミングでネコのスプライトを作り、
         // コスチュームを１個登録する
         cat = new Lib.Sprite( SpriteCatName );
     });
-    stage.Event.whenFlag( function(){
+    stage.Event.whenFlag( async function(){
         // コスチュームを１個登録する
         // whenFlagを定義した順番に実行されるので、
         // ここの『旗クリック』の処理ではネコのスプライトは作成済である。

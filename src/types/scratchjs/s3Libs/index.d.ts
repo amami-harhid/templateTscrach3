@@ -56,7 +56,8 @@ export interface S3Libs {
      * 指定したミリ秒経過するまで待つ (await必須)
      * @param ms ﾐﾘ秒
      */
-    wait(ms:number): Promise<any>;
+    //wait(ms:number): Promise<any>;
+    
     /**
      * 条件が成立する間、待つ (await必須)
      * conditionの例： ()=> x>10 

@@ -56,7 +56,7 @@ Pg.setting = async function () {
         while (true) {
             if (this.Sensing.isMouseTouching()) {
                 this.Looks.nextCostume();
-                await Lib.waitWhile(() => this.Sensing.isMouseTouching());
+                await this.Control.waitWhile(() => this.Sensing.isMouseTouching());
                 this.Looks.nextCostume();
             }
             yield;
@@ -75,7 +75,7 @@ Pg.setting = async function () {
                 // 下をコメントアウトすると、十字にさわっている間は クローンを作り続ける
                 // 下を生かすと、十字に触ったときにクローンを作るが、次には進まない
                 //await Libs.waitUntil( this.isNotMouseTouching, this); // 「マウスポインターが触らない」迄待つ。
-                await Lib.wait(100); // 100ミリ秒待つ。 <== クローン発生する間隔
+                await butterfly.Control.wait(100); // 100ミリ秒待つ。 <== クローン発生する間隔
             }
             yield;
         }
@@ -85,7 +85,7 @@ Pg.setting = async function () {
         while (true) {
             if (clone.life > 0) {
                 this.Looks.nextCostume();
-                await Lib.wait(50);
+                await clone.Control.wait(50);
             }
             else {
                 break;

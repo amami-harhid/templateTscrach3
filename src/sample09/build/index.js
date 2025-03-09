@@ -51,8 +51,8 @@ Pg.setting = async function setting() {
             yield;
         }
     });
-    cat.Event.whenClicked(function () {
-        this.Control.clone();
+    cat.Event.whenClicked(async function () {
+        await this.Control.clone();
     });
     const catStep = 10;
     cat.Control.whenCloned(async function* () {

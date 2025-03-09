@@ -72,15 +72,15 @@ Pg.setting = async function setting() {
             yield;
         }
     });
-    cross.Event.whenFlag( function*( this: S3Sprite ){
+    cross.Event.whenFlag( async function*( this: S3Sprite ){
         while(true){
             // 矢印キーを押しながら、スペースキーを検知させたい
             if(Lib.keyIsDown('Space')){
                 this.Sound.play();
                 const options = {scale:{x:20,y:20}, direction:0}
-                this.Control.clone(options);
+                await this.Control.clone(options);
                 //次をコメントアウトしているときは キー押下中連続してクローン作る  
-                //await Libs.waitWhile( ()=>Libs.keyIsDown('Space'));
+                //await this.Control.waitWhile( ()=>Libs.keyIsDown('Space'));
             }
             yield;
         }
@@ -108,13 +108,13 @@ Pg.setting = async function setting() {
     cross.Control.whenCloned( async function*( this: S3Sprite ) {
         const clone = this;
         // while の後に処理があるときは await 忘れないようにしましょう
-        clone.Sound.setOption( Lib.SoundOption.VOLUME, 100 );
-        clone.Sound.setOption( Lib.SoundOption.PITCH, 90 );
+        await clone.Sound.setOption( Lib.SoundOption.VOLUME, 100 );
+        await clone.Sound.setOption( Lib.SoundOption.PITCH, 90 );
         while(true){
             clone.Motion.turnRightDegrees(TURN_RIGHT_DEGREE);
             if(clone.Sensing.isTouchingEdge()){
                 clone.Sound.play();
-                await Lib.wait(500)
+                await this.Control.wait(500)
                 break;
             }
             yield;

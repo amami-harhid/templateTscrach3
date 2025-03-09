@@ -33,7 +33,6 @@ Pg.prepare = async function prepare() {
 Pg.setting = async function setting() {
     const WALK_STEP = 1;
     cat.Event.whenFlag(async function* () {
-        console.log("#001");
         while (true) {
             this.Motion.ifOnEdgeBounds();
             this.Motion.moveSteps(WALK_STEP);
@@ -44,10 +43,10 @@ Pg.setting = async function setting() {
         }
     });
     cat.Event.whenFlag(async function* () {
-        await Lib.wait(100); // <--- なぜ 100ms 待つようにしたのか？
+        await this.Control.wait(100); // <--- なぜ 100ms 待つようにしたのか？
         while (true) {
             this.Looks.nextCostume();
-            await Lib.wait(100);
+            await this.Control.wait(100);
             if (bubble.exit === true) {
                 break;
             }
@@ -55,7 +54,7 @@ Pg.setting = async function setting() {
         }
     });
     cat.Event.whenFlag(async function* () {
-        await Lib.wait(100); // <--- なぜ 100ms 待つようにしたのか？
+        await this.Control.wait(100); // <--- なぜ 100ms 待つようにしたのか？
         const MOVE_STEP = 2;
         const SCALE = { MIN: 50, MAX: 150 };
         while (true) {
@@ -97,12 +96,11 @@ Pg.setting = async function setting() {
                 this.Looks.say();
                 break;
             }
-            await Lib.wait(500); // <--- なぜ 500ms待つのか？
+            await this.Control.wait(500); // <--- なぜ 500ms待つのか？
             yield;
         }
     });
     cat2.Event.whenFlag(async function* () {
-        console.log("#002");
         while (true) {
             this.Motion.ifOnEdgeBounds();
             this.Motion.moveSteps(WALK_STEP);
@@ -121,12 +119,12 @@ Pg.setting = async function setting() {
                 this.Looks.say();
                 break;
             }
-            await Lib.wait(500);
+            await this.Control.wait(500);
             yield;
         }
     });
     stage.Event.whenFlag(async function () {
-        await Lib.wait(20 * 1000); // 20秒たったらバブルループを終わらせる。
+        await this.Control.wait(20 * 1000); // 20秒たったらバブルループを終わらせる。
         bubble.exit = true;
         bubble2.exit = true;
     });

@@ -64,7 +64,7 @@ Pg.setting = async function setting() {
                 
                 // 「送って待つ」ではないので次のループに進ませないように、
                 // 「マウスタッチしない迄待つ」をする。
-                await Lib.waitWhile( ()=>this.Sensing.isMouseTouching() ); 
+                await this.Control.waitWhile( ()=>this.Sensing.isMouseTouching() ); 
             }
             yield;
         }

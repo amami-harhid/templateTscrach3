@@ -29,8 +29,8 @@ Pg.setting = async function setting() {
 
     stage.Event.whenFlag(async function*(this:S3Stage){
         await this.Sound.add( Chill );
-        this.Sound.setOption(Lib.SoundOption.VOLUME, 20);
-        while(true){
+        await this.Sound.setOption(Lib.SoundOption.VOLUME, 20);
+        for(;;){
             await this.Sound.playUntilDone();
             yield;
         }
@@ -47,7 +47,7 @@ Pg.setting = async function setting() {
                 
                 // 「送って待つ」を使うことで スピーチが終わるまで次のループに進まないため、
                 // 以下の「マウスタッチしている間、待つ」のコードが不要である。
-                //await Libs.waitWhile( ()=>this.isMouseTouching()); 
+                // await this.Control.waitWhile( ()=>this.Sensing.isMouseTouching()); 
             }else{
                 this.Looks.say(""); // フキダシを消す
             }

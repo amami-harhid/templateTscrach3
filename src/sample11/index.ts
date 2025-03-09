@@ -44,7 +44,7 @@ Pg.setting = async function setting() {
     cat.Event.whenFlag(async function*( this:S3Sprite ) {
         while(true){
             // 繰り返すごとに 1秒待つ
-            await Lib.wait(1000);
+            await this.Control.wait(1000);
             // １秒でどこかへ行く
             const randomPoint = Lib.randomPoint;
             await this.Motion.glideToPosition(1,  randomPoint.x, randomPoint.y);

@@ -59,8 +59,8 @@ Pg.setting = async function setting() {
             yield;
         }
     });
-    cat.Event.whenClicked(function (this:S3Sprite) {
-        this.Control.clone();
+    cat.Event.whenClicked( async function (this:S3Sprite) {
+        await this.Control.clone();
     });
 
     const catStep = 10;

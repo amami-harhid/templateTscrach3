@@ -58,123 +58,122 @@ Pg.prepare = async function prepare() {
 Pg.setting = async function setting() {
 
     const BubbleScale = {scale:{x:100,y:100}};
-    stage.Event.whenFlag( async function($this: S3Stage) {
+    stage.Event.whenFlag( async function(this: S3Stage) {
         // 1秒待つ
-        await Lib.wait(1000);
+        await this.Control.wait(1000);
         
         // (↓)順番にメッセージを送って待つ
-
-        //(左) "こんにちは。良い天気ですね"　(3秒間)
-        await $this.Event.broadcastAndWait(MessageCat1Say, bubbleTextArr[0], 3); 
-        //(右) "💚こんにちは💚青空がよい感じですね"　(1秒間)
-        await $this.Event.broadcastAndWait(MessageCat2Say, bubbleTextArr2[0], 1);
+        //(左) "こんにちは。良い天気ですね" (3秒間)
+        await this.Event.broadcastAndWait(MessageCat1Say, bubbleTextArr[0], 3); 
+        //(右) "💚こんにちは💚青空がよい感じですね" (1秒間)
+        await this.Event.broadcastAndWait(MessageCat2Say, bubbleTextArr2[0], 1);
         //(右) "どこにおでかけですか" (2秒間)
-        await $this.Event.broadcastAndWait(MessageCat2Say, bubbleTextArr2[1], 2);
+        await this.Event.broadcastAndWait(MessageCat2Say, bubbleTextArr2[1], 2);
         //(左) "ちょっと近くのスーパーに買い物にいくんですよ" (1秒間)
-        await $this.Event.broadcastAndWait(MessageCat1Say, bubbleTextArr[1], 1);
+        await this.Event.broadcastAndWait(MessageCat1Say, bubbleTextArr[1], 1);
         //(右) "あらあらそれはいいですね" (4秒間)
-        await $this.Event.broadcastAndWait(MessageCat2Think, bubbleTextArr2[2], 4);
-        // それではまた！ (2秒間) 退場！
-        await $this.Event.broadcastAndWait(MessageByeBye, "それでは、また！", 2);
-        $this.Event.broadcast(MessageTAIJYO);
+        await this.Event.broadcastAndWait(MessageCat2Think, bubbleTextArr2[2], 4);
+        // それではまた！ (2秒間) 
+        await this.Event.broadcastAndWait(MessageByeBye, "それでは、また！", 2);
+        // 退場する
+        this.Event.broadcast(MessageTAIJYO);
 
     });
     // MessageCat1Say を受け取る。引数は受け取らずに 上下に変化させるだけ。
-    cat.Event.whenBroadcastReceived(MessageCat1Say, async function() {
-        const me = this;
+    cat.Event.whenBroadcastReceived(MessageCat1Say, async function*(this:S3Sprite) {
         // 上下に揺らす。
-        await me.Control.repeat(10, _=>{
-            me.Motion.changeY(+2);
-        });
-        await me.repeat(10, _=>{
-            me.Motion.changeY(-2);
-        });
+        for(let count=0; count<10; count++){
+            this.Motion.changeY(+2);
+            yield;
+        }
+        for(let count=0; count<10; count++){
+            this.Motion.changeY(-2);
+            yield;
+        }
     });
     // MessageCat1Say を受け取る。引数を受け取り、フキダシを表示する。
-    cat.Event.whenBroadcastReceived(MessageCat1Say, async function(text,time) {
-        const $this = this;
+    cat.Event.whenBroadcastReceived(MessageCat1Say, 
+                async function(this:S3Sprite, text:string, time:number) {
+        const self = this;
         // Cat の フキダシ を出す
-        //console.log('CAT フキダシ time='+time + " text="+text);
         if(time>0) {
-            await $this.Looks.sayForSecs(text, time, BubbleScale);
+            await self.Looks.sayForSecs(text, time, BubbleScale);
         }else{
-            $this.Looks.say(text);
+            self.Looks.say(text);
         }
     });
     // MessageTAIJYO を受け取る。引数を受け取り、フキダシを表示したあと、退場する
-    cat.Event.whenBroadcastReceived(MessageTAIJYO, async function() {
-        const $this = this;
+    cat.Event.whenBroadcastReceived(MessageTAIJYO, async function*(this:S3Sprite) {
+        const self = this;
         // Cat 退場
-        $this.Looks.say('');
-        $this.Motion.turnRightDegrees(180); // 反対方向へ
-        await $this.Control.forever( _=>{
-            $this.Motion.moveSteps(5);
-            if($this.Sensing.isTouchingEdge()) {
-                Lib.Loop.break();
+        self.Looks.say('');
+        self.Motion.turnRightDegrees(180); // 反対方向へ
+        for(;;){
+            self.Motion.moveSteps(5);
+            if(self.Sensing.isTouchingEdge()) {
+                break;
             }
-        });
-        $this.Looks.hide(); 
+            yield;
+        }
+        self.Looks.hide(); 
     });
     // MessageTAIJYO を受け取る。引数を受け取り、フキダシを表示したあと、退場する
-    cat2.Event.whenBroadcastReceived(MessageTAIJYO, async function() {
-        const $this = this;
+    cat2.Event.whenBroadcastReceived(MessageTAIJYO, async function*(this:S3Sprite) {
+        const self = this;
         // Cat2 退場
         //console.log('Cat2 退場');
-        $this.Looks.say('');
-        $this.Motion.turnRightDegrees(180); // 反対方向へ
-        await $this.Control.forever( _=>{
-            $this.Motion.moveSteps(5);
-            if($this.Sensing.isTouchingEdge()) {
-                Lib.Loop.break();
+        self.Looks.say('');
+        self.Motion.turnRightDegrees(180); // 反対方向へ
+        for(;;){
+            self.Motion.moveSteps(5);
+            if(self.Sensing.isTouchingEdge()) {
+                break;
             }
-        });
-        $this.Looks.hide();       
+            yield;
+        }
+        self.Looks.hide();       
     });
     // MessageCat2Say を受け取る。引数は受け取らずに 上下に変化させるだけ。
-    cat2.Event.whenBroadcastReceived(MessageCat2Say, async function() {
-        const me = this;
+    cat2.Event.whenBroadcastReceived(MessageCat2Say, async function*(this:S3Sprite) {
         // 上下に揺らす。
-        await me.repeat(10, _=>{
-            me.Motion.changeY(+2);
-        });
-        await me.repeat(10, _=>{
-            me.Motion.changeY(-2);
-        });    
+        for(let count=0; count<10; count++){
+            this.Motion.changeY(+2);
+            yield;
+        }
+        for(let count=0; count<10; count++){
+            this.Motion.changeY(-2);
+            yield;
+        }
     });
     // MessageCat2Say を受け取る。引数を受け取り、フキダシを表示する。
-    cat2.Event.whenBroadcastReceived(MessageCat2Say, async function(text="", time=-1) {
-        const $this = this;
+    cat2.Event.whenBroadcastReceived(MessageCat2Say, async function(this:S3Sprite, text="", time=-1) {
         // Cat2 の フキダシ を出す
-        //console.log('CAT2 フキダシ time='+time + " text="+text);
         if(time>0) {
-            await $this.Looks.sayForSecs(text, time, BubbleScale);
+            await this.Looks.sayForSecs(text, time, BubbleScale);
         }else{
-            $this.Looks.say(text);
+            this.Looks.say(text);
         }    
     });
     // MessageCat2Think を受け取る。引数を受け取り、フキダシを表示する。
-    cat2.Event.whenBroadcastReceived(MessageCat2Think, async function(text="", time=-1) {
-        const $this = this;
+    cat2.Event.whenBroadcastReceived(MessageCat2Think, async function(this:S3Sprite, text="", time=-1) {
         // Cat2 の フキダシ を出す
         //console.log('CAT2 フキダシ time='+time + " text="+text);
         if(time>0) {
-            await $this.Looks.thinkForSecs(text, time);
+            await this.Looks.thinkForSecs(text, time);
         }else{
-            $this.Looks.think(text);
+            this.Looks.think(text);
         }    
     });
     // MessageByeBye を受け取る。引数を受け取り、フキダシを表示する。
-    cat.Event.whenBroadcastReceived(MessageByeBye, async function(text="", time=-1) {
-        const $this = this;
+    cat.Event.whenBroadcastReceived(MessageByeBye, async function(this:S3Sprite, text="", time=-1) {
         // それでは、という
         //console.log('CAT フキダシ time='+time + " text="+text);
-        await $this.Looks.thinkForSecs(text, time);
+        await this.Looks.thinkForSecs(text, time);
     });
     // MessageByeBye を受け取る。引数を受け取り、フキダシを表示する。
-    cat2.Event.whenBroadcastReceived(MessageByeBye, async function(text="", time=-1) {
-        const $this = this;
+    cat2.Event.whenBroadcastReceived(MessageByeBye, async function(this:S3Sprite, text="", time=-1) {
         // それでは、という
         //console.log('CAT2 フキダシ time='+time + " text="+text);
-        await $this.Looks.sayForSecs(text, time);
+        await this.Looks.sayForSecs(text, time);
     });
 }

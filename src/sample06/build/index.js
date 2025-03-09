@@ -26,7 +26,7 @@ Pg.prepare = async function prepare() {
 };
 Pg.setting = async function setting() {
     // フラグをクリックしたときの動作
-    stage.Event.whenFlag(function () {
+    stage.Event.whenFlag(async function () {
         // アロー関数なので、ここでの『this』はPである
         cat.Looks.show(); // 表示
     });

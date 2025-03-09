@@ -68,10 +68,10 @@ Pg.setting = async function setting() {
         // マウスカーソルでタッチしたら、クローンを作る
         while(true){
             if( this.Sensing.isMouseTouching() ) {
-                this.Control.clone();
+                await this.Control.clone();
             }
             // マウスタッチしないまで待つ
-            await Lib.waitWhile( ()=>this.Sensing.isMouseTouching() ); 
+            await this.Control.waitWhile( ()=>this.Sensing.isMouseTouching() ); 
             yield;
         }
     });
