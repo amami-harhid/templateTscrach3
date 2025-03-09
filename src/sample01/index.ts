@@ -11,9 +11,9 @@ let stage:S3Stage;
 Pg.preload = function(this:S3PlayGround) {
     this.Image.load('../assets/Jurassic.svg', Jurassic);
 }
-Pg.prepare = function() {
+Pg.prepare = async function() {
     stage = new Lib.Stage();
-    stage.Image.add( Jurassic );
+    await stage.Image.add( Jurassic );
 }
 Pg.setting = function() {
     // Do nothing.
