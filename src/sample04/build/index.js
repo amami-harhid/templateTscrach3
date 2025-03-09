@@ -10,8 +10,8 @@ Pg.prepare = async function () {
 };
 Pg.setting = async function () {
     // すぐに実行する。
-    stage.Event.whenRightNow(function () {
-        this.Image.add(ImageNameJurassic);
+    stage.Event.whenRightNow(async function () {
+        await this.Image.add(ImageNameJurassic);
     });
 };
 //# sourceMappingURL=index.js.map

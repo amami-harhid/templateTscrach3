@@ -24,11 +24,12 @@ import globals from "globals";
 import pluginJs from "@eslint/js";
 import tseslint from "typescript-eslint";
 import {awaitControlRulesPlugin} from "./elintPlugin/eslintAwaitControlRulePlugin.js";
-import {awaitSoundRulesPlugin} from "./elintPlugin/eslintAwaitSoundRulePlugin.js";
 import {awaitEventRulesPlugin } from "./elintPlugin/eslintAwaitEventRulePlugin.js";
 import {awaitExtensionsRulesPlugin} from "./elintPlugin/eslintAwaitExtensionsRulePlugin.js";
+import {awaitImageRulesPlugin} from "./elintPlugin/eslintAwaitImageRulePlugin.js";
 import {awaitLooksRulesPlugin} from "./elintPlugin/eslintAwaitLooksRulePlugin.js";
 import {awaitLibRulesPlugin} from "./elintPlugin/eslintAwaitLibRulePlugin.js";
+import {awaitSoundRulesPlugin} from "./elintPlugin/eslintAwaitSoundRulePlugin.js";
 import {eventAsyncRulesPlugin} from "./elintPlugin/eslintEventAsyncRulePlugin.js";
 
 /** @type {import('eslint').Linter.Config[]} */
@@ -44,6 +45,7 @@ export default [
       awaitControl : awaitControlRulesPlugin,
       awaitEvent : awaitEventRulesPlugin,
       awaitExtensions: awaitExtensionsRulesPlugin,
+      awaitImage : awaitImageRulesPlugin,
       awaitLooks : awaitLooksRulesPlugin,
       awaitLib : awaitLibRulesPlugin,
       awaitSound : awaitSoundRulesPlugin,
@@ -84,6 +86,7 @@ export default [
       'awaitControl/await-control-plugin': 'error',
       'awaitEvent/await-event-plugin': 'error',
       'awaitExtensions/await-extensions-plugin': 'error',
+      'awaitImage/await-image-plugin': 'error',
       'awaitLib/await-lib-plugin': 'error',
       'awaitLooks/await-looks-plugin': 'error',
       'awaitSound/await-sound-plugin': 'error',

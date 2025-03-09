@@ -23,17 +23,17 @@ Pg.preload = async function preload() {
 };
 Pg.prepare = async function prepare() {
     stage = new Lib.Stage();
-    stage.Image.add(Jurassic);
+    await stage.Image.add(Jurassic);
     cat1 = new Lib.Sprite("Cat1");
-    cat1.Image.add(Cat);
+    await cat1.Image.add(Cat);
     cat1.Motion.gotoXY({ x: -Lib.stageWidth / 4, y: +Lib.stageHeight / 4 });
     cat1.Looks.setEffect(Lib.ImageEffective.COLOR, 50);
     cat1.Motion.setRotationStyle(Lib.RotationStyle.LEFT_RIGHT);
     cat2 = new Lib.Sprite("Cat2");
-    cat2.Image.add(Cat);
+    await cat2.Image.add(Cat);
     cat2.Motion.gotoXY({ x: 0, y: 0 });
     cat3 = new Lib.Sprite("Cat3");
-    cat3.Image.add(Cat);
+    await cat3.Image.add(Cat);
     cat3.Motion.gotoXY({ x: Lib.stageWidth / 4, y: -Lib.stageHeight / 4 });
     cat3.Looks.setEffect(Lib.ImageEffective.COLOR, 10);
     cat3.Motion.setRotationStyle(Lib.RotationStyle.DONT_ROTATE);

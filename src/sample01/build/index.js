@@ -2,8 +2,8 @@ import { Pg, Lib } from "./importer.js";
 Pg.title = "【Sample01】背景を表示する";
 const Jurassic = "Jurassic";
 let stage;
-Pg.preload = function ($this) {
-    $this.Image.load('../assets/Jurassic.svg', Jurassic);
+Pg.preload = function () {
+    this.Image.load('../assets/Jurassic.svg', Jurassic);
 };
 Pg.prepare = function () {
     stage = new Lib.Stage();

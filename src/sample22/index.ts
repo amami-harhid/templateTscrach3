@@ -20,9 +20,9 @@ Pg.preload = async function preload(this:S3PlayGround) {
 }
 Pg.prepare = async function prepare(this:S3PlayGround) {
     stage = new Lib.Stage();
-    stage.Image.add( Jurassic );
+    await stage.Image.add( Jurassic );
     cat = new Lib.Sprite("Cat", {scale:{x:200,y:200}});//サイズを２倍にしています
-    cat.Image.add( Cat );
+    await cat.Image.add( Cat );
 }
 
 Pg.setting = async function setting() {

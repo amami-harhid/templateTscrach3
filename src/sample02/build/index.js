@@ -11,7 +11,7 @@ Pg.prepare = function () {
 Pg.setting = function () {
     // すぐに実行する。
     stage.Event.whenRightNow(async function () {
-        this.Image.add(Jurassic);
+        await this.Image.add(Jurassic);
     });
 };
 //# sourceMappingURL=index.js.map

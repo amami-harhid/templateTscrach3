@@ -13,9 +13,9 @@ Pg.preload = function(this:S3PlayGround) {
     this.Image.load('../assets/Jurassic.svg', ImageNameJurassic);
     this.Sound.load('../assets/Chill.wav', SoundNameChill);
 }
-Pg.prepare = function() {
+Pg.prepare = async function() {
     stage = new Lib.Stage();
-    stage.Image.add( ImageNameJurassic );
+    await stage.Image.add( ImageNameJurassic );
 }
 Pg.setting = function() {
     // すぐに実行する。

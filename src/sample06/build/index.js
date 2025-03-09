@@ -16,10 +16,10 @@ Pg.preload = async function preload() {
 };
 Pg.prepare = async function prepare() {
     stage = new Lib.Stage();
-    stage.Image.add(Jurassic);
+    await stage.Image.add(Jurassic);
     // スプライトを作り、コスチュームを１個登録する
     cat = new Lib.Sprite(SpriteCatName);
-    cat.Image.add(Cat);
+    await cat.Image.add(Cat);
     await cat.Sound.add(Chill);
     await cat.Sound.setOption(Lib.SoundOption.VOLUME, 10);
     cat.Looks.hide(); // 非表示

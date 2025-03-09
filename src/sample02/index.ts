@@ -17,6 +17,6 @@ Pg.prepare = function() {
 Pg.setting = function() {
     // すぐに実行する。
     stage.Event.whenRightNow( async function(this:S3Stage){
-        this.Image.add( Jurassic );
+        await this.Image.add( Jurassic );
     });
 };

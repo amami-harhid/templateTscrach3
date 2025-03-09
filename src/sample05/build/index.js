@@ -16,7 +16,7 @@ Pg.preload = function () {
 };
 Pg.prepare = async function () {
     stage = new Lib.Stage();
-    stage.Image.add(Jurassic);
+    await stage.Image.add(Jurassic);
     await stage.Sound.add(Chill);
     await stage.Sound.setOption(Lib.SoundOption.VOLUME, 100);
 };
@@ -35,7 +35,7 @@ Pg.setting = function () {
         // コスチュームを１個登録する
         // whenFlagを定義した順番に実行されるので、
         // ここの『旗クリック』の処理ではネコのスプライトは作成済である。
-        cat.Image.add(Cat);
+        await cat.Image.add(Cat);
     });
 };
 //# sourceMappingURL=index.js.map

@@ -23,11 +23,11 @@ Pg.preload = async function preload() {
 };
 Pg.prepare = async function prepare() {
     stage = new Lib.Stage();
-    stage.Image.add(Jurassic);
+    await stage.Image.add(Jurassic);
     cross = new Lib.Sprite("Cross");
     cross.Motion.setY(-Lib.stageHeight / 2 * 0.6);
-    cross.Image.add(Cross01);
-    cross.Image.add(Cross02);
+    await cross.Image.add(Cross01);
+    await cross.Image.add(Cross02);
     cross.Looks.setSize({ x: 100, y: 100 });
 };
 Pg.setting = async function setting() {
