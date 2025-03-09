@@ -47,17 +47,14 @@ Pg.setting = async function setting() {
     const catStep = 10;
 
     cat.Event.whenFlag( async function(this:S3Sprite){
-        await this.Sound.add( Mya );
-        await this.Sound.setOption( Lib.SoundOption.VOLUME, 50);
-    });
-    
-    cat.Event.whenFlag( async function(this:S3Sprite){
         // 初期化
         this.Motion.gotoXY({x:0, y:0});
         this.Motion.pointInDirection( 40 );
     });
 
     cat.Event.whenFlag( async function*(this:S3Sprite){
+        await this.Sound.add( Mya );
+        await this.Sound.setOption( Lib.SoundOption.VOLUME, 50);
         // ずっと「左右」に動く。端に触れたら跳ね返る。
         while(true){
             this.Motion.moveSteps(catStep);

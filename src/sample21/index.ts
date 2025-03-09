@@ -70,7 +70,7 @@ Pg.setting = async function setting() {
         }
     });
     // ネコをクリックしたらお話する
-    cat.Event.whenClicked(function( this: S3Sprite ){
+    cat.Event.whenClicked(async function( this: S3Sprite ){
         const words = `そこそこ`;
         const properties = {'pitch': 1.7, 'volume': 500}
         this.Event.broadcast('SPEAK', words, properties, 'female')

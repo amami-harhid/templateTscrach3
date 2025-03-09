@@ -38,20 +38,22 @@ Pg.setting = async function setting() {
         await this.Sound.add(Mya);
         await this.Sound.setOption(Lib.SoundOption.VOLUME, 20);
     });
-    cat.Event.whenFlag(function () {
+    cat.Event.whenFlag(async function () {
         // 初期化
         this.Motion.gotoXY({ x: 0, y: 0 });
         this.Motion.pointInDirection(90);
     });
     // { }の外側のスコープを参照できる
     const direction02 = 1;
-    cat.Event.whenFlag(function* () {
+    cat.Event.whenFlag(async function* () {
         while (true) {
             this.Motion.turnRightDegrees(direction01 + direction02);
             yield;
         }
     });
     cat.Event.whenClicked(async function () {
+        // スプライトをクリックしたらクローンを作る
+        // クローンは本体の背面に表示される(Scratch3と同じにしている)
         await this.Control.clone();
     });
     const catStep = 10;

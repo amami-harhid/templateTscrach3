@@ -2,7 +2,7 @@
  * Sample07 スプライトを左右に動かす。端に触れたら跳ね返る
  */
 import { Pg, Lib } from "./importer.js";
-Pg.title = "【Sample07】スプライトが横向きに動き、端に触れたら跳ね返";
+Pg.title = "【Sample07】スプライトが横向きに動き、端に触れたら跳ね返る";
 const Jurassic = "Jurassic";
 const Chill = "Chill";
 const Cat = "Cat";

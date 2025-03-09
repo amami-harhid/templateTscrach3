@@ -59,7 +59,7 @@ Pg.setting = async function setting() {
             yield;
         }
     });
-    const WAIT_TIME = 5000;//5秒
+    const WAIT_TIME = 5;//5秒
     stage.Event.whenFlag( async function*( this: S3Stage ){
         while(true){
             await this.Control.wait(WAIT_TIME);
@@ -71,7 +71,7 @@ Pg.setting = async function setting() {
     });
 
     const CAT_WALK_STEP = 2;
-    cat1.Event.whenFlag(function*( this: S3Sprite ){
+    cat1.Event.whenFlag(async function*( this: S3Sprite ){
         while(true){
             this.Motion.pointToMouse();
             this.Motion.moveSteps(CAT_WALK_STEP);
@@ -79,7 +79,7 @@ Pg.setting = async function setting() {
         }
     });
 
-    cat2.Event.whenFlag(function*( this: S3Sprite ){
+    cat2.Event.whenFlag(async function*( this: S3Sprite ){
         while(true){
             this.Motion.pointToMouse();
             this.Motion.moveSteps(CAT_WALK_STEP);
@@ -87,7 +87,7 @@ Pg.setting = async function setting() {
         }
     });
 
-    cat3.Event.whenFlag( function*( this: S3Sprite ){
+    cat3.Event.whenFlag( async function*( this: S3Sprite ){
         while(true){
             this.Motion.pointToMouse();
             this.Motion.moveSteps(CAT_WALK_STEP);

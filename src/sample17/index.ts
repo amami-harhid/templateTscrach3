@@ -57,7 +57,7 @@ Pg.setting = async function() {
     });
 
     const ChangeDirection = 1;
-    cross.Event.whenFlag( function*( this: S3Sprite ){
+    cross.Event.whenFlag( async function*( this: S3Sprite ){
         while(true){
             this.Motion.turnRightDegrees(ChangeDirection);
             yield;
@@ -86,7 +86,7 @@ Pg.setting = async function() {
                 // 下をコメントアウトすると、十字にさわっている間は クローンを作り続ける
                 // 下を生かすと、十字に触ったときにクローンを作るが、次には進まない
                 //await Libs.waitUntil( this.isNotMouseTouching, this); // 「マウスポインターが触らない」迄待つ。
-                await butterfly.Control.wait(100); // 100ミリ秒待つ。 <== クローン発生する間隔
+                await butterfly.Control.wait(0.01); // 100ミリ秒待つ。 <== クローン発生する間隔
             }
             yield;
         }
@@ -96,7 +96,7 @@ Pg.setting = async function() {
         while(true){
             if(clone.life > 0 ){
                 this.Looks.nextCostume();
-                await clone.Control.wait(50);    
+                await clone.Control.wait(0.05);    
             }else{
                 break;
             }
@@ -118,5 +118,6 @@ Pg.setting = async function() {
             }        
             yield;
         }
+        clone.Control.remove();
     });
 }

@@ -30,12 +30,9 @@ Pg.prepare = async function prepare() {
 }
 Pg.setting = async function setting() {
 
-    stage.Event.whenFlag(async function( this:S3Stage ) {
+    stage.Event.whenFlag(async function*( this:S3Stage ) {
         await this.Sound.add( Chill );
         await this.Sound.setOption( Lib.SoundOption.VOLUME, 10);
-    });
-
-    stage.Event.whenFlag(async function*( this:S3Stage ) {
         while(true){
             await this.Sound.playUntilDone();
             yield;
@@ -44,7 +41,7 @@ Pg.setting = async function setting() {
     cat.Event.whenFlag(async function*( this:S3Sprite ) {
         while(true){
             // 繰り返すごとに 1秒待つ
-            await this.Control.wait(1000);
+            await this.Control.wait(1);
             // １秒でどこかへ行く
             const randomPoint = Lib.randomPoint;
             await this.Motion.glideToPosition(1,  randomPoint.x, randomPoint.y);

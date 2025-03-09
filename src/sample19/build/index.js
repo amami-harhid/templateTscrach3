@@ -43,10 +43,10 @@ Pg.setting = async function setting() {
         }
     });
     cat.Event.whenFlag(async function* () {
-        await this.Control.wait(100); // <--- なぜ 100ms 待つようにしたのか？
+        await this.Control.wait(0.1); // <--- なぜ 100ms 待つようにしたのか？
         while (true) {
             this.Looks.nextCostume();
-            await this.Control.wait(100);
+            await this.Control.wait(0.1);
             if (bubble.exit === true) {
                 break;
             }
@@ -54,7 +54,7 @@ Pg.setting = async function setting() {
         }
     });
     cat.Event.whenFlag(async function* () {
-        await this.Control.wait(100); // <--- なぜ 100ms 待つようにしたのか？
+        await this.Control.wait(0.1); // <--- なぜ 100ms 待つようにしたのか？
         const MOVE_STEP = 2;
         const SCALE = { MIN: 50, MAX: 150 };
         while (true) {
@@ -96,7 +96,7 @@ Pg.setting = async function setting() {
                 this.Looks.say();
                 break;
             }
-            await this.Control.wait(500); // <--- なぜ 500ms待つのか？
+            await this.Control.wait(0.5); // <--- なぜ 500ms待つのか？
             yield;
         }
     });
@@ -119,12 +119,12 @@ Pg.setting = async function setting() {
                 this.Looks.say();
                 break;
             }
-            await this.Control.wait(500);
+            await this.Control.wait(0.5);
             yield;
         }
     });
     stage.Event.whenFlag(async function () {
-        await this.Control.wait(20 * 1000); // 20秒たったらバブルループを終わらせる。
+        await this.Control.wait(20); // 20秒たったらバブルループを終わらせる。
         bubble.exit = true;
         bubble2.exit = true;
     });

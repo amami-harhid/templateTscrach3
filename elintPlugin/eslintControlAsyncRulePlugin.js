@@ -1,5 +1,5 @@
 'use strict'
-const eventAsyncRule = {
+const controlAsyncRule = {
   meta: {
       type: 'problem',
       fixable: 'code',
@@ -16,13 +16,11 @@ const eventAsyncRule = {
             const caleeObj = calee.object;
             if(caleeObj){
               const caleeObjProperty = caleeObj.property;
-              if(caleeObjProperty && caleeObjProperty.name == 'Event'){
+              if(caleeObjProperty && caleeObjProperty.name == 'Control'){
                 const calleeProperty = calee.property;
                 if(calleeProperty && 
                   (
-                    calleeProperty.name == 'whenFlag' ||
-                    calleeProperty.name == 'whenRightNow' ||
-                    calleeProperty.name == 'whenClicked'
+                    calleeProperty.name == 'whenCloned'
                   )
                 ){
                   const _arguments = node.expression.arguments;
@@ -52,10 +50,10 @@ const eventAsyncRule = {
     },
 }
 
-export const eventAsyncRulesPlugin = { 
+export const controlAsyncRulesPlugin = { 
   meta:{
-    name: 'event-async-plugin',
+    name: 'control-async-plugin',
     version: '0.1.0',
   },
-  rules: { "event-async-plugin": eventAsyncRule },
+  rules: { "control-async-plugin": controlAsyncRule },
 };

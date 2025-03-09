@@ -11,10 +11,11 @@ const Cat = "Cat";
 const Mya = "Mya";
 let stage;
 let cat;
-Pg.preload = async function preload($this) {
-    $this.Image.load('../assets/Jurassic.svg', Jurassic);
-    $this.Sound.load('../assets/Chill.wav', Chill);
-    $this.Image.load('../assets/cat.svg', Cat);
+Pg.preload = async function preload() {
+    this.Image.load('../assets/Jurassic.svg', Jurassic);
+    this.Sound.load('../assets/Chill.wav', Chill);
+    this.Image.load('../assets/cat.svg', Cat);
+    this.Sound.load('../assets/Cat.wav', Mya);
 };
 Pg.prepare = async function prepare() {
     stage = new Lib.Stage();
@@ -46,7 +47,7 @@ Pg.setting = async function setting() {
         this.Motion.pointInDirection(90);
     });
     const _changeDirection = 1;
-    cat.Event.whenFlag(function* () {
+    cat.Event.whenFlag(async function* () {
         // ずっと繰り返して回転する
         while (true) {
             this.Motion.turnRightDegrees(_changeDirection); // 外側Scope 参照可能
@@ -71,7 +72,7 @@ Pg.setting = async function setting() {
         this.Motion.gotoXY({ x: 100, y: -100 });
         clone.Looks.setSize({ x: 50, y: 50 });
         clone.Looks.setEffect(Lib.ImageEffective.COLOR, 50);
-        clone.life = 5000;
+        clone.life = 5000; // 約5秒
         clone.Looks.show();
         // ずっと繰り返す
         while (true) {
@@ -82,8 +83,12 @@ Pg.setting = async function setting() {
                 // ミャーと鳴く。
                 clone.Sound.play();
             }
+            if (clone.life < 0) {
+                break;
+            }
             yield;
         }
+        clone.Control.remove();
     });
 };
 //# sourceMappingURL=index.js.map

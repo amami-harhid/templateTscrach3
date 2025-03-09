@@ -46,7 +46,7 @@ Pg.setting = async function setting() {
         await this.Sound.setOption(Lib.SoundOption.PITCH, 150);
     });
     const MoveSteps = 15;
-    cross.Event.whenFlag(function* () {
+    cross.Event.whenFlag(async function* () {
         this.Motion.pointInDirection(90);
         while (true) {
             if (Lib.keyIsDown('RightArrow')) {
@@ -71,14 +71,14 @@ Pg.setting = async function setting() {
             yield;
         }
     });
-    cross.Control.whenCloned(function () {
+    cross.Control.whenCloned(async function () {
         const clone = this;
         const { height } = clone.Looks.drawingDimensions();
         clone.Motion.changeY(height / 2);
         clone.Looks.nextCostume();
         clone.Looks.show();
     });
-    cross.Control.whenCloned(function* () {
+    cross.Control.whenCloned(async function* () {
         // while の後に処理があるときは await 忘れないようにしましょう
         const clone = this;
         while (true) {
@@ -100,7 +100,7 @@ Pg.setting = async function setting() {
             clone.Motion.turnRightDegrees(TURN_RIGHT_DEGREE);
             if (clone.Sensing.isTouchingEdge()) {
                 clone.Sound.play();
-                await this.Control.wait(500);
+                await this.Control.wait(0.5); //0.5秒待つ
                 break;
             }
             yield;

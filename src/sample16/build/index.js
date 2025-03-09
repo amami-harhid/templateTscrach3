@@ -48,7 +48,7 @@ Pg.setting = async function setting() {
             yield;
         }
     });
-    const WAIT_TIME = 5000; //5秒
+    const WAIT_TIME = 5; //5秒
     stage.Event.whenFlag(async function* () {
         while (true) {
             await this.Control.wait(WAIT_TIME);
@@ -59,21 +59,21 @@ Pg.setting = async function setting() {
         }
     });
     const CAT_WALK_STEP = 2;
-    cat1.Event.whenFlag(function* () {
+    cat1.Event.whenFlag(async function* () {
         while (true) {
             this.Motion.pointToMouse();
             this.Motion.moveSteps(CAT_WALK_STEP);
             yield;
         }
     });
-    cat2.Event.whenFlag(function* () {
+    cat2.Event.whenFlag(async function* () {
         while (true) {
             this.Motion.pointToMouse();
             this.Motion.moveSteps(CAT_WALK_STEP);
             yield;
         }
     });
-    cat3.Event.whenFlag(function* () {
+    cat3.Event.whenFlag(async function* () {
         while (true) {
             this.Motion.pointToMouse();
             this.Motion.moveSteps(CAT_WALK_STEP);

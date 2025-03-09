@@ -40,7 +40,7 @@ Pg.setting = async function setting() {
             yield;
         }
     });
-    cat.Event.whenFlag( function(this: S3Sprite){
+    cat.Event.whenFlag( async function(this: S3Sprite){
         this.Motion.gotoXY({x:0, y:0});
     });
 

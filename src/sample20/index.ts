@@ -60,7 +60,7 @@ Pg.setting = async function setting() {
     const BubbleScale = {scale:{x:100,y:100}};
     stage.Event.whenFlag( async function(this: S3Stage) {
         // 1秒待つ
-        await this.Control.wait(1000);
+        await this.Control.wait(1); // 1秒待つ
         
         // (↓)順番にメッセージを送って待つ
         //(左) "こんにちは。良い天気ですね" (3秒間)

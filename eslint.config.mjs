@@ -31,6 +31,7 @@ import {awaitLooksRulesPlugin} from "./elintPlugin/eslintAwaitLooksRulePlugin.js
 import {awaitLibRulesPlugin} from "./elintPlugin/eslintAwaitLibRulePlugin.js";
 import {awaitSoundRulesPlugin} from "./elintPlugin/eslintAwaitSoundRulePlugin.js";
 import {eventAsyncRulesPlugin} from "./elintPlugin/eslintEventAsyncRulePlugin.js";
+import {controlAsyncRulesPlugin} from "./elintPlugin/eslintControlAsyncRulePlugin.js";
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
@@ -41,7 +42,6 @@ export default [
     files: ["**/*.ts"],
     languageOptions: { globals: globals.browser },
     plugins: {
-      eventAsync: eventAsyncRulesPlugin,
       awaitControl : awaitControlRulesPlugin,
       awaitEvent : awaitEventRulesPlugin,
       awaitExtensions: awaitExtensionsRulesPlugin,
@@ -49,6 +49,8 @@ export default [
       awaitLooks : awaitLooksRulesPlugin,
       awaitLib : awaitLibRulesPlugin,
       awaitSound : awaitSoundRulesPlugin,
+      eventAsync: eventAsyncRulesPlugin,
+      controlAsync: controlAsyncRulesPlugin,
     },
     rules: {
       "no-this-alias": ["off"],
@@ -91,6 +93,7 @@ export default [
       'awaitLooks/await-looks-plugin': 'error',
       'awaitSound/await-sound-plugin': 'error',
       'eventAsync/event-async-plugin': 'error',
+      'controlAsync/control-async-plugin': 'error',
     }
   },
   pluginJs.configs.recommended,

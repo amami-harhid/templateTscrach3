@@ -6,7 +6,7 @@ import type {S3PlayGround} from "@typeJS/scratchjs/s3PlayGround";
 import type {S3Stage} from "@typeJS/scratchjs/s3Stage";
 import type {S3Sprite} from "@typeJS/scratchjs/s3Sprite";
 
-Pg.title = "【Sample07】スプライトが横向きに動き、端に触れたら跳ね返";
+Pg.title = "【Sample07】スプライトが横向きに動き、端に触れたら跳ね返る";
 
 const Jurassic:string = "Jurassic";
 const Chill:string = "Chill";

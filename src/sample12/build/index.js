@@ -33,12 +33,12 @@ Pg.setting = async function setting() {
             yield;
         }
     });
-    stage.Event.whenClicked(function () {
+    stage.Event.whenClicked(async function () {
         // アロー関数の中なので、【this】は 上の階層 の this = P である。
         const mousePosition = Lib.mousePosition;
         cat.Motion.gotoXY(mousePosition);
     });
-    cat.Event.whenFlag(function () {
+    cat.Event.whenFlag(async function () {
         this.Motion.gotoXY({ x: 0, y: 0 });
     });
 };

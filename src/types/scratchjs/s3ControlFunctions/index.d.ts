@@ -1,7 +1,7 @@
 /** 制御処理 */
 export interface S3ControlFunctions {
-    /** 指定したms秒待つ(await必要) */
-    wait(ms: number) : Promise<any>;
+    /** 指定した秒数分待つ(await必要) */
+    wait(second: number) : Promise<any>;
     /** 指定した条件が成立するまで待つ(await任意) */
     waitUntil(condition: Function) : Promise<any>;
     /** 指定した条件が成立する間、待つ(await任意) */

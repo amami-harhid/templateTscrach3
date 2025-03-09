@@ -32,24 +32,24 @@ Pg.setting = async function setting() {
             yield;
         }
     });
-    cat.Event.whenFlag(function () {
+    cat.Event.whenFlag(async function () {
         this.Motion.gotoXY({ x: 0, y: 0 });
     });
     // ms の値
-    const ms1000 = 1000;
-    const ms5000 = 5000;
+    const sec1 = 1;
+    const sec5 = 5;
     // 5秒経過した？
     let _5SecondsTimerOn = false;
     // ネコの速度
     const catStep = 5;
     cat.Event.whenFlag(async function () {
         _5SecondsTimerOn = false;
-        await this.Control.wait(ms1000 + ms5000);
+        await this.Control.wait(sec1 + sec5);
         _5SecondsTimerOn = true;
     });
     cat.Event.whenFlag(async function* () {
         // 1秒待ってからマウスカーソルを追跡する
-        await this.Control.wait(ms1000);
+        await this.Control.wait(sec1);
         while (true) {
             // マウスの方向へ向く
             this.Motion.pointToMouse();

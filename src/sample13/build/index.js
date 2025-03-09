@@ -44,7 +44,7 @@ Pg.setting = async function setting() {
         await cat.Motion.glideToPosition(1, mousePosition);
     });
     /** 旗をクリックしたときのネコのイベント */
-    cat.Event.whenFlag(function () {
+    cat.Event.whenFlag(async function () {
         this.Motion.gotoXY({ x: 0, y: 0 });
     });
 };

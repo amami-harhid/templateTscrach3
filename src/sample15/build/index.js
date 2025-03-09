@@ -31,7 +31,7 @@ Pg.setting = async function setting() {
             yield;
         }
     });
-    cat.Event.whenFlag(function () {
+    cat.Event.whenFlag(async function () {
         this.Motion.gotoXY({ x: 0, y: 0 });
     });
     const CAT_WALK_STEP = 5;

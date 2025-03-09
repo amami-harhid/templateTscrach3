@@ -60,7 +60,7 @@ Pg.setting = async function setting() {
     });
 
     const MoveSteps = 15;
-    cross.Event.whenFlag( function*( this: S3Sprite ){
+    cross.Event.whenFlag( async function*( this: S3Sprite ){
         this.Motion.pointInDirection( 90 );
         while(true){
             if(Lib.keyIsDown('RightArrow')){
@@ -85,14 +85,14 @@ Pg.setting = async function setting() {
             yield;
         }
     });
-    cross.Control.whenCloned( function( this: S3Sprite ){
+    cross.Control.whenCloned( async function( this: S3Sprite ){
         const clone = this;
         const {height} = clone.Looks.drawingDimensions();
         clone.Motion.changeY( height / 2);
         clone.Looks.nextCostume();
         clone.Looks.show();
     });
-    cross.Control.whenCloned( function*( this: S3Sprite ) {
+    cross.Control.whenCloned( async function*( this: S3Sprite ) {
         // while の後に処理があるときは await 忘れないようにしましょう
         const clone = this;
         while(true){
@@ -114,7 +114,7 @@ Pg.setting = async function setting() {
             clone.Motion.turnRightDegrees(TURN_RIGHT_DEGREE);
             if(clone.Sensing.isTouchingEdge()){
                 clone.Sound.play();
-                await this.Control.wait(500)
+                await this.Control.wait(0.5); //0.5秒待つ
                 break;
             }
             yield;
