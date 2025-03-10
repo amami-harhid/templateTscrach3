@@ -2,7 +2,7 @@ import {S3Stage} from "@typeJS/scratchjs/s3Stage"
 import {S3Sprite} from "@typeJS/scratchjs/s3Sprite"
 import {S3Point} from "@typeJS/scratchjs/s3Point";
 import {S3ImageEffective} from "@typeJS/scratchjs/s3ImageEffective";
-
+import {S3Monitors} from "@typeJS/scratchjs/s3Monitors";
 declare interface Loop {
     /** ループ内で breakする */
     break() : void;
@@ -114,4 +114,6 @@ export interface S3Libs {
     FunctionChecker : any;
     /** 指定した回数分のイテレーター */
     Iterator(n: number):  Iterable<number>; 
+    /** モニタークラス */
+    Monitors: S3Monitors;
 }
