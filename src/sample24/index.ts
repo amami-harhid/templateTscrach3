@@ -8,7 +8,7 @@ import type {S3Stage} from "@typeJS/scratchjs/s3Stage";
 import type {S3Sprite} from "@typeJS/scratchjs/s3Sprite";
 
 
-Pg.title = "【Sample24】上に10回、下に10回移動を繰り返す"
+Pg.title = "【Sample24】上下・左右に移動を繰り返す"
 
 const NeonTunnel:string = "NeonTunnel";
 const Chill:string = "Chill";
@@ -39,6 +39,10 @@ Pg.prepare = async function prepare() {
 
 Pg.setting = async function setting() {
 
+    /**
+     * 旗を押されたとき
+     * 音を追加して、STARTメッセージを送る
+     */
     stage.Event.whenFlag(async function(this:S3Stage){
         // Chill を追加
         await this.Sound.add( Chill );
@@ -47,6 +51,10 @@ Pg.setting = async function setting() {
         await this.Control.wait(1);
         this.Event.broadcast('START');
     });
+    /**
+     * START を受け取ったとき
+     * ずっと繰返し音を鳴らす
+     */
     stage.Event.whenBroadcastReceived('START', async function*(this:S3Stage){
 
         // ずっと繰り返す
@@ -60,23 +68,53 @@ Pg.setting = async function setting() {
         this.Motion.setXY(0,0);
     });
 
+    /**
+     * START を受け取ったとき
+     * 上下に動かす
+     */
     ball.Event.whenBroadcastReceived('START', async function*(this:S3Sprite){
         
         // 上に5回移動
-        for(const _ of Lib.times(5)){
+        for(const _ of Lib.Iterator(5)){
             this.Motion.changeY(+10);
             yield;
         }
         // ずっと繰り返す
         for(;;){
             // 下に10回移動
-            for(const _ of Lib.times(10)){
+            for(const _ of Lib.Iterator(10)){
                 this.Motion.changeY(-10);
                 yield;
             }
             // 上に10回移動
-            for(const _ of Lib.times(10)){
+            for(const _ of Lib.Iterator(10)){
                 this.Motion.changeY(+10);
+                yield;
+            }
+            yield;
+        }
+    });
+    /**
+     * START を受け取ったとき
+     * 左右に動かす
+     */
+    ball.Event.whenBroadcastReceived('START', async function*(this:S3Sprite){
+        
+        // 右に5回移動
+        for(const _ of Lib.Iterator(5)){
+            this.Motion.changeX(+10);
+            yield;
+        }
+        // ずっと繰り返す
+        for(;;){
+            // 左に10回移動
+            for(const _ of Lib.Iterator(10)){
+                this.Motion.changeX(-10);
+                yield;
+            }
+            // 右に10回移動
+            for(const _ of Lib.Iterator(10)){
+                this.Motion.changeX(+10);
                 yield;
             }
             yield;

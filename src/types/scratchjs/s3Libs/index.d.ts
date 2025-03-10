@@ -113,5 +113,5 @@ export interface S3Libs {
 
     FunctionChecker : any;
     /** 指定した回数分のイテレーター */
-    times(n: number):  Iterable<number>; 
+    Iterator(n: number):  Iterable<number>; 
 }
