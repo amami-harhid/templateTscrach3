@@ -1,6 +1,6 @@
 /**
- * sample23
- * ボールがパドルに触れたら跳ね返る
+ * sample24
+ * 上下・左右に移動を繰り返す
  */
 import {Pg,Lib} from "./importer.js";
 import type {S3PlayGround} from "@typeJS/scratchjs/s3PlayGround";
