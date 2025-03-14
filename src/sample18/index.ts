@@ -23,11 +23,11 @@ let stage: S3Stage;
 let cross: S3Sprite;
 
 Pg.preload = async function preload(this: S3PlayGround) {
-    this.Image.load('../assets/Jurassic.svg', Jurassic );
-    this.Sound.load('../assets/Chill.wav', Chill );
-    this.Image.load('../assets/cross1.svg', Cross01 );
-    this.Image.load('../assets/cross2.svg', Cross02 );
-    this.Sound.load('../assets/Pew.wav', Pew );
+    this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/Jurassic.svg', Jurassic );
+    this.Sound.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/Chill.wav', Chill );
+    this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/cross1.svg', Cross01 );
+    this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/cross2.svg', Cross02 );
+    this.Sound.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/Pew.wav', Pew );
 }
 
 Pg.prepare = async function prepare() {

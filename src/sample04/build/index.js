@@ -4,8 +4,8 @@ const ImageNameJurassic = "Jurassic";
 const Chill = "Chill";
 let stage;
 Pg.preload = async function () {
-    this.Image.load('../assets/Jurassic.svg', ImageNameJurassic);
-    this.Sound.load('../assets/Chill.wav', Chill);
+    this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/Jurassic.svg', ImageNameJurassic);
+    this.Sound.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/Chill.wav', Chill);
 };
 Pg.prepare = async function () {
     stage = new Lib.Stage();

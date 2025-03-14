@@ -23,12 +23,12 @@ let cross: S3Sprite;
 let butterfly: S3Sprite;
 
 Pg.preload = async function(this: S3PlayGround) {
-    this.Image.load('../assets/Jurassic.svg', Jurassic );
-    this.Sound.load('../assets/Chill.wav', Chill );
-    this.Image.load('../assets/cross1.svg', Cross01 );
-    this.Image.load('../assets/cross2.svg', Cross02 );
-    this.Image.load('../assets/butterfly1.svg', Butterfly01 );
-    this.Image.load('../assets/butterfly2.svg', Butterfly02 );
+    this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/Jurassic.svg', Jurassic );
+    this.Sound.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/Chill.wav', Chill );
+    this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/cross1.svg', Cross01 );
+    this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/cross2.svg', Cross02 );
+    this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/butterfly1.svg', Butterfly01 );
+    this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/butterfly2.svg', Butterfly02 );
 }
 Pg.prepare = async function() {
     stage = new Lib.Stage();

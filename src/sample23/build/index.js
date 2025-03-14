@@ -17,16 +17,17 @@ let stage;
 let ball, paddle, block, line;
 let title;
 let score = 0;
+const AssetHost = "https://amami-harhid.github.io/scratch3likejslib/web";
 Pg.preload = async function preload() {
-    this.Image.load('../assets/Neon Tunnel.png', NeonTunnel);
-    this.Sound.load('../assets/Chill.wav', Chill);
-    this.Image.load('../assets/ball-a.svg', BallA);
-    this.Image.load('../assets/paddle.svg', Paddle);
-    this.Image.load('../assets/button3-b.svg', Block);
-    this.Image.load('../assets/line.svg', Line);
-    this.Sound.load('../assets/Pew.wav', Pew);
-    this.Image.load('./assets/YouWon.svg', YouWon);
-    this.Image.load('./assets/GameOver.svg', GameOver);
+    this.Image.load(AssetHost + '/assets/Neon Tunnel.png', NeonTunnel);
+    this.Sound.load(AssetHost + '/assets/Chill.wav', Chill);
+    this.Image.load(AssetHost + '/assets/ball-a.svg', BallA);
+    this.Image.load(AssetHost + '/assets/paddle.svg', Paddle);
+    this.Image.load(AssetHost + '/assets/button3-b.svg', Block);
+    this.Image.load(AssetHost + '/assets/line.svg', Line);
+    this.Sound.load(AssetHost + '/assets/Pew.wav', Pew);
+    this.Image.load(AssetHost + '/sample23/assets/YouWon.svg', YouWon);
+    this.Image.load(AssetHost + '/sample23/assets/GameOver.svg', GameOver);
 };
 Pg.prepare = async function prepare() {
     stage = new Lib.Stage();

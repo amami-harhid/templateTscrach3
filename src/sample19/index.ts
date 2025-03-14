@@ -22,9 +22,9 @@ let cat2: S3Sprite;
 import {bubble, bubbleTextArr, bubble2, bubbleTextArr2} from './bubble.js'
 
 Pg.preload = async function preload(this: S3PlayGround) {
-    this.Image.load('../assets/Jurassic.svg', Jurassic);
-    this.Image.load('../assets/cat.svg', Cat1 );
-    this.Image.load('../assets/cat2.svg', Cat2 );
+    this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/Jurassic.svg', Jurassic);
+    this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/cat.svg', Cat1 );
+    this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/cat2.svg', Cat2 );
 }
 Pg.prepare = async function prepare() {
     stage = new Lib.Stage();

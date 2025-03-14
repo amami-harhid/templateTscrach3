@@ -24,9 +24,9 @@ const Cat = "Cat";
 let stage;
 let cat;
 Pg.preload = async function preload() {
-    this.Image.load('../assets/Jurassic.svg', Jurassic);
-    this.Sound.load('../assets/Chill.wav', Chill);
-    this.Image.load('../assets/cat.svg', Cat);
+    this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/Jurassic.svg', Jurassic);
+    this.Sound.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/Chill.wav', Chill);
+    this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/cat.svg', Cat);
 };
 Pg.prepare = async function prepare() {
     stage = new Lib.Stage();

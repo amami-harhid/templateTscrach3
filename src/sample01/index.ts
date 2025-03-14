@@ -9,7 +9,7 @@ const Jurassic = "Jurassic";
 let stage:S3Stage;
 
 Pg.preload = function(this:S3PlayGround) {
-    this.Image.load('../assets/Jurassic.svg', Jurassic);
+    this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/Jurassic.svg', Jurassic);
 }
 Pg.prepare = async function() {
     stage = new Lib.Stage();

@@ -1,18 +1,19 @@
 /**
- * sample23
- * ボールがパドルに触れたら跳ね返る
+ * sample24
+ * 上下・左右に移動を繰り返す
  */
 import { Pg, Lib } from "./importer.js";
-Pg.title = "【Sample24】上に10回、下に10回移動を繰り返す";
+Pg.title = "【Sample24】上下・左右に移動を繰り返す";
 const NeonTunnel = "NeonTunnel";
 const Chill = "Chill";
 const BallA = "BallA";
 let stage;
 let ball;
+const AssetHost = "https://amami-harhid.github.io/scratch3likejslib/web";
 Pg.preload = async function preload() {
-    this.Image.load('../assets/Neon Tunnel.png', NeonTunnel);
-    this.Sound.load('../assets/Chill.wav', Chill);
-    this.Image.load('../assets/ball-a.svg', BallA);
+    this.Image.load(AssetHost + '/assets/Neon Tunnel.png', NeonTunnel);
+    this.Sound.load(AssetHost + '/assets/Chill.wav', Chill);
+    this.Image.load(AssetHost + '/assets/ball-a.svg', BallA);
 };
 Pg.prepare = async function prepare() {
     // ステージを作る

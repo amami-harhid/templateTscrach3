@@ -19,10 +19,10 @@ let stage: S3Stage;
 let cat: S3Sprite;
 
 Pg.preload = async function preload(this: S3PlayGround) {
-    this.Image.load('../assets/Jurassic.svg', Jurassic);
-    this.Sound.load('../assets/Chill.wav', Chill);
-    this.Image.load('../assets/ball-a.svg', Cat);
-    this.Sound.load('../assets/Cat.wav', Mya);
+    this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/Jurassic.svg', Jurassic);
+    this.Sound.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/Chill.wav', Chill);
+    this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/ball-a.svg', Cat);
+    this.Sound.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/Cat.wav', Mya);
 }
 Pg.prepare = async function prepare() {
     stage = new Lib.Stage();

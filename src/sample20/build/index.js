@@ -16,9 +16,9 @@ let cat;
 let cat2;
 import { bubbleTextArr, bubbleTextArr2, MessageCat1Say, MessageCat2Say, MessageCat2Think, MessageByeBye, MessageTAIJYO } from './bubble.js';
 Pg.preload = async function preload($this) {
-    $this.Image.load('../assets/backdrop.png', BackDrop);
-    $this.Image.load('../assets/cat.svg', Cat1);
-    $this.Image.load('../assets/cat2.svg', Cat2);
+    $this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/backdrop.png', BackDrop);
+    $this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/cat.svg', Cat1);
+    $this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/cat2.svg', Cat2);
 };
 Pg.prepare = async function prepare() {
     stage = new Lib.Stage();
