@@ -23,15 +23,17 @@
 import globals from "globals";
 import pluginJs from "@eslint/js";
 import tseslint from "typescript-eslint";
-import {awaitControlRulesPlugin} from "./elintPlugin/eslintAwaitControlRulePlugin.js";
-import {awaitEventRulesPlugin } from "./elintPlugin/eslintAwaitEventRulePlugin.js";
-import {awaitExtensionsRulesPlugin} from "./elintPlugin/eslintAwaitExtensionsRulePlugin.js";
-import {awaitImageRulesPlugin} from "./elintPlugin/eslintAwaitImageRulePlugin.js";
-import {awaitLooksRulesPlugin} from "./elintPlugin/eslintAwaitLooksRulePlugin.js";
-import {awaitLibRulesPlugin} from "./elintPlugin/eslintAwaitLibRulePlugin.js";
-import {awaitSoundRulesPlugin} from "./elintPlugin/eslintAwaitSoundRulePlugin.js";
-import {eventAsyncRulesPlugin} from "./elintPlugin/eslintEventAsyncRulePlugin.js";
-import {controlAsyncRulesPlugin} from "./elintPlugin/eslintControlAsyncRulePlugin.js";
+import {
+  awaitControlRulesPlugin,
+  awaitEventRulesPlugin,
+  awaitExtensionsRulesPlugin,
+  awaitImageRulesPlugin,
+  awaitLooksRulesPlugin,
+  awaitLibRulesPlugin,
+  awaitSoundRulesPlugin,
+  eventAsyncRulesPlugin,
+  controlAsyncRulesPlugin
+} from "./eslintPlugin/index.js";
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
