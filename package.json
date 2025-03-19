@@ -1,26 +1,24 @@
 {
-  "name": "samplestsscratch3",
+  "name": "scratch3ts",
   "version": "1.0.0",
-  "description": "A collection of samples written in TypeScript for using scratch3LikeJsLib.",
   "main": "index.js",
+  "type": "commonjs",
   "scripts": {
-    "build": ".\\node_modules\\.bin\\tsc -p ./tsconfig.json",
-    "tsc": ".\\node_modules\\.bin\\tsc --init"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC",
-  "type":"module", 
+  "license": "MIT",
+  "description": "",
   "devDependencies": {
-    "@eslint/js": "^9.21.0",
+    "@eslint/js": "^9.22.0",
     "@types/node": "^22.13.4",
-    "eslint": "^9.21.0",
+    "eslint": "^9.22.0",
     "globals": "^16.0.0",
-    "scratch3likejslib": "github:amami-harhid/scratch3LikeJsLib",
     "ts-loader": "^9.5.2",
+    "tscratch3likejs": "github:amami-harhid/tscratch3likejs",
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.26.0",
-    "webpack": "^5.98.0",
-    "webpack-cli": "^6.0.1",
-    "webpack-dev-server": "^5.2.0"
+    "webpack-cli": "^6.0.1"
   }
 }
+

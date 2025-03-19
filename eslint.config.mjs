@@ -32,7 +32,8 @@ import {
   awaitLibRulesPlugin,
   awaitSoundRulesPlugin,
   eventAsyncRulesPlugin,
-  controlAsyncRulesPlugin
+  controlAsyncRulesPlugin,
+  yieldLoopRulesPlugin,
 } from "./eslintPlugin/index.js";
 
 /** @type {import('eslint').Linter.Config[]} */
@@ -53,6 +54,7 @@ export default [
       awaitSound : awaitSoundRulesPlugin,
       eventAsync: eventAsyncRulesPlugin,
       controlAsync: controlAsyncRulesPlugin,
+      loopYield: yieldLoopRulesPlugin,
     },
     rules: {
       "no-this-alias": ["off"],
@@ -97,6 +99,7 @@ export default [
       'awaitSound/await-sound-plugin': 'error',
       'eventAsync/event-async-plugin': 'error',
       'controlAsync/control-async-plugin': 'error',
+      'loopYield/yield-loop-plugin' : 'error',
     }
   },
   pluginJs.configs.recommended,
