@@ -39,7 +39,7 @@ import {
 /** @type {import('eslint').Linter.Config[]} */
 export default [
   {
-    ignores: ["**/*.d.ts"],
+    ignores: ["**/*.d.ts","**/*.js"],
   },
   {
     files: ["**/*.ts"],
