@@ -7,12 +7,13 @@
   },
   "author": "",
   "license": "MIT",
-  "type":"commonjs", 
+  "type": "commonjs",
   "description": "",
   "devDependencies": {
     "@eslint/js": "^9.22.0",
     "@types/node": "^22.13.4",
     "eslint": "^9.22.0",
+    "glob": "^10.4.5",
     "globals": "^16.0.0",
     "ts-loader": "^9.5.2",
     "tscratch3likejs": "github:amami-harhid/tscratch3likejs",
@@ -21,4 +22,3 @@
     "webpack-cli": "^6.0.1"
   }
 }
-
