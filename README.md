@@ -36,16 +36,16 @@ module.exports = {
     },
 }
 ```
-
-# コンパイルする場所にて(webpack)
+# webpack
+## コンパイルする場所にて(webpack)
 npx webpack --mode development
 
-# 全部をコンパイル(webpack)
+## 全部をコンパイル(webpack)
 
 トップディレクトリにて、
 node ./build.js
 
-## build.js
+### build.js
 
 ```javascript
 const fs = require('fs');
@@ -74,7 +74,7 @@ try{
 }
 ```
 
-# buildされたbundle.js
+## buildされたbundle.js
 
 buildディレクトリの下にソースディレクトリと同名のディレクトリを作り、webpackされたbundle.jsを格納される。
 
