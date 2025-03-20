@@ -8,8 +8,8 @@
     "tsc": ".\\node_modules\\.bin\\tsc --init"
   },
   "author": "",
-  "license": "ISC",
-  "type":"module", 
+  "license": "MIT",
+  "type":"commonjs", 
   "devDependencies": {
     "@eslint/js": "^9.21.0",
     "@types/node": "^22.13.4",

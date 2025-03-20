@@ -32,8 +32,9 @@ import {
   awaitLibRulesPlugin,
   awaitSoundRulesPlugin,
   eventAsyncRulesPlugin,
-  controlAsyncRulesPlugin
-} from "./eslintPlugin/index.js";
+  controlAsyncRulesPlugin,
+  yieldLoopRulesPlugin,
+} from "./eslint-plugin/index.js";
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
@@ -53,29 +54,16 @@ export default [
       awaitSound : awaitSoundRulesPlugin,
       eventAsync: eventAsyncRulesPlugin,
       controlAsync: controlAsyncRulesPlugin,
+      loopYield: yieldLoopRulesPlugin,
     },
     rules: {
+      "indent": ["error", 4],  // indent 4 space
       "no-this-alias": ["off"],
       "@typescript-eslint/no-this-alias": [
         "error",
         {
           "allowDestructuring": false, // Disallow 'const {props,state} = this';
           "allowedNames": ["self","me","clone"] // Allow 'const self = this;'
-        }
-      ],
-      "no-restricted-syntax": [
-        "error",
-        {
-          "selector": "WhileStatement > BlockStatement >:last-child[expression.type!='YieldExpression']",
-          "message": "(ScratchLib)while構文の最後はyieldを書いてください"
-        },
-        {
-          "selector": "DoWhileStatement > BlockStatement >:last-child[expression.type!='YieldExpression']",
-          "message": "(ScratchLib)do...while構文の最後はyieldを書いてください"
-        },
-        {
-          "selector": "ForStatement > BlockStatement >:last-child[expression.type!='YieldExpression']",
-          "message": "(ScratchLib)for構文の最後はyieldを書いてください"
         }
       ],
       'no-unused-vars': 'warn',
@@ -97,6 +85,7 @@ export default [
       'awaitSound/await-sound-plugin': 'error',
       'eventAsync/event-async-plugin': 'error',
       'controlAsync/control-async-plugin': 'error',
+      'loopYield/yield-loop-plugin' : 'error',
     }
   },
   pluginJs.configs.recommended,

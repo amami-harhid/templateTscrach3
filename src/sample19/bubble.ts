@@ -1,4 +1,3 @@
-export {bubble, bubbleTextArr, bubble2, bubbleTextArr2}
 
 declare interface BubbleDef {
     type: "say" | "think";
@@ -18,3 +17,5 @@ const bubbleTextArr2: string[] = [
     "あなたもねこだね",
     "★こんばんは★",
 ];
+
+export {bubble, bubbleTextArr, bubble2, bubbleTextArr2}

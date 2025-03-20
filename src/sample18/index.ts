@@ -6,10 +6,10 @@
  * スペースキーで 弾を発射（発射する弾はクローン）
  */
 
-import {Pg,Lib} from "./importer.js";
-import type {S3PlayGround} from "@typeJS/scratchjs/s3PlayGround";
-import type {S3Stage} from "@typeJS/scratchjs/s3Stage";
-import type {S3Sprite} from "@typeJS/scratchjs/s3Sprite";
+import {Pg, Lib} from "tscratch3likejs/s3lib-importer";
+import type {S3PlayGround} from "@typeJS/s3PlayGround";
+import type {S3Stage} from "@typeJS/s3Stage";
+import type {S3Sprite} from "@typeJS/s3Sprite";
 
 Pg.title = "【Sample18】左右矢印でシップが左右に動き、スペースキーで弾を発射。"
 

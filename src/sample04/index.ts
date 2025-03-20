@@ -1,6 +1,6 @@
-import {Pg,Lib} from "./importer.js";
-import type {S3PlayGround} from "@typeJS/scratchjs/s3PlayGround";
-import type {S3Stage} from "@typeJS/scratchjs/s3Stage";
+import {Pg, Lib} from "tscratch3likejs/s3lib-importer";
+import type {S3PlayGround} from "@typeJS/s3PlayGround";
+import type {S3Stage} from "@typeJS/s3Stage";
 
 Pg.title = "【Sample04】 旗をクリックした後、ステージをクリック（タッチ）したら音を鳴らす";
 

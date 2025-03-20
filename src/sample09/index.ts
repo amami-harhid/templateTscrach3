@@ -1,10 +1,10 @@
 /**
  * Sample09 スプライトをクリックしたらクローンを作る。
  */
-import {Pg,Lib} from "./importer.js";
-import type {S3PlayGround} from "@typeJS/scratchjs/s3PlayGround";
-import type {S3Stage} from "@typeJS/scratchjs/s3Stage";
-import type {S3Sprite} from "@typeJS/scratchjs/s3Sprite";
+import {Pg, Lib} from "tscratch3likejs/s3lib-importer";
+import type {S3PlayGround} from "@typeJS/s3PlayGround";
+import type {S3Stage} from "@typeJS/s3Stage";
+import type {S3Sprite} from "@typeJS/s3Sprite";
 
 Pg.title = "【Sample09】スプライトをクリックしたらクローンを作る。端に触れたらミャーとないて折り返す。";
 

@@ -4,10 +4,10 @@
  * 吹き出し(SAY, THINK)
  */
 
-import {Pg,Lib} from "./importer.js";
-import type {S3PlayGround} from "@typeJS/scratchjs/s3PlayGround";
-import type {S3Stage} from "@typeJS/scratchjs/s3Stage";
-import type {S3Sprite} from "@typeJS/scratchjs/s3Sprite";
+import {Pg, Lib} from "tscratch3likejs/s3lib-importer";
+import type {S3PlayGround} from "@typeJS/s3PlayGround";
+import type {S3Stage} from "@typeJS/s3Stage";
+import type {S3Sprite} from "@typeJS/s3Sprite";
 
 Pg.title = "【Sample19】いろんな文字列でフキダシ(言う, 思う)。20秒間。"
 
@@ -19,7 +19,7 @@ let stage: S3Stage;
 let cat: S3Sprite;
 let cat2: S3Sprite;
 
-import {bubble, bubbleTextArr, bubble2, bubbleTextArr2} from './bubble.js'
+import {bubble, bubbleTextArr, bubble2, bubbleTextArr2} from './bubble'
 
 Pg.preload = async function preload(this: S3PlayGround) {
     this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/Jurassic.svg', Jurassic);

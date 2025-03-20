@@ -1,6 +1,6 @@
-import {Pg,Lib} from "./importer.js";
-import type {S3PlayGround} from "@typeJS/scratchjs/s3PlayGround";
-import type {S3Stage} from "@typeJS/scratchjs/s3Stage";
+import {Pg, Lib} from "tscratch3likejs/s3lib-importer";
+import type {S3PlayGround} from "@typeJS/s3PlayGround";
+import type {S3Stage} from "@typeJS/s3Stage";
 
 Pg.title = "【Sample03】旗クリックでずっと『終わるまで音を鳴らす』を繰り返す";
 
@@ -10,8 +10,8 @@ const SoundNameChill = "Chill";
 let stage:S3Stage;
 
 Pg.preload = function(this:S3PlayGround) {
-    this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/Jurassic.svg', ImageNameJurassic);
-    this.Sound.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/Chill.wav', SoundNameChill);
+    this.Image.load('/assets/Jurassic.svg', ImageNameJurassic);
+    this.Sound.load('/assets/Chill.wav', SoundNameChill);
 }
 Pg.prepare = async function() {
     stage = new Lib.Stage();
