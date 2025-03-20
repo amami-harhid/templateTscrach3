@@ -74,7 +74,7 @@ try{
 }
 ```
 
-# build
+# buildされたbundle.js
 
 buildディレクトリの下にソースディレクトリと同名のディレクトリを作り、webpackされたbundle.jsを格納される。
 
