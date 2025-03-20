@@ -34,7 +34,7 @@ import {
   eventAsyncRulesPlugin,
   controlAsyncRulesPlugin,
   yieldLoopRulesPlugin,
-} from "./eslint-plugin/index.js";
+} from "tscratch3likejs/eslint-plugin/index.js";
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
