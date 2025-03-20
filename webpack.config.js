@@ -1,7 +1,4 @@
 const path = require('path');
-//import path from 'path';
-
-//import path from 'path';
 
 module.exports = {
     entry: {
@@ -20,7 +17,6 @@ module.exports = {
         }]
     },
     resolve: {
-        extensions: ['.ts']
         extensions: ['.ts']
     }
 }

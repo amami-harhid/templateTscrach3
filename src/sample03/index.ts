@@ -1,9 +1,6 @@
 import {Pg, Lib} from "tscratch3likejs/s3lib-importer";
 import type {S3PlayGround} from "@typeJS/s3PlayGround";
 import type {S3Stage} from "@typeJS/s3Stage";
-import {Pg,Lib} from "tscratch3likejs/s3lib-importer";
-import type {S3PlayGround} from "@typeJS/s3PlayGround";
-import type {S3Stage} from "@typeJS/s3Stage";
 
 Pg.title = "【Sample03】旗クリックでずっと『終わるまで音を鳴らす』を繰り返す";
 
