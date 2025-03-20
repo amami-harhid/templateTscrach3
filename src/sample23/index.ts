@@ -51,7 +51,6 @@ Pg.prepare = async function prepare() {
     paddle.Motion.setXY(0, -140);
     block = new Lib.Sprite( "block");
     await block.Image.add( Block );
-//    block.Looks.setSize({x:50, y:50});
     block.Motion.setXY(-220,180);
     block.Looks.hide();
     line = new Lib.Sprite( "line" );
