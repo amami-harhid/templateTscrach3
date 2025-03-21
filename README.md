@@ -25,9 +25,9 @@ Assisting with JavaScript(TypeScript) programming in the style of Scratch 3.
 
 # Usage
 
-npm install --save-dev https://github.com/amami-harhid/tscratch3likejs.git
+npm install https://github.com/amami-harhid/tscratch3likejs.git --save-dev 
 
-npm install --save-dev @eslint/js, @types/node, eslint, glob, globals, ts-loader, typescript, typescript-eslint, webpack-cli
+npm install @eslint/js @types/node eslint glob globals ts-loader typescript typescript-eslint webpack-cli --save-dev
 
 # samples
 
