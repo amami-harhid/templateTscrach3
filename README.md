@@ -39,9 +39,43 @@ srcディレクトリの下に サブディレクトリを作成し、サブデ�
 サブディレクトリの下には、次のファイルを用意する。
 
 - index.html
+- index.ts
 - tsconfig.json
 - webpack.config.js
 
+## index.html
+```html
+<title>TscratchJsLibSample</title>
+<meta charset="utf-8" />
+<link rel="icon" href="data:,">
+<script src="../common/scriptLoader.js"></script>
+```
+## index.ts
+```typescript
+import {Pg, Lib} from "tscratch3likejs/s3lib-importer";
+import type {S3PlayGround} from "@typeJS/s3PlayGround";
+import type {S3Stage} from "@typeJS/s3Stage";
+Pg.title = "[description]"
+// 画像名
+const Jurassic = "Jurassic";
+// Stage変数
+let stage:S3Stage;
+// プレロード部
+Pg.preload = function(this:S3PlayGround) {
+    // イメージのロード
+    this.Image.load('../../assets/Jurassic.svg', Jurassic);
+}
+// プリペア部
+Pg.prepare = async function() {
+    // ステージインスタンス作成
+    stage = new Lib.Stage();
+    // イメージの設定
+    await stage.Image.add( Jurassic );
+}
+Pg.setting = function() {
+    // ここでイベントを記述する
+};
+```
 ## tsconfig.json
 ```json
 {

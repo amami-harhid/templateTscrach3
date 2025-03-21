@@ -93,15 +93,15 @@ Pg.setting = async function setting() {
     });
     // MessageCat1Say を受け取る。引数を受け取り、フキダシを表示する。
     cat.Event.whenBroadcastReceived(MessageCat1Say, 
-                async function(this:S3Sprite, text:string, time:number) {
-        const self = this;
-        // Cat の フキダシ を出す
-        if(time>0) {
-            await self.Looks.sayForSecs(text, time, BubbleScale);
-        }else{
-            self.Looks.say(text);
-        }
-    });
+        async function(this:S3Sprite, text:string, time:number) {
+            const self = this;
+            // Cat の フキダシ を出す
+            if(time>0) {
+                await self.Looks.sayForSecs(text, time, BubbleScale);
+            }else{
+                self.Looks.say(text);
+            }
+        });
     // MessageTAIJYO を受け取る。引数を受け取り、フキダシを表示したあと、退場する
     cat.Event.whenBroadcastReceived(MessageTAIJYO, async function*(this:S3Sprite) {
         const self = this;
