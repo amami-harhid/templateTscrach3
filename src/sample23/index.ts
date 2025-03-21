@@ -105,7 +105,7 @@ Pg.setting = async function setting() {
             if( this.Sensing.isTouchingTarget(paddle)){
                 this.Motion.turnRightDegrees( Lib.getRandomValueInRange(-2, 2)+180 );
                 this.Motion.moveSteps(BallSpeed*2);
-                await this.Control.wait(0.2 * 1000);
+                await this.Control.wait(0.2); // 0.2秒待つ
             }
             yield;
         }
