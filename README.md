@@ -1,16 +1,39 @@
-# samplesTsScratch3
+# name
+
+samplesTsScratch3
+
+# Overview
 A collection of samples written in TypeScript for using scratch3LikeJsLib.
 
-# 手順
-npm install --save-dev @eslint/js, @types/node, eslint, glob, globals, ts-loader, typescript, typescript-eslint, webpack-cli
+# Requirement
+
+- Node ( > v18)
+- EsLinker
+- @eslint/js, 
+- @types/node
+- eslint
+- glob
+- globals
+- ts-loader
+- typescript
+- typescript-eslint
+- webpack-cli
+
+# Features
+
+Assisting with JavaScript(TypeScript) programming in the style of Scratch 3.
+
+# Usage
 
 npm install --save-dev https://github.com/amami-harhid/tscratch3likejs.git
 
+npm install --save-dev @eslint/js, @types/node, eslint, glob, globals, ts-loader, typescript, typescript-eslint, webpack-cli
+
 # samples
 
-https://amami-harhid.github.io/samplesTsScratch3/src/
+[一覧ページ](https://amami-harhid.github.io/samplesTsScratch3/src/)
 
-# src
+# Description
 
 srcディレクトリの下に サブディレクトリを作成し、サブディレクトリ内に index.ts を作成する
 サブディレクトリの下には、次のファイルを用意する。
@@ -40,16 +63,16 @@ module.exports = {
     },
 }
 ```
-# webpack
-## コンパイルする場所にて(webpack)
+## webpack
+### コンパイルする場所にて(webpack)
 npx webpack --mode development
 
-## 全部をコンパイル(webpack)
+### 全部をコンパイル(webpack)
 
 トップディレクトリにて、
 node ./build.js
 
-### build.js
+#### build.js
 
 ```javascript
 const fs = require('fs');
@@ -78,9 +101,15 @@ try{
 }
 ```
 
-## buildされたbundle.js
+### buildされたbundle.js
 
 buildディレクトリの下にソースディレクトリと同名のディレクトリを作り、webpackされたbundle.jsを格納される。
 
+# Author
 
+amami-harhid
+
+# Licence
+
+[AGPL-3](https://www.gnu.org/licenses/agpl-3.0.en.html)
 
