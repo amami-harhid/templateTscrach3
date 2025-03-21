@@ -6,6 +6,10 @@ npm install --save-dev @eslint/js, @types/node, eslint, glob, globals, ts-loader
 
 npm install --save-dev https://github.com/amami-harhid/tscratch3likejs.git
 
+# samples
+
+https://amami-harhid.github.io/samplesTsScratch3/src/
+
 # src
 
 srcディレクトリの下に サブディレクトリを作成し、サブディレクトリ内に index.ts を作成する
