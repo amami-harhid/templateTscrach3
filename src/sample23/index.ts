@@ -36,8 +36,8 @@ Pg.preload = async function preload(this:S3PlayGround) {
     this.Image.load(AssetHost+'/assets/button3-b.svg', Block );
     this.Image.load(AssetHost+'/assets/line.svg', Line );
     this.Sound.load(AssetHost+'/assets/Pew.wav', Pew);
-    this.Image.load('/assets/YouWon.svg', YouWon );
-    this.Image.load('/assets/GameOver.svg', GameOver );
+    this.Image.load('../../assets/YouWon.svg', YouWon );
+    this.Image.load('../../assets/GameOver.svg', GameOver );
 }
 Pg.prepare = async function prepare() {
     stage = new Lib.Stage();

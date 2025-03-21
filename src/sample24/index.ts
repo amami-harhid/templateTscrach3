@@ -20,7 +20,7 @@ let ball: S3Sprite
 const AssetHost = "https://amami-harhid.github.io/scratch3likejslib/web";
 
 Pg.preload = async function preload(this:S3PlayGround) {
-    this.Image.load(AssetHost+'/assets/Neon Tunnel.png', NeonTunnel );
+    this.Image.load('../../assets/Neon Tunnel.png', NeonTunnel );
     this.Sound.load(AssetHost+'/assets/Chill.wav', Chill );
     this.Image.load(AssetHost+'/assets/ball-a.svg', BallA );
 }
