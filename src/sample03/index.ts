@@ -10,8 +10,8 @@ const SoundNameChill = "Chill";
 let stage:S3Stage;
 
 Pg.preload = function(this:S3PlayGround) {
-    this.Image.load('/assets/Jurassic.svg', ImageNameJurassic);
-    this.Sound.load('/assets/Chill.wav', SoundNameChill);
+    this.Image.load('../../assets/Jurassic.svg', ImageNameJurassic);
+    this.Sound.load('../../assets/Chill.wav', SoundNameChill);
 }
 Pg.prepare = async function() {
     stage = new Lib.Stage();
