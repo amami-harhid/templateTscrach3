@@ -32,7 +32,7 @@ Pg.preload = async function preload(this:S3PlayGround) {
     this.Image.load('../../assets/Neon Tunnel.png', NeonTunnel );
     this.Sound.load(AssetHost+'/assets/Chill.wav', Chill );
     this.Image.load(AssetHost+'/assets/ball-a.svg', BallA );
-    this.Image.load(AssetHost+'/assets/paddle.svg', Paddle );
+    this.Image.load('../../assets/paddle.svg', Paddle );
     this.Image.load('../../assets/button3-b.svg', Block );
     this.Image.load('../../assets/line.svg', Line );
     this.Sound.load(AssetHost+'/assets/Pew.wav', Pew);
