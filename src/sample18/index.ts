@@ -80,7 +80,7 @@ Pg.setting = async function setting() {
                 const options = {scale:{x:20,y:20}, direction:0}
                 await this.Control.clone(options);
                 //次をコメントアウトしているときは キー押下中連続してクローン作る  
-                //await this.Control.waitWhile( ()=>Libs.keyIsDown('Space'));
+                //await this.Control.waitWhile( ()=>Lib.keyIsDown('Space'));
             }
             yield;
         }

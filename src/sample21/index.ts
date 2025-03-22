@@ -79,13 +79,13 @@ Pg.setting = async function setting() {
     
     /** SPEAK を受信したらスピーチする */
     cat.Event.whenBroadcastReceived('SPEAK', 
-                    async function(this:S3Sprite, 
-                                    words:string, 
-                                    properties:{'pitch': number, 'volume': number}, 
-                                    gender='male', 
-                                    locale='ja-JP'
-                                ) {
-        this.Extensions.speech(words, properties, gender, locale);
+        async function(this:S3Sprite, 
+            words:string, 
+            properties:{'pitch': number, 'volume': number}, 
+            gender='male', 
+            locale='ja-JP'
+        ) {
+            this.Extensions.speech(words, properties, gender, locale);
 
-    });
+        });
 }

@@ -67,14 +67,14 @@ Pg.setting = async function setting() {
     });
     
     cat.Event.whenBroadcastReceived('SPEECH', 
-                    async function(this:S3Sprite, 
-                                    words:string, 
-                                    properties:{'pitch': number, 'volume': number}, 
-                                    gender:string='male', 
-                                    locale:string='ja-JP'
-                                ) {
-        // speechAndWait に await をつけて、音声スピーチが終わるまで待つ。
-        await this.Extensions.speechAndWait(words, properties, gender, locale);
-    });
+        async function(this:S3Sprite, 
+            words:string, 
+            properties:{'pitch': number, 'volume': number}, 
+            gender:string='male', 
+            locale:string='ja-JP'
+        ) {
+            // speechAndWait に await をつけて、音声スピーチが終わるまで待つ。
+            await this.Extensions.speechAndWait(words, properties, gender, locale);
+        });
 
 }

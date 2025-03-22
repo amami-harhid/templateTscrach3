@@ -15,8 +15,9 @@ Pg.prepare = function() {
     stage = new Lib.Stage();
 }
 Pg.setting = function() {
-    // すぐに実行する。
-    stage.Event.whenRightNow( async function(this:S3Stage){
+    
+    // 旗が押されたときの動作
+    stage.Event.whenFlag( async function(this:S3Stage){
         await this.Image.add( Jurassic );
     });
 };

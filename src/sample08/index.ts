@@ -12,7 +12,8 @@ Pg.title = "【Sample08】スプライトが動き、端に触れたらミャー
 const Jurassic:string = "Jurassic";
 const Chill:string = "Chill";
 const Mya: string = "Mya";
-const Cat:string = "Cat";
+const Cat1:string = "Cat1";
+const Cat2:string = "Cat2";
 const SpriteCatName:string = "cat";
 
 let stage: S3Stage;
@@ -21,50 +22,77 @@ let cat: S3Sprite;
 Pg.preload = async function preload(this: S3PlayGround) {
     this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/Jurassic.svg', Jurassic);
     this.Sound.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/Chill.wav', Chill);
-    this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/ball-a.svg', Cat);
+    this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/cat.svg', Cat1);
+    this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/cat2.svg', Cat2);
     this.Sound.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/Cat.wav', Mya);
 }
 Pg.prepare = async function prepare() {
     stage = new Lib.Stage();
     await stage.Image.add( Jurassic );
     cat = new Lib.Sprite( SpriteCatName );
-    await cat.Image.add( Cat );
+    await cat.Image.add( Cat1 );
+    await cat.Image.add( Cat2 );
+    // 位置の初期化
+    cat.Motion.gotoXY({x:0, y:0});
+    // 向きの初期化
+    cat.Motion.pointInDirection( 40 );
 }
 Pg.setting = async function setting() {
 
+    // 旗が押されたときの動作(ステージ)
     stage.Event.whenFlag(async function*(this:S3Stage){
         // ここでの『this』は P であるので、this.sounds は P.soundsと同じである。 
         // stageのインスタンスは 『stage』の変数で受け取っている。
         await this.Sound.add( Chill );
         await this.Sound.setOption( Lib.SoundOption.VOLUME, 20);
-        while(true){
+        // ずっと繰り返す
+        for(;;){
             // ＢＧＭを鳴らし続ける（終わるまで待つ）
             await this.Sound.playUntilDone();
             yield;
         }
     });
 
-    const catStep = 10;
-
-    cat.Event.whenFlag( async function(this:S3Sprite){
-        // 初期化
+    // 旗が押される前の動作(ネコ)
+    cat.Event.whenRightNow( async function(this:S3Sprite){
+        console.log('cat.Event.whenRightNow'); // <--- whenRightNow が動かなくなっている？
+        // 位置の初期化
         this.Motion.gotoXY({x:0, y:0});
+        // 向きの初期化
         this.Motion.pointInDirection( 40 );
     });
 
+    // 旗が押されたときの動作(ネコ)
+    cat.Event.whenFlag( async function*(this:S3Sprite){
+        // ずっと繰り返す
+        for(;;){
+            // 次のコスチュームに切り替える
+            this.Looks.nextCostume();
+            // ０．１秒待つ
+            await this.Control.wait(0.1);
+            yield;
+        }
+    });
+
+    // ネコが進む速さ
+    const catStep = 5;
+    // 旗が押されたときの動作(ネコ)
     cat.Event.whenFlag( async function*(this:S3Sprite){
         await this.Sound.add( Mya );
         await this.Sound.setOption( Lib.SoundOption.VOLUME, 50);
         // ずっと「左右」に動く。端に触れたら跳ね返る。
-        while(true){
+        for(;;){
+            // ネコが進む
             this.Motion.moveSteps(catStep);
+            // もし端に触れたら跳ね返る
             this.Motion.ifOnEdgeBounds();
+            // もし端に触れていたら
             if(this.Sensing.isTouchingEdge()){
+                // ネコの音を鳴らす
                 this.Sound.play();
             }
             yield;
         }
     });
-
 
 }

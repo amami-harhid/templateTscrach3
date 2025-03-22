@@ -11,10 +11,15 @@ let stage:S3Stage;
 Pg.preload = function(this:S3PlayGround) {
     this.Image.load('../../assets/Jurassic.svg', Jurassic);
 }
+
 Pg.prepare = async function() {
     stage = new Lib.Stage();
-    await stage.Image.add( Jurassic );
 }
+
 Pg.setting = function() {
-    // Do nothing.
+    
+    // すぐに実行（旗が押される前）
+    stage.Event.whenRightNow(async function(this:S3Stage){
+        await this.Image.add( Jurassic );
+    })
 };
