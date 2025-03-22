@@ -29,15 +29,15 @@ let score = 0;
 const AssetHost = "https://amami-harhid.github.io/scratch3likejslib/web";
 
 Pg.preload = async function preload(this:S3PlayGround) {
-    this.Image.load(AssetHost+'/assets/Neon Tunnel.png', NeonTunnel );
+    this.Image.load('../../assets/Neon Tunnel.png', NeonTunnel );
     this.Sound.load(AssetHost+'/assets/Chill.wav', Chill );
     this.Image.load(AssetHost+'/assets/ball-a.svg', BallA );
-    this.Image.load(AssetHost+'/assets/paddle.svg', Paddle );
-    this.Image.load(AssetHost+'/assets/button3-b.svg', Block );
-    this.Image.load(AssetHost+'/assets/line.svg', Line );
+    this.Image.load('../../assets/Paddle.svg', Paddle );
+    this.Image.load('../../assets/Button3-b.svg', Block );
+    this.Image.load('../../assets/Line.svg', Line );
     this.Sound.load(AssetHost+'/assets/Pew.wav', Pew);
-    this.Image.load('/assets/YouWon.svg', YouWon );
-    this.Image.load('/assets/GameOver.svg', GameOver );
+    this.Image.load('../../assets/YouWon.svg', YouWon );
+    this.Image.load('../../assets/GameOver.svg', GameOver );
 }
 Pg.prepare = async function prepare() {
     stage = new Lib.Stage();
@@ -105,7 +105,7 @@ Pg.setting = async function setting() {
             if( this.Sensing.isTouchingTarget(paddle)){
                 this.Motion.turnRightDegrees( Lib.getRandomValueInRange(-2, 2)+180 );
                 this.Motion.moveSteps(BallSpeed*2);
-                await this.Control.wait(0.2 * 1000);
+                await this.Control.wait(0.2); // 0.2秒待つ
             }
             yield;
         }
