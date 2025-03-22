@@ -40,6 +40,10 @@ Pg.setting = async function setting() {
         }
     });
 
+    cat.Event.whenBroadcastReceived('Start', async function(this:S3Sprite){
+        this.Motion.setXY({x:0, y:0});
+    })
+
     const catStep = 5;
     // フラグクリック
     cat.Event.whenFlag( async function(this:S3Sprite){
@@ -47,6 +51,7 @@ Pg.setting = async function setting() {
         this.Motion.gotoXY({x:0, y:0});
         this.Motion.pointInDirection( 90 );
     });
+
     cat.Event.whenFlag( async function*(this:S3Sprite){
         // 「左右」に動く。端に触れたら跳ね返る。
         while(true){
