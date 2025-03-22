@@ -55,7 +55,7 @@ Pg.prepare = async function prepare() {
     block.Looks.hide();
     line = new Lib.Sprite( "line" );
     await line.Image.add( Line );
-    line.Motion.setXY(0, -170);
+    line.Motion.setXY(0, -180);
     title = new Lib.Sprite("title");
     await title.Image.add(YouWon);
     await title.Image.add(GameOver);
