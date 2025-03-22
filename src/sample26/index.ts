@@ -105,6 +105,7 @@ Pg.prepare = async function prepare() {
     await stage.Sound.setOption(Lib.SoundOption.VOLUME, 5);
     await stage.Image.add( Jurassic );
     sprite = new Lib.Sprite("sprite");
+    sprite.Looks.hide(); // 非表示
     await sprite.Sound.add( Rip );
     await sprite.Image.add( Apple );
     await sprite.Image.add( Arrow1_a );
@@ -161,8 +162,10 @@ Pg.setting = async function setting() {
     
     // 即時に動く動作
     sprite.Event.whenRightNow(async function(this:S3Sprite){
+        // 初期設定
         this.Motion.setXY(0,0);
-
+        // 表示
+        this.Looks.show();
     });
 
     // 旗が押されたときの動作
