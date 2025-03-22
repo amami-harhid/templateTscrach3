@@ -55,12 +55,9 @@ const Rip:string = "Rip";
 let stage: S3Stage;
 let sprite: S3Sprite;
 
-
-const AssetHost = "https://amami-harhid.github.io/scratch3likejslib/web";
-
 Pg.preload = async function preload(this:S3PlayGround) {
     this.Image.load('../../assets/Jurassic.svg', Jurassic );
-    this.Sound.load(AssetHost+'/assets/Chill.wav', Chill );
+    this.Sound.load('../../assets/Chill.wav', Chill );
     this.Sound.load('../../assets/Rip.wav', Rip);
     this.Image.load('../../assets/Apple.svg', Apple);
     this.Image.load('../../assets/Arrow1-a.svg', Arrow1_a);
