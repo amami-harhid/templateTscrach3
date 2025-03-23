@@ -9,7 +9,6 @@
     "paths": {
       "@typeJS/*": ["./node_modules/tscratch3likejs/types/scratchjs/*"],
     },
-    // "rewriteRelativeImportExtensions": true,
     "sourceMap": true,
     "outDir": "./build",
     "importHelpers": true,

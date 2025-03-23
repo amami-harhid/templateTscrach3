@@ -1,4 +1,6 @@
 {
     "eslint.useFlatConfig": true,
-    "eslint.problems.shortenToSingleLine": true
+    "eslint.problems.shortenToSingleLine": true,
+    "codeTemplateTool.userInput.cancelOnEscape": true,
+    "codeTemplateTool.userInput.confirmOnEnter": true
 }
