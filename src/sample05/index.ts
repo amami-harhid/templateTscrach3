@@ -21,12 +21,14 @@ Pg.preload = function(this: S3PlayGround) {
     this.Sound.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/Chill.wav', Chill);
     this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/cat.svg', Cat);
 }
+
 Pg.prepare = async function() {
     stage = new Lib.Stage();
     await stage.Image.add( Jurassic );
     await stage.Sound.add( Chill );
     await stage.Sound.setOption( Lib.SoundOption.VOLUME, 100)
 }
+
 Pg.setting = function() {
     // フラグをクリックしたときの動作
     // whenFlagのなかでStageの『this』を使わずに、
