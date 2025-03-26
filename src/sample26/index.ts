@@ -147,12 +147,12 @@ Pg.prepare = async function prepare() {
     // 縦横 200%のサイズにする
     sprite.Looks.setSize({x:200, y:200}); 
 
-    console.log('last of prepare');
-
 }
+
 
 Pg.setting = async function setting() {
 
+    
     // 旗が押されたときの動作
     stage.Event.whenFlag(async function*(this:S3Stage){
         await this.Sound.setOption(Lib.SoundOption.VOLUME, 5);
@@ -174,22 +174,33 @@ Pg.setting = async function setting() {
 
     // 旗が押されたときの動作
     sprite.Event.whenFlag(async function*(this:S3Sprite){
-        
+
+        const SpriteImageNames = this.Image.names();
+
         // ずっと繰り返す
         for(;;){
-            // スペースキーが押されたとき
-            if(Lib.keyIsDown('Space')){
+            // イメージ名の配列をシャッフルする（順番をランダムに変える）
+            shuffle(SpriteImageNames);
+            // イメージ名の配列
+            for(const name of SpriteImageNames){
+                // スペースキーが押されていない間、待つ
+                await this.Control.waitWhile( ()=>Lib.keyIsNotDown('Space'));
                 // 音を鳴らす
                 this.Sound.play(Rip);
-                // 次のコスチュームに切り替える
-                this.Looks.nextCostume();
-                // スペースキーを押している間は、待つ
-                // await this.Control.waitWhile( ()=>Lib.keyIsDown('Space'));
+                // コスチュームを切り替える
+                this.Looks.switchCostume(name);
                 // 0.1秒待つ
                 await this.Control.wait(0.1); 
+                yield;
             }
             yield;
         }
     });
-    console.log('last of setting');
+}
+/**
+ * 配列をシャッフルする
+ * @param array 配列
+ */
+function shuffle(array: string[]){
+    array.sort(() => Math.random() - 0.5);
 }
