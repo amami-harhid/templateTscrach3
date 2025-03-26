@@ -18,87 +18,97 @@ const Mya:string = "Mya";
 let stage: S3Stage;
 let cat: S3Sprite;
 
+// 事前ロード処理
 Pg.preload = async function preload(this: S3PlayGround) {
     this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/Jurassic.svg', Jurassic);
     this.Sound.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/Chill.wav', Chill);
     this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/cat.svg', Cat);
     this.Sound.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/Cat.wav', Mya);
 }
+// 事前準備処理
 Pg.prepare = async function prepare() {
     stage = new Lib.Stage();
     await stage.Image.add( Jurassic );
+    await stage.Sound.add( Chill );
     cat = new Lib.Sprite("Cat");
     await cat.Image.add( Cat );
+    await cat.Sound.add( Mya );
     cat.Motion.gotoXY({x:200, y:150});
     cat.Motion.pointInDirection( 90 );
 }
+// イベント定義処理
 Pg.setting = async function setting() {
 
-    stage.Event.whenFlag(async function(this:S3Stage) {
-        await this.Sound.add( Chill );
-        await this.Sound.setOption( Lib.SoundOption.VOLUME, 50);
-    });
+    // 旗が押されたときの動作(ステージ)
     stage.Event.whenFlag(async function*(this:S3Stage) {
-        while(true){
-            await this.Sound.playUntilDone();
+        // 音量 50
+        await this.Sound.setOption( Lib.SoundOption.VOLUME, 50);
+        // ずっと繰り返す
+        for(;;){
+            // 終わるまで音を鳴らす
+            await this.Sound.playUntilDone(Chill);
             yield;
         }
     });
 
+    // 旗が押されたときの動作(ネコ)
     cat.Event.whenFlag( async function(this:S3Sprite) {
-        // 音を登録する
-        await this.Sound.add( Mya );
+        // 位置初期化
+        this.Motion.gotoXY({x:200, y:150});
+        // 向き初期化
+        this.Motion.pointInDirection( 90 );
+        // 音量 20
         await this.Sound.setOption( Lib.SoundOption.VOLUME, 20);
     });
-    cat.Event.whenFlag( async function(this:S3Sprite) {
-        // 初期化
-        this.Motion.gotoXY({x:200, y:150});
-        this.Motion.pointInDirection( 90 );
-    });
-
+    // 回転量
     const _changeDirection = 1;
+    // 旗が押されたときの動作(ネコ)
     cat.Event.whenFlag( async function*(this:S3Sprite) {
-        // ずっと繰り返して回転する
-        while(true){
-            this.Motion.turnRightDegrees(_changeDirection);// 外側Scope 参照可能
+        // ずっと繰り返す
+        for(;;){
+            // 右へ回転する
+            this.Motion.turnRightDegrees(_changeDirection);// 外側Scope 参照可能を実証
             yield;
         }
     });
+    // 旗が押されたときの動作(ネコ)
     cat.Event.whenFlag( async function*(this:S3Sprite) {
         // 次をずっと繰り返す
-        // マウスカーソルでタッチしたら、クローンを作る
-        while(true){
+        for(;;){
+            // マウスカーソルでタッチしたら、クローンを作る
             if( this.Sensing.isMouseTouching() ) {
                 await this.Control.clone();
             }
-            // マウスタッチしないまで待つ
+            // マウスタッチしている間、待つ
             await this.Control.waitWhile( ()=>this.Sensing.isMouseTouching() ); 
             yield;
         }
     });
 
     const steps = 10;
+    // クローンされたときの動作(ネコ)
     cat.Control.whenCloned(async function*(this:S3Sprite){
-        const clone:S3Sprite = this;
-        this.Motion.gotoXY({x:100, y:-100});
-        clone.Looks.setSize({x:50, y:50});
-        clone.Looks.setEffect(Lib.ImageEffective.COLOR, 50);
-        clone.life = 5000; // 約5秒
-        clone.Looks.show();
+        this.Motion.gotoXY({x:100, y:-100}); // 位置
+        this.Looks.setSize({x:50, y:50}); // 大きさを縦横50%
+        this.Looks.setEffect(Lib.ImageEffective.COLOR, 50); //色の効果
+        this.life = 5000; // 約5秒。1fps=0.033秒ごとにライフ(1)減る
+        this.Looks.show(); // 表示する
         // ずっと繰り返す
-        while(true){
-            clone.Motion.moveSteps( steps );
-            // 端に触れたら
-            clone.Motion.ifOnEdgeBounds();
-            if(clone.Sensing.isTouchingEdge() ){
+        for(;;){
+            // 進む
+            this.Motion.moveSteps( steps );
+            // 端に触れたら跳ね返る
+            this.Motion.ifOnEdgeBounds();
+            if(this.Sensing.isTouchingEdge() ){
                 // ミャーと鳴く。
-                clone.Sound.play()
+                this.Sound.play(Mya)
             }
-            if(clone.life < 0){
-                break;
+            if(this.life < 0){ // ライフがゼロより小さくなったとき
+                break; // 「ずっと繰り返す」を抜ける
             }
             yield;
         }
-        clone.Control.remove();
+        // このクローンを削除する
+        this.Control.remove();
     });
 }

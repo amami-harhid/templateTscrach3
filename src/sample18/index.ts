@@ -9,7 +9,7 @@
 import {Pg, Lib} from "tscratch3likejs/s3lib-importer";
 import type {S3PlayGround} from "@typeJS/s3PlayGround";
 import type {S3Stage} from "@typeJS/s3Stage";
-import type {S3Sprite} from "@typeJS/s3Sprite";
+import type {S3Sprite, SizeProperty} from "@typeJS/s3Sprite";
 
 Pg.title = "【Sample18】左右矢印でシップが左右に動き、スペースキーで弾を発射。"
 
@@ -22,103 +22,145 @@ const Pew:string = "Pew";
 let stage: S3Stage;
 let cross: S3Sprite;
 
-Pg.preload = async function preload(this: S3PlayGround) {
-    this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/Jurassic.svg', Jurassic );
-    this.Sound.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/Chill.wav', Chill );
-    this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/cross1.svg', Cross01 );
-    this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/cross2.svg', Cross02 );
-    this.Sound.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/Pew.wav', Pew );
+const ASSETS_HOST = 'https://amami-harhid.github.io/scratch3likejslib/web';
+
+// 事前ロード処理
+Pg.preload = async function(this: S3PlayGround) {
+    this.Image.load(`${ASSETS_HOST}/assets/Jurassic.svg`, Jurassic);
+    this.Sound.load(`${ASSETS_HOST}/assets/Chill.wav`, Chill);
+    this.Image.load(`${ASSETS_HOST}/assets/cross1.svg`, Cross01);
+    this.Image.load(`${ASSETS_HOST}/assets/cross2.svg`, Cross02);
+    this.Sound.load(`${ASSETS_HOST}/assets/Pew.wav`, Pew);
 }
 
+// 事前準備処理
 Pg.prepare = async function prepare() {
+    // ステージを作る
     stage = new Lib.Stage();
     await stage.Image.add( Jurassic );
-
+    await stage.Sound.add( Chill );
+    // 十字を作る
     cross = new Lib.Sprite("Cross");
-    cross.Motion.setY(-Lib.stageHeight/2 * 0.6); 
     await cross.Image.add( Cross01 );
     await cross.Image.add( Cross02 );
+    await cross.Sound.add( Pew );
     cross.Looks.setSize({x:100,y:100});
-
+    // 座標y を ステージの高さの半分×0.6だけ下げる 
+    cross.Motion.setY(-Lib.stageHeight/2 * 0.6); 
 }
+// イベント定義処理
 Pg.setting = async function setting() {
 
+    // 旗が押されたときの動作(ステージ)
     stage.Event.whenFlag(async function*( this: S3Stage) {
-        // function() の中なので、【this】はProxy(stage)である。
-        await this.Sound.add( Chill );
+        // 音量=50
         await this.Sound.setOption( Lib.SoundOption.VOLUME, 50 );
-        while(true){
-            await this.Sound.playUntilDone();
+        // ずっと繰り返す
+        for(;;){
+            // 終わるまで音を鳴らす
+            await this.Sound.playUntilDone(Chill);
             yield;
         }
     });
-
+    // 旗が押されたときの動作(十字)
     cross.Event.whenFlag(async function( this: S3Sprite ){
-        await this.Sound.add( Pew );
+        // 音量=10
         await this.Sound.setOption( Lib.SoundOption.VOLUME, 10 );
+        // ピッチ=150 (再生速度をあげる = 音を短く高く)
         await this.Sound.setOption( Lib.SoundOption.PITCH, 150 );
     });
 
+    // 進む速さ
     const MoveSteps = 15;
+    // 旗が押されたときの動作(十字)
     cross.Event.whenFlag( async function*( this: S3Sprite ){
+        // 向き初期化
         this.Motion.pointInDirection( 90 );
-        while(true){
+        // ずっと繰り返す
+        for(;;){
+            // キー(右矢印)が押されているとき
             if(Lib.keyIsDown('RightArrow')){
                 this.Motion.moveSteps(MoveSteps);
             }
+            // キー(左矢印)が押されているとき
             if(Lib.keyIsDown('LeftArrow')){
                 this.Motion.moveSteps(-MoveSteps);
             }
             yield;
         }
     });
+    // 矢印キーを押しながら、スペースキー押していることが分かることを実証
+    // 旗が押されたときの動作(十字)
     cross.Event.whenFlag( async function*( this: S3Sprite ){
-        while(true){
-            // 矢印キーを押しながら、スペースキーを検知させたい
+        // ずっと繰り返す
+        for(;;){
+            // キー(スペース)が押されているとき
             if(Lib.keyIsDown('Space')){
-                this.Sound.play();
-                const options = {scale:{x:20,y:20}, direction:0}
-                await this.Control.clone(options);
+                // 音を鳴らす
+                this.Sound.play(Pew);
+                // クローンを作る
+                await this.Control.clone();
                 //次をコメントアウトしているときは キー押下中連続してクローン作る  
                 //await this.Control.waitWhile( ()=>Lib.keyIsDown('Space'));
             }
             yield;
         }
     });
+    // クローンが作られたときの動作(十字)
     cross.Control.whenCloned( async function( this: S3Sprite ){
-        const clone = this;
-        const {height} = clone.Looks.drawingDimensions();
-        clone.Motion.changeY( height / 2);
-        clone.Looks.nextCostume();
-        clone.Looks.show();
+        // サイズを 20%にしておく
+        const size:SizeProperty = {x:20, y:20};
+        this.Looks.setSize(size);
+        // 上方向にしておく
+        this.Motion.pointInDirection(0);
+        // スプライトの大きさを取得（高さのみ）
+        const {height} = this.Looks.drawingDimensions();
+        // Y座標を 高さの半分だけ変える
+        this.Motion.changeY( height / 2);
+        // 次のコスチュームにする（本体とは別のコスチュームにする）
+        this.Looks.nextCostume();
+        // 表示する
+        this.Looks.show();
     });
     cross.Control.whenCloned( async function*( this: S3Sprite ) {
-        // while の後に処理があるときは await 忘れないようにしましょう
-        const clone = this;
-        while(true){
-            clone.Motion.changeY(+10); // 10だけ上にする
-            if(clone.Sensing.isTouchingEdge()){
+        // ずっと繰り返す
+        for(;;){
+            this.Motion.changeY(+5); // 5だけ上にする
+            // 端にふれたとき
+            if(this.Sensing.isTouchingEdge()){
+                // 隠す
+                this.Looks.hide();
+                // 繰り返しを抜ける
                 break;
             }
             yield;
         }
-        clone.Control.remove();
     });
+
+    // 右回転する量
     const TURN_RIGHT_DEGREE= 25;
+    // クローンされたときの動作（十字）
     cross.Control.whenCloned( async function*( this: S3Sprite ) {
-        const clone = this;
-        // while の後に処理があるときは await 忘れないようにしましょう
-        await clone.Sound.setOption( Lib.SoundOption.VOLUME, 100 );
-        await clone.Sound.setOption( Lib.SoundOption.PITCH, 90 );
-        while(true){
-            clone.Motion.turnRightDegrees(TURN_RIGHT_DEGREE);
-            if(clone.Sensing.isTouchingEdge()){
-                clone.Sound.play();
-                await this.Control.wait(0.5); //0.5秒待つ
+        // 音量 50
+        await this.Sound.setOption( Lib.SoundOption.VOLUME, 50 );
+        // ピッチ 50 ( 低音にする )
+        await this.Sound.setOption( Lib.SoundOption.PITCH, 50 );
+        // ずっと繰り返す
+        for(;;){
+            // 右へ回転する
+            this.Motion.turnRightDegrees(TURN_RIGHT_DEGREE);
+            // 端に触れたとき
+            if(this.Sensing.isTouchingEdge()){
+                // 音を鳴らす
+                this.Sound.play(Pew);
+                // 繰り返しを抜ける
                 break;
             }
             yield;
         }
-        clone.Control.remove();
+        // 少し待つ
+        await this.Control.wait(0.2);
+        // このクローンを削除する
+        this.Control.remove();
     });
 }

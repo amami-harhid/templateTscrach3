@@ -21,11 +21,16 @@ let cat2: S3Sprite;
 
 import {bubble, bubbleTextArr, bubble2, bubbleTextArr2} from './bubble'
 
-Pg.preload = async function preload(this: S3PlayGround) {
-    this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/Jurassic.svg', Jurassic);
-    this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/cat.svg', Cat1 );
-    this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/cat2.svg', Cat2 );
+const ASSETS_HOST = 'https://amami-harhid.github.io/scratch3likejslib/web';
+
+// 事前ロード処理
+Pg.preload = async function(this: S3PlayGround) {
+    this.Image.load(`${ASSETS_HOST}/assets/Jurassic.svg`, Jurassic);
+    this.Image.load(`${ASSETS_HOST}/assets/cat.svg`, Cat1);
+    this.Image.load(`${ASSETS_HOST}/assets/cat2.svg`, Cat2);
 }
+
+// 事前準備処理
 Pg.prepare = async function prepare() {
     stage = new Lib.Stage();
     await stage.Image.add( Jurassic );
@@ -40,104 +45,160 @@ Pg.prepare = async function prepare() {
     cat2.Motion.pointInDirection(115);
     cat2.Motion.moveTo({x: -20, y: -120});
 }
+// イベント定義処理
 Pg.setting = async function setting() {
 
-    const WALK_STEP = 1;
-    cat.Event.whenFlag( async function*( this: S3Sprite ) {
-        while(true){
-            this.Motion.ifOnEdgeBounds();
-            this.Motion.moveSteps(WALK_STEP);
-            if( bubble.exit === true) {
-                break;
-            }
-            yield;
-        }
-    });
-    cat.Event.whenFlag( async function*( this: S3Sprite ) {
-        await this.Control.wait(0.1); // <--- なぜ 100ms 待つようにしたのか？
-        while(true){
-            this.Looks.nextCostume();
-            await this.Control.wait(0.1)
-            if( bubble.exit === true) {
-                break;
-            }
-            yield;
-        }
-    });
-    cat.Event.whenFlag( async function*( this: S3Sprite ) {
-        await this.Control.wait(0.1); // <--- なぜ 100ms 待つようにしたのか？
-        const MOVE_STEP = 2;
-        const SCALE = {MIN:50, MAX:150};
-        while(true){
-            while(true){
-                this.Looks.changeSizeBy({x:-MOVE_STEP, y: -MOVE_STEP});
-                const scale = this.Looks.getSize();
-                if(scale.x < SCALE.MIN) break;
-                yield;
-            }
-            while(true){
-                this.Looks.changeSizeBy({x: +MOVE_STEP, y: +MOVE_STEP});
-                const scale = this.Looks.getSize();
-                if(scale.x > SCALE.MAX) break;
-                yield;
-            }
-            if( bubble.exit === true) {
-                break;
-            }
-            yield;
-        }
-    });
-    cat.Event.whenFlag( async function*( this: S3Sprite ) {
-        let counter = 0;
-        while(true){
-            const text = bubbleTextArr[ Math.ceil(Math.random() * bubbleTextArr.length) - 1 ];
-            if( this.Sensing.isTouchingEdge() ) {
-                counter += 1;
-                counter = counter % 2;
-            }
-            if( counter == 0 ) {
-                this.Looks.say(text);
-
-            }else{
-                this.Looks.think(text);
-
-            }
-            if( bubble.exit === true) {
-                this.Looks.say();
-                break;
-            }
-            await this.Control.wait(0.5); // <--- なぜ 500ms待つのか？
-            yield;
-        }
-    });
-    cat2.Event.whenFlag( async function*( this: S3Sprite ) {
-        while(true){
-            this.Motion.ifOnEdgeBounds();
-            this.Motion.moveSteps(WALK_STEP);
-            if( bubble.exit === true) {
-                break;
-            }
-            yield;
-        }
-    });
-    cat2.Event.whenFlag( async function*( this: S3Sprite ) {
-        const scale = {x: 60, y:60};
-        while(true){
-            const text = bubbleTextArr2[ Math.ceil(Math.random() * bubbleTextArr2.length) - 1 ]
-            this.Looks.think(text, {scale:scale});
-            if( bubble2.exit === true) {
-                this.Looks.say();
-                break;
-            }
-            await this.Control.wait(0.5)
-            yield;
-        }
-    });
-
+    // 旗が押されたときの動作(ステージ)
     stage.Event.whenFlag( async function(this:S3Stage) {
         await this.Control.wait(20); // 20秒たったらバブルループを終わらせる。
         bubble.exit = true;
         bubble2.exit = true;
     });
 
+    // 歩く速さ
+    const WALK_STEP = 1;
+    // 旗が押されたときの動作(ネコ)
+    cat.Event.whenFlag( async function*( this: S3Sprite ) {
+        // ずっと繰り返す
+        for(;;){
+            // もし端に着いたら跳ね返る
+            this.Motion.ifOnEdgeBounds();
+            // 進む
+            this.Motion.moveSteps(WALK_STEP);
+            // フキダシが終わりになったら
+            if( bubble.exit === true) {
+                // 繰り返しを抜ける
+                break;
+            }
+            yield;
+        }
+    });
+
+    // 旗が押されたときの動作(ネコ)
+    cat.Event.whenFlag( async function*( this: S3Sprite ) {
+        // ちょっとだけ待つ
+        await this.Control.wait(0.1);
+        // ずっと繰り返す
+        for(;;){
+            // 次のコスチュームに切り替える
+            this.Looks.nextCostume();
+            // ちょっとだけ待つ
+            await this.Control.wait(0.1)
+            // フキダシ 終わりのとき
+            if( bubble.exit === true) {
+                // 繰り返しを抜ける
+                break;
+            }
+            yield;
+        }
+    });
+    // 旗が押されたときの動作(ネコ)
+    cat.Event.whenFlag( async function*( this: S3Sprite ) {
+        // ちょっとだけ待つ
+        await this.Control.wait(0.1);
+        // サイズの変更量
+        const CHANGE_SIZE = 2;
+        // 最小サイズ、最大サイズ
+        const SCALE = {MIN:50, MAX:150};
+        // ずっと繰り返す
+        for(;;){
+            // ずっと繰り返す(入れ子)
+            for(;;){
+                // サイズを指定した量だけ変える（減らす）
+                this.Looks.changeSizeBy({x:-CHANGE_SIZE, y: -CHANGE_SIZE});
+                const scale = this.Looks.getSize();
+                // サイズが決めた値より小さくなったとき繰り返しを抜ける
+                if(scale.x < SCALE.MIN) break;
+                yield;
+            }
+            // ずっと繰り返す(入れ子)
+            for(;;){
+                // サイズを指定した量だけ変える（増やす）
+                this.Looks.changeSizeBy({x: +CHANGE_SIZE, y: +CHANGE_SIZE});
+                const scale = this.Looks.getSize();
+                // サイズが決めた値より大きくなったとき繰り返しを抜ける
+                if(scale.x > SCALE.MAX) break;
+                yield;
+            }
+            // フキダシ 終わりのとき
+            if( bubble.exit === true) {
+                // 繰り返しを抜ける
+                break;
+            }
+            yield;
+        }
+    });
+    // 旗が押されたときの動作(ネコ)
+    cat.Event.whenFlag( async function*( this: S3Sprite ) {
+        // 言う・思う を切り替えるためのフラグ的な変数
+        let counter = 0;
+        // ずっと繰り返す
+        for(;;){
+            // フキダシテキスト配列からランダムな要素を取り出す
+            const text = bubbleTextArr[ Math.ceil(Math.random() * bubbleTextArr.length) - 1 ];
+            // 端についたとき
+            if( this.Sensing.isTouchingEdge() ) {
+                // 0, 1 を入れ替える
+                counter += 1;
+                counter = counter % 2;
+            }
+            if( counter == 0 ) {
+                // 言う
+                this.Looks.say(text);
+
+            }else{
+                // 思う
+                this.Looks.think(text);
+
+            }
+            // フキダシ 終わりのとき
+            if( bubble.exit === true) {
+                // 空文字で「言う」( ==> フキダシ消える )
+                this.Looks.say();
+                // 繰り返しを抜ける
+                break;
+            }
+            // 少しだけまつ
+            await this.Control.wait(0.5);
+            yield;
+        }
+    });
+    // 旗が押されたときの動作(ネコ２)
+    cat2.Event.whenFlag( async function*( this: S3Sprite ) {
+        // ずっと繰り返す
+        for(;;){
+            // もし端に着いたら跳ね返る
+            this.Motion.ifOnEdgeBounds();
+            // 進む
+            this.Motion.moveSteps(WALK_STEP);
+            // フキダシ 終わりのとき
+            if( bubble.exit === true) {
+                // 繰り返しを抜ける
+                break;
+            }
+            yield;
+        }
+    });
+    // 旗が押されたときの動作(ネコ２)
+    cat2.Event.whenFlag( async function*( this: S3Sprite ) {
+        // 大きさ 60 %
+        const scale = {x: 60, y:60};
+        // ずっと繰り返す
+        for(;;){
+            // フキダシテキスト配列からランダムな要素を取り出す
+            const text = bubbleTextArr2[ Math.ceil(Math.random() * bubbleTextArr2.length) - 1 ]
+            // 「思う」
+            this.Looks.think(text, {scale:scale});
+            // フキダシ 終わりのとき
+            if( bubble2.exit === true) {
+                // 空文字で「言う」( ==> フキダシ消える )
+                this.Looks.say();
+                // 繰り返しを抜ける
+                break;
+            }
+            // 少し待つ
+            await this.Control.wait(0.5)
+            yield;
+        }
+    });
 }

@@ -33,6 +33,8 @@ Pg.prepare = async function prepare() {
     // ステージに背景を追加
     await stage.Image.add( Jurassic01 );
     await stage.Image.add( Jurassic02 );
+    // Chill を追加
+    await stage.Sound.add( Chill );
 
     // スプライト(ball)を作る
     ball = new Lib.Sprite("ball");
@@ -56,10 +58,6 @@ Pg.setting = async function setting() {
      * 音を追加して、STARTメッセージを送る
      */
     stage.Event.whenFlag(async function(this:S3Stage){
-        // Chill を追加
-        await this.Sound.add( Chill );
-        // 音量を 5にする
-        await this.Sound.setOption(Lib.SoundOption.VOLUME, 5);
         await this.Control.wait(1);
         this.Event.broadcast('START');
     });
@@ -86,10 +84,12 @@ Pg.setting = async function setting() {
      */
     stage.Event.whenBroadcastReceived('START', async function*(this:S3Stage){
 
+        // 音量を 5にする
+        await this.Sound.setOption(Lib.SoundOption.VOLUME, 5);
         // ずっと繰り返す
         for(;;){
             // 終わるまで鳴らす
-            await this.Sound.playUntilDone();
+            await this.Sound.playUntilDone(Chill);
             yield;
         }
     });

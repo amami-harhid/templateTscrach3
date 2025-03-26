@@ -22,102 +22,137 @@ let stage: S3Stage;
 let cross: S3Sprite;
 let butterfly: S3Sprite;
 
+const ASSETS_HOST = 'https://amami-harhid.github.io/scratch3likejslib/web';
+
+// 事前ロード処理
 Pg.preload = async function(this: S3PlayGround) {
-    this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/Jurassic.svg', Jurassic );
-    this.Sound.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/Chill.wav', Chill );
-    this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/cross1.svg', Cross01 );
-    this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/cross2.svg', Cross02 );
-    this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/butterfly1.svg', Butterfly01 );
-    this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/butterfly2.svg', Butterfly02 );
+    this.Image.load(`${ASSETS_HOST}/assets/Jurassic.svg`, Jurassic);
+    this.Sound.load(`${ASSETS_HOST}/assets/Chill.wav`, Chill);
+    this.Image.load(`${ASSETS_HOST}/assets/cross1.svg`, Cross01);
+    this.Image.load(`${ASSETS_HOST}/assets/cross2.svg`, Cross02);
+    this.Image.load(`${ASSETS_HOST}/assets/butterfly1.svg`, Butterfly01);
+    this.Image.load(`${ASSETS_HOST}/assets/butterfly2.svg`, Butterfly02);
 }
+
+// 事前準備処理
 Pg.prepare = async function() {
+    // ステージを作る
     stage = new Lib.Stage();
     await stage.Image.add( Jurassic );
-
+    await stage.Sound.add( Chill );
+    // 十字を作る
     cross = new Lib.Sprite("Cross");
     await cross.Image.add( Cross01 );
     await cross.Image.add( Cross02 );
     cross.Looks.setSize({x:300,y:300});
-
+    // 蝶を作る
     butterfly = new Lib.Sprite("Butterfly");
     await butterfly.Image.add( Butterfly01 );
     await butterfly.Image.add( Butterfly02 );
     butterfly.Looks.hide();
 }
+// イベント定義処理
 Pg.setting = async function() {
-
+    // 旗が押されたときの動作(ステージ)
     stage.Event.whenFlag( async function*( this:S3Stage ) {
-        // function() の中なので、【this】はProxy(stage)である。
-        await this.Sound.add( Chill );
+        // 音量=20
         await this.Sound.setOption( Lib.SoundOption.VOLUME, 20 )
-        while(true){
-            await this.Sound.playUntilDone();
+        // ずっと繰り返す
+        for(;;){
+            // 終わるまで音を鳴らす
+            await this.Sound.playUntilDone(Chill);
             yield;
         }
     });
 
     const ChangeDirection = 1;
+    // 旗が押されたときの動作(十字)
     cross.Event.whenFlag( async function*( this: S3Sprite ){
-        while(true){
+        // ずっと繰り返す
+        for(;;){
+            // 右へ回転する
             this.Motion.turnRightDegrees(ChangeDirection);
             yield;
         }
     });
+    // 旗が押されたときの動作(十字)
     cross.Event.whenFlag( async function*( this: S3Sprite ){
-        while(true){
-            if ( this.Sensing.isMouseTouching() ) {
+        // ずっと繰り返す
+        for(;;){
+            // マウスカーソルに触ったとき
+            if( this.Sensing.isMouseTouching() ){
+                // 次のコスチュームへ切り替える
                 this.Looks.nextCostume();
+                // マウスタッチしている間、待つ
                 await this.Control.waitWhile( ()=>this.Sensing.isMouseTouching());
+                // 次のコスチュームへ切り替える(元のコスチュームへ戻す)
                 this.Looks.nextCostume();
             }
             yield;
         }
     });
+    // 旗が押されたときの動作(十字)
     cross.Event.whenFlag(async function*( this: S3Sprite ){
-        const self:S3Sprite = this;
-        while(true){
-            if ( self.Sensing.isMouseTouching() ) {
+        // ずっと繰り返す
+        for(;;){
+            // マウスカーソルに触ったとき( this は cross である)
+            if ( this.Sensing.isMouseTouching() ) {
+                // マウス位置を取得する
                 const mousePosition = Lib.mousePosition;
+                // 取得した位置へ蝶を移動させる
                 butterfly.Motion.gotoXY(mousePosition);
+                // 蝶のサイズを 縦横 15% にする
                 const scale = {x: 15, y: 15}
                 butterfly.Looks.setSize(scale);
+                // ランダムな方向へ蝶を向ける
                 butterfly.Motion.pointInDirection(Lib.randomDirection);
+                // 蝶のクローンを作る
                 await butterfly.Control.clone();
                 // 下をコメントアウトすると、十字にさわっている間は クローンを作り続ける
                 // 下を生かすと、十字に触ったときにクローンを作るが、次には進まない
                 //await Libs.waitUntil( this.isNotMouseTouching, this); // 「マウスポインターが触らない」迄待つ。
-                await butterfly.Control.wait(0.01); // 100ミリ秒待つ。 <== クローン発生する間隔
+                await this.Control.wait(0.01); // 100ミリ秒待つ。 <== クローン発生する間隔
             }
             yield;
         }
     });
+    // 蝶がクローンされたときの動作
     butterfly.Control.whenCloned( async function*( this: S3Sprite ) {
+        // this がクローンであることを明示するために 変数cloneに入れる
         const clone = this;
-        while(true){
-            if(clone.life > 0 ){
-                this.Looks.nextCostume();
-                await clone.Control.wait(0.05);    
-            }else{
+        // ずっと繰り返す
+        for(;;){
+            // lifeが尽きたら『繰り返し』を抜ける
+            if(clone.life < 0 ){
                 break;
             }
+            // 次のコスチュームへ切り替える
+            this.Looks.nextCostume();
+            // コスチューム切り替えが速すぎないように少しだけ待つ
+            await clone.Control.wait(0.05);// <-- yieldにする場合は 1 fpsを待つ
             yield;
         }
     });
+    // 蝶がクローンされたときの動作
     butterfly.Control.whenCloned( async function*( this: S3Sprite ) {
+        // this がクローンであることを明示するために 変数cloneに入れる
         const clone = this;
+        // 表示する
         clone.Looks.show();
         clone.life = 5000; // ミリ秒。クローンが生きている時間。（およその時間）
-        while(true){
-            // ランダムな場所
+        // ずっと繰り返す
+        for(;;){
+            // ランダムな位置を取得する
             const randomPoint = Lib.randomPoint;
-            // １秒でどこかに行く。
+            // 取得した位置へ１秒で移動する
             await this.Motion.glideToPosition(5, randomPoint.x, randomPoint.y);
-            // ライフがゼロになったら「繰り返し」を抜ける
+            // lifeが尽きたら『繰り返し』を抜ける
             if( this.life < 0) {
                 break;
             }        
             yield;
         }
+        // このクローンを削除する
         clone.Control.remove();
     });
 }

@@ -19,59 +19,76 @@ const Cat:string = "Cat";
 let stage: S3Stage;
 let cat: S3Sprite;
 
-Pg.preload = async function preload($this: S3PlayGround) {
-    $this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/Jurassic.svg', Jurassic);
-    $this.Sound.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/Chill.wav', Chill);
-    $this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/cat.svg', Cat);
+const ASSETS_HOST = 'https://amami-harhid.github.io/scratch3likejslib/web';
+
+// 事前ロード処理
+Pg.preload = async function(this: S3PlayGround) {
+    this.Image.load(`${ASSETS_HOST}/assets/Jurassic.svg`, Jurassic);
+    this.Sound.load(`${ASSETS_HOST}/assets/Chill.wav`, Chill);
+    this.Image.load(`${ASSETS_HOST}/assets/cat.svg`, Cat);
 }
-Pg.prepare = async function prepare() {
+
+// 事前準備処理
+Pg.prepare = async function() {
     stage = new Lib.Stage();
     await stage.Image.add( Jurassic );
+    await stage.Sound.add( Chill );
     cat = new Lib.Sprite("Cat");
     await cat.Image.add( Cat );
 }
-Pg.setting = async function setting() {
+// イベント定義処理
+Pg.setting = async function() {
 
+    // 旗が押されたときの動作(ステージ)
     stage.Event.whenFlag( async function*( this:S3Stage ) {
-        // function() の中なので、【this】はProxy(stage)である。
-        await this.Sound.add( Chill );
+        // 音量=50
         await this.Sound.setOption( Lib.SoundOption.VOLUME, 50);
-        while(true){
-            await this.Sound.playUntilDone();
+        // ずっと繰り返す
+        for(;;){
+            // 終わるまで音を鳴らす
+            await this.Sound.playUntilDone(Chill);
             yield;            
         }
     });
     
+    // 旗が押されたときの動作(ネコ)
     cat.Event.whenFlag( async function( this: S3Sprite ){
+        // (0,0)へ移動する
         this.Motion.gotoXY({x:0, y:0});
     })
 
     // ms の値
     const sec1 = 1;
     const sec5 = 5;
-    // 5秒経過した？
+    // 「5秒経過した」フラグ
     let _5SecondsTimerOn = false;
     // ネコの速度
     const catStep = 5;
 
-    cat.Event.whenFlag( async function( this:S3Sprite ){
-        _5SecondsTimerOn = false;
-        await this.Control.wait(sec1+sec5);
-        _5SecondsTimerOn = true;
+    // 旗が押されたときの動作(ネコ)
+    cat.Event.whenFlag( async function( this:S3Sprite ){        
+        _5SecondsTimerOn = false; // 5秒経過していない
+        await this.Control.wait(sec1+sec5); // 1秒 + 5秒待つ
+        _5SecondsTimerOn = true;  // 5秒経過した
     });
 
+    // 旗が押されたときの動作(ネコ)
     cat.Event.whenFlag( async function*( this:S3Sprite ){
-        // 1秒待ってからマウスカーソルを追跡する
-        await this.Control.wait(sec1);
-        while(true){
+        // 旗をおした瞬間ではなく マウス移動させる時間余裕をもたせるために 待つ時間を設ける
+        await this.Control.wait(sec1); // 1秒待つ 
+        // ずっと繰り返す
+        for(;;){
             // マウスの方向へ向く
             this.Motion.pointToMouse();
+            // 5秒経過しているとき
             if(_5SecondsTimerOn){
-                // 枠内にあった最後の場所
+                // マウスカーソルの位置（枠内にあった最後の位置）
                 const mousePosition = Lib.mousePosition;
-                // マウスカーソルの場所へ1秒かけて移動する
+                // 取得した位置へ1秒かけて移動する
                 await this.Motion.glideToPosition( 1, mousePosition.x, mousePosition.y );
             }else{
+                // 5秒経過していないときは
+                // マウスカーソルのある方向へ移動する
                 this.Motion.moveSteps(catStep);
             }
             yield;

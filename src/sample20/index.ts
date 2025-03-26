@@ -12,16 +12,14 @@ import type {S3PlayGround} from "@typeJS/s3PlayGround";
 import type {S3Stage} from "@typeJS/s3Stage";
 import type {S3Sprite} from "@typeJS/s3Sprite";
 
-Pg.title = "Sample20】二匹のネコ、メッセージを送信受信して会話"
+Pg.title = "【Sample20】二匹のネコ、メッセージを送信受信して会話"
 
 const BackDrop = "BackDrop";
 const Cat1:string = "Cat";
 const Cat2:string = "Cat";
-
 let stage: S3Stage;
 let cat: S3Sprite;
 let cat2: S3Sprite;
-
 import {
     bubbleTextArr, 
     bubbleTextArr2, 
@@ -31,12 +29,16 @@ import {
     MessageByeBye,
     MessageTAIJYO} from './bubble';
 
-Pg.preload = async function preload($this: S3PlayGround) {
-    $this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/backdrop.png', BackDrop );
-    $this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/cat.svg', Cat1 );
-    $this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/cat2.svg', Cat2 );
+const ASSETS_HOST = 'https://amami-harhid.github.io/scratch3likejslib/web';
+
+// 事前ロード処理
+Pg.preload = async function(this: S3PlayGround) {
+    this.Image.load(`${ASSETS_HOST}/assets/backdrop.png`, BackDrop);
+    this.Image.load(`${ASSETS_HOST}/assets/cat.svg`, Cat1);
+    this.Image.load(`${ASSETS_HOST}/assets/cat2.svg`, Cat2);
 }
 
+// 事前準備処理
 Pg.prepare = async function prepare() {
     stage = new Lib.Stage();
     await stage.Image.add( BackDrop );
@@ -54,10 +56,11 @@ Pg.prepare = async function prepare() {
     cat2.Motion.pointInDirection( -90 );
     cat2.Motion.moveTo({x: 150, y: 0});
 }
-
+// イベント定義処理
 Pg.setting = async function setting() {
-
+    
     const BubbleScale = {scale:{x:100,y:100}};
+
     stage.Event.whenFlag( async function(this: S3Stage) {
         // 1秒待つ
         await this.Control.wait(1); // 1秒待つ

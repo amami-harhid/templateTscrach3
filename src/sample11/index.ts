@@ -16,34 +16,46 @@ const Cat:string = "Cat";
 let stage: S3Stage;
 let cat: S3Sprite;
 
+const ASSETS_HOST = 'https://amami-harhid.github.io/scratch3likejslib/web';
+
+// 事前ロード処理
 Pg.preload = async function preload(this: S3PlayGround) {
-    this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/Jurassic.svg', Jurassic);
-    this.Sound.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/Chill.wav', Chill);
-    this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/cat.svg', Cat);
+    this.Image.load(`${ASSETS_HOST}/assets/Jurassic.svg`, Jurassic);
+    this.Sound.load(`${ASSETS_HOST}/assets/Chill.wav`, Chill);
+    this.Image.load(`${ASSETS_HOST}/assets/cat.svg`, Cat);
 }
+// 事前準備処理
 Pg.prepare = async function prepare() {
     stage = new Lib.Stage();
     await stage.Image.add( Jurassic );
+    await stage.Sound.add( Chill );
     cat = new Lib.Sprite("Cat");
     cat.Motion.gotoXY({x:0, y:0});
     await cat.Image.add( Cat );
 }
+// イベント定義処理
 Pg.setting = async function setting() {
 
+    // 旗が押されたときの動作(ステージ)
     stage.Event.whenFlag(async function*( this:S3Stage ) {
-        await this.Sound.add( Chill );
+        // 音量 10
         await this.Sound.setOption( Lib.SoundOption.VOLUME, 10);
-        while(true){
-            await this.Sound.playUntilDone();
+        // ずっと繰り返す
+        for(;;){
+            // 終わるまで音を鳴らす
+            await this.Sound.playUntilDone(Chill);
             yield;
         }
     });
+    // 旗が押されたときの動作(ネコ)
     cat.Event.whenFlag(async function*( this:S3Sprite ) {
-        while(true){
-            // 繰り返すごとに 1秒待つ
+        // ずっと繰り返す
+        for(;;){
+            // 1秒待つ
             await this.Control.wait(1);
-            // １秒でどこかへ行く
+            // 場所をランダムに決める
             const randomPoint = Lib.randomPoint;
+            // 1秒で決めた場所へ移動する
             await this.Motion.glideToPosition(1,  randomPoint.x, randomPoint.y);
             yield;
         }

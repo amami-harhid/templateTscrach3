@@ -9,41 +9,37 @@ import type {S3Sprite} from "@typeJS/s3Sprite";
 Pg.title = "【Sample05】旗クリックでスプライトを表示する";
 
 const Jurassic = "Jurassic";
-const Chill = "Chill";
 const Cat = "Cat";
 const SpriteCatName = "cat";
 
 let stage: S3Stage;
 let cat: S3Sprite;
 
+// 事前ロード処理
 Pg.preload = function(this: S3PlayGround) {
     this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/Jurassic.svg', Jurassic);
-    this.Sound.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/Chill.wav', Chill);
     this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/cat.svg', Cat);
 }
-
+// 事前準備処理
 Pg.prepare = async function() {
     stage = new Lib.Stage();
     await stage.Image.add( Jurassic );
-    await stage.Sound.add( Chill );
-    await stage.Sound.setOption( Lib.SoundOption.VOLUME, 100)
 }
-
+// イベント定義処理
 Pg.setting = function() {
-    // フラグをクリックしたときの動作
-    // whenFlagのなかでStageの『this』を使わずに、
-    // Pのthisとして使うのであれば、アロー式（引数省略）で書いて
-    // this.cat として明示的に使うことでもよい。
-    // ここでは、this.cat は P.catと同じ意味である。
+    // 旗が押されたときの動作(ステージ)
     stage.Event.whenFlag( async function() {
-        // 旗クリックしたタイミングでネコのスプライトを作り、
-        // コスチュームを１個登録する
+        // ネコのスプライトを作る。
         cat = new Lib.Sprite( SpriteCatName );
     });
+    // 旗が押されたときの動作(ステージ)
     stage.Event.whenFlag( async function(){
         // コスチュームを１個登録する
         // whenFlagを定義した順番に実行されるので、
-        // ここの『旗クリック』の処理ではネコのスプライトは作成済である。
+        // ここの『旗クリック』の処理ではネコのスプライトは
+        // 作成済である。
+        // 本来は同じタイミングで実行する方が分かりやすい
+        // のだが、実験的に２箇所に分けている
         await cat.Image.add( Cat );
     });
 };

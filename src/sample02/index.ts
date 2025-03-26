@@ -8,15 +8,18 @@ const Jurassic = "Jurassic";
 
 let stage:S3Stage;
 
+// 事前ロード処理
 Pg.preload = function(this:S3PlayGround) {
     this.Image.load('../../assets/Jurassic.svg', Jurassic);
 }
+// 事前準備処理
 Pg.prepare = function() {
     stage = new Lib.Stage();
 }
+// イベント定義処理
 Pg.setting = function() {
     
-    // 旗が押されたときの動作
+    // 旗が押されたときの動作(ステージ)
     stage.Event.whenFlag( async function(this:S3Stage){
         await this.Image.add( Jurassic );
     });

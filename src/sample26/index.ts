@@ -101,12 +101,10 @@ Pg.preload = async function preload(this:S3PlayGround) {
 
 Pg.prepare = async function prepare() {
     stage = new Lib.Stage();
-    await stage.Sound.add( Chill );
-    await stage.Sound.setOption(Lib.SoundOption.VOLUME, 5);
     await stage.Image.add( Jurassic );
+    await stage.Sound.add( Chill );
     sprite = new Lib.Sprite("sprite");
     sprite.Looks.hide(); // 非表示
-    await sprite.Sound.add( Rip );
     await sprite.Image.add( Apple );
     await sprite.Image.add( Arrow1_a );
     await sprite.Image.add( Ballerina_a );
@@ -144,18 +142,24 @@ Pg.prepare = async function prepare() {
     await sprite.Image.add( Glow_1 );
     await sprite.Image.add( Gobo_a );
     await sprite.Image.add( Story_Z_3 );
+
+    await sprite.Sound.add( Rip );
     // 縦横 200%のサイズにする
     sprite.Looks.setSize({x:200, y:200}); 
+
+    console.log('last of prepare');
+
 }
 
 Pg.setting = async function setting() {
 
     // 旗が押されたときの動作
     stage.Event.whenFlag(async function*(this:S3Stage){
+        await this.Sound.setOption(Lib.SoundOption.VOLUME, 5);
         // ずっと繰り返す
         for(;;){
             // 終わるまで音を鳴らす
-            await this.Sound.playUntilDone();
+            await this.Sound.playUntilDone(Chill);
             yield;
         }
     });
@@ -176,7 +180,7 @@ Pg.setting = async function setting() {
             // スペースキーが押されたとき
             if(Lib.keyIsDown('Space')){
                 // 音を鳴らす
-                this.Sound.play();
+                this.Sound.play(Rip);
                 // 次のコスチュームに切り替える
                 this.Looks.nextCostume();
                 // スペースキーを押している間は、待つ
@@ -187,5 +191,5 @@ Pg.setting = async function setting() {
             yield;
         }
     });
-
+    console.log('last of setting');
 }

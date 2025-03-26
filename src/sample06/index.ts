@@ -16,37 +16,37 @@ const SpriteCatName = "cat";
 let stage: S3Stage;
 let cat: S3Sprite;
 
+// 事前ロード処理
 Pg.preload = async function preload(this:S3PlayGround) {
     this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/Jurassic.svg', Jurassic);
     this.Sound.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/Chill.wav', Chill);
     this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/cat.svg', Cat);
 }
+// 事前準備処理
 Pg.prepare = async function prepare() {
     stage = new Lib.Stage();
     await stage.Image.add( Jurassic );
-    // スプライトを作り、コスチュームを１個登録する
     cat = new Lib.Sprite( SpriteCatName );
     await cat.Image.add( Cat );
     await cat.Sound.add( Chill );
-    await cat.Sound.setOption( Lib.SoundOption.VOLUME, 10 );
     cat.Looks.hide(); // 非表示
 }
+// イベント定義処理
 Pg.setting = async function setting() {
 
-    // フラグをクリックしたときの動作
+    // 旗が押されたときの動作(ステージ)
     stage.Event.whenFlag( async function(){
-        // アロー関数なので、ここでの『this』はPである
         cat.Looks.show(); // 表示
     });
 
     // スプライト（ネコ）をクリックしたときの動作
     cat.Event.whenClicked( async function*(this:S3Sprite){
-        // 『this』は cat である
-        // catのインスタンスは 『ネコ』として受け取っている。
+        // 音量 10
+        await cat.Sound.setOption( Lib.SoundOption.VOLUME, 10 );
         // 「終わるまで音を鳴らす」をずっと繰り返す
-        while(true){
+        for(;;){
             // 処理が終わるまで待つために await をつける
-            await this.Sound.playUntilDone();
+            await this.Sound.playUntilDone(Chill);
             yield;
         }
     });

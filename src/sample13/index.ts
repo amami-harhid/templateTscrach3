@@ -17,44 +17,56 @@ const Cat:string = "Cat";
 let stage: S3Stage;
 let cat: S3Sprite;
 
-Pg.preload = async function preload(this: S3PlayGround) {
-    this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/Jurassic.svg', Jurassic);
-    this.Sound.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/Chill.wav', Chill);
-    this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/cat.svg', Cat);
+const ASSETS_HOST = 'https://amami-harhid.github.io/scratch3likejslib/web';
+
+// 事前ロード処理
+Pg.preload = async function(this: S3PlayGround) {
+    this.Image.load(`${ASSETS_HOST}/assets/Jurassic.svg`, Jurassic);
+    this.Sound.load(`${ASSETS_HOST}/assets/Chill.wav`, Chill);
+    this.Image.load(`${ASSETS_HOST}/assets/cat.svg`, Cat);
 }
-Pg.prepare = async function prepare() {
+
+// 事前準備処理
+Pg.prepare = async function() {
     stage = new Lib.Stage();
     await stage.Image.add( Jurassic );
+    await stage.Sound.add( Chill );
     cat = new Lib.Sprite("Cat");
     await cat.Image.add( Cat );
 }
-Pg.setting = async function setting() {
+// イベント定義処理
+Pg.setting = async function() {
 
-    /** 旗をクリックしたときのステージのイベント */
+    // 旗が押されたときの動作(ステージ)
     stage.Event.whenFlag(async function( this: S3Stage ) {
-        // function() の中なので、【this】はstageである。
+        // 音を登録
         await this.Sound.add( Chill );
+        // 音量=50
         await this.Sound.setOption( Lib.SoundOption.VOLUME, 50 )
     });
-    /** 旗をクリックしたときのステージのイベント */
+    // 旗が押されたときの動作(ステージ)
     stage.Event.whenFlag(async function*( this:S3Stage ) {
-        // function() の中なので、【this】はProxy(stage)である。
-        await this.Sound.add( Chill );
+        // 音量=50
         await this.Sound.setOption( Lib.SoundOption.VOLUME, 50 )
-        while(true){
-            await this.Sound.playUntilDone();
+        // ずっと繰り返す
+        for(;;){
+            // 終わるまで音を鳴らす
+            await this.Sound.playUntilDone(Chill);
             yield;
         }
     });
 
-    /** ステージをクリックしたときのステージイベント */
+    // ステージをタッチしたときの動作
     stage.Event.whenClicked(async function(){
+        // マウスカーソルの位置を取得する
         const mousePosition = Lib.mousePosition;
-        // ステージイベント処理の中でネコを動かす
+        // 取得した位置へ1秒で移動させる
         await cat.Motion.glideToPosition( 1, mousePosition );
     });
-    /** 旗をクリックしたときのネコのイベント */
+
+    // 旗が押されたときの動作(ネコ)
     cat.Event.whenFlag(async function( this:S3Sprite ){
+        // (0,0)へ移動する
         this.Motion.gotoXY({x:0, y:0});
     });
 }

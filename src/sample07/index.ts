@@ -16,46 +16,52 @@ const SpriteCatName:string = "cat";
 let stage: S3Stage;
 let cat: S3Sprite;
 
+// 事前ロード処理
 Pg.preload = async function preload(this: S3PlayGround) {
     this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/Jurassic.svg', Jurassic);
     this.Sound.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/Chill.wav', Chill);
     this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/cat.svg', Cat);
 }
+// 事前準備処理
 Pg.prepare = async function prepare() {
     stage = new Lib.Stage();
     await stage.Image.add( Jurassic );
     await stage.Sound.add( Chill);
-    await stage.Sound.setOption( Lib.SoundOption.VOLUME, 100);
     cat = new Lib.Sprite( SpriteCatName );
     await cat.Image.add( Cat );
 }
+// イベント定義処理
 Pg.setting = async function setting() {
 
-    // フラグクリック
+    // 旗が押されたときの動作(ステージ)
     stage.Event.whenFlag( async function*(this:S3Stage){
-        // 「終わるまで音を鳴らす」をずっと繰り返す、スレッドを起動する
+        // 音量 150
+        await stage.Sound.setOption( Lib.SoundOption.VOLUME, 150);
+        // ずっと繰り返す
         while(true){
-            await this.Sound.playUntilDone();
+            // 終わるまで音を鳴らす
+            await this.Sound.playUntilDone(Chill);
             yield;
         }
     });
-
-    cat.Event.whenBroadcastReceived('Start', async function(this:S3Sprite){
-        this.Motion.setXY({x:0, y:0});
-    })
-
+    // 歩く速さ
     const catStep = 5;
-    // フラグクリック
+
+    // 旗が押されたときの動作(ネコ)
     cat.Event.whenFlag( async function(this:S3Sprite){
-        // 初期化
+        // (0,0)へ移動
         this.Motion.gotoXY({x:0, y:0});
+        // 向き=90
         this.Motion.pointInDirection( 90 );
     });
 
+    // 旗が押されたときの動作(ネコ)
     cat.Event.whenFlag( async function*(this:S3Sprite){
-        // 「左右」に動く。端に触れたら跳ね返る。
-        while(true){
+        // ずっと繰り返す。
+        for(;;){
+            // 進む
             this.Motion.moveSteps(catStep);
+            // もし端に触れたら跳ね返る
             this.Motion.ifOnEdgeBounds();
             yield;
         }

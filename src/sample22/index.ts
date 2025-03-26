@@ -12,15 +12,18 @@ const Cat:string = "Cat";
 let stage: S3Stage;
 let cat: S3Sprite;
 
+const ASSETS_HOST = 'https://amami-harhid.github.io/scratch3likejslib/web';
 
-Pg.preload = async function preload(this:S3PlayGround) {
-    this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/Jurassic.svg','Jurassic');
-    this.Sound.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/Chill.wav','Chill');
-    this.Image.load('https://amami-harhid.github.io/scratch3likejslib/web/assets/cat.svg','Cat');
+Pg.preload = async function preload(this: S3PlayGround) {
+    this.Image.load(`${ASSETS_HOST}/assets/Jurassic.svg`, Jurassic);
+    this.Sound.load(`${ASSETS_HOST}/assets/Chill.wav`, Chill);
+    this.Image.load(`${ASSETS_HOST}/assets/cat.svg`, Cat);
 }
+
 Pg.prepare = async function prepare(this:S3PlayGround) {
     stage = new Lib.Stage();
     await stage.Image.add( Jurassic );
+    await stage.Sound.add( Chill );
     cat = new Lib.Sprite("Cat", {scale:{x:200,y:200}});//サイズを２倍にしています
     await cat.Image.add( Cat );
 }
@@ -28,10 +31,9 @@ Pg.prepare = async function prepare(this:S3PlayGround) {
 Pg.setting = async function setting() {
 
     stage.Event.whenFlag(async function*(this:S3Stage){
-        await this.Sound.add( Chill );
         await this.Sound.setOption(Lib.SoundOption.VOLUME, 20);
         for(;;){
-            await this.Sound.playUntilDone();
+            await this.Sound.playUntilDone(Chill);
             yield;
         }
     })
