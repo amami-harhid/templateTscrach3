@@ -56,8 +56,8 @@ Pg.setting = async function setting() {
         }
     });
 
-    // 旗が押される前の動作(ネコ)
-    cat.Event.whenRightNow( async function(this:S3Sprite){
+    // 旗が押されたときの動作(ネコ)
+    cat.Event.whenFlag( async function(this:S3Sprite){
         // 位置の初期化
         this.Motion.gotoXY({x:0, y:0});
         // 向きの初期化

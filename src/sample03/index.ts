@@ -22,12 +22,11 @@ Pg.prepare = async function() {
 }
 // イベント定義処理
 Pg.setting = function() {
-    // すぐに実行する。
-    stage.Event.whenRightNow( async function(this:S3Stage){
-        await this.Sound.setOption( Lib.SoundOption.VOLUME, 100);
-    });
+
     // 旗が押されたときの動作(ステージ)
     stage.Event.whenFlag( async function*(this:S3Stage){ 
+        // 音量 = 50
+        await this.Sound.setOption( Lib.SoundOption.VOLUME, 50);
         // 「終わるまで音を鳴らす」をずっと繰り返す
         while(true){
             // 処理が終わるまで待つために await をつける

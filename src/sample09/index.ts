@@ -36,14 +36,16 @@ Pg.prepare = async function prepare() {
 // 向き
 const direction01 = 1; // 実験としてグローバル変数とする
 
-// 事前準備処理
+// イベント定義処理
 Pg.setting = async function setting() {
 
     // 旗が押されたときの動作(ステージ)
     stage.Event.whenFlag(async function*(this:S3Stage){
         // 音量= 50
         await this.Sound.setOption( Lib.SoundOption.VOLUME, 50);
-        while(true){
+        // ずっと繰り返す
+        for(;;){
+            // 終わるまで音を鳴らす
             await this.Sound.playUntilDone(Chill);
             yield;
         };

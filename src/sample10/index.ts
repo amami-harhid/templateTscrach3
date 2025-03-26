@@ -78,9 +78,9 @@ Pg.setting = async function setting() {
             // マウスカーソルでタッチしたら、クローンを作る
             if( this.Sensing.isMouseTouching() ) {
                 await this.Control.clone();
+                // マウスタッチしている間、待つ
+                await this.Control.waitWhile( ()=>this.Sensing.isMouseTouching() ); 
             }
-            // マウスタッチしている間、待つ
-            await this.Control.waitWhile( ()=>this.Sensing.isMouseTouching() ); 
             yield;
         }
     });
@@ -91,7 +91,7 @@ Pg.setting = async function setting() {
         this.Motion.gotoXY({x:100, y:-100}); // 位置
         this.Looks.setSize({x:50, y:50}); // 大きさを縦横50%
         this.Looks.setEffect(Lib.ImageEffective.COLOR, 50); //色の効果
-        this.life = 5000; // 約5秒。1fps=0.033秒ごとにライフ(1)減る
+        this.life = 5000; // 約5秒
         this.Looks.show(); // 表示する
         // ずっと繰り返す
         for(;;){
@@ -108,7 +108,18 @@ Pg.setting = async function setting() {
             }
             yield;
         }
+    });
+    // クローンされたときの動作(ネコ)
+    cat.Control.whenCloned(async function*(this:S3Sprite){
+        // ずっと繰り返す
+        for(;;){
+            if(this.life < 0){ // ライフがゼロより小さくなったとき
+                break; // 「ずっと繰り返す」を抜ける
+            }
+            yield;
+        }
         // このクローンを削除する
         this.Control.remove();
     });
+
 }

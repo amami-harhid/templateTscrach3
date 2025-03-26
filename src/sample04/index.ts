@@ -22,13 +22,16 @@ Pg.prepare = async function() {
 // イベント定義処理
 Pg.setting = async function() {
 
+    stage.Event.whenFlag( async function(this:S3Stage){
+        // 音量20
+        await this.Sound.setOption( Lib.SoundOption.VOLUME, 20)
+    })
+
     // ステージをクリックしたときの動作
     // 追記：音が鳴っている最中に再度クリックしたときの
     // 動作に着目してください（前回のイベント=音を鳴らす)をキャンセルした
     // うえで音が鳴り始めます。
     stage.Event.whenClicked( async function*(this:S3Stage){
-        // 音量20
-        await this.Sound.setOption( Lib.SoundOption.VOLUME, 20)
         // 「終わるまで音を鳴らす」をずっと繰り返す
         for(;;){
             // 処理が終わるまで待つために await をつける

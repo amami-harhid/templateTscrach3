@@ -47,6 +47,12 @@ Pg.setting = async function setting() {
             yield;
         }
     });
+
+    cat.Event.whenFlag(async function(this:S3Sprite){
+        // 初期位置
+        this.Motion.gotoXY({x:0, y:0});
+    });
+
     // 旗が押されたときの動作(ネコ)
     cat.Event.whenFlag(async function*( this:S3Sprite ) {
         // ずっと繰り返す

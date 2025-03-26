@@ -7,6 +7,7 @@ import {Pg, Lib} from "tscratch3likejs/s3lib-importer";
 import type {S3PlayGround} from "@typeJS/s3PlayGround";
 import type {S3Stage} from "@typeJS/s3Stage";
 import type {S3Sprite} from "@typeJS/s3Sprite";
+import type {S3Point} from "@typeJS/s3Point";
 
 Pg.title = "【Sample12】クリックした場所へ移動する"
 
@@ -49,14 +50,23 @@ Pg.setting = async function setting() {
         }
     });
     // ステージをクリックしたときの動作
-    stage.Event.whenClicked(async function() {
+    stage.Event.whenClicked(async function(this:S3Stage) {
         // マウスカーソルの位置を取得する
         const mousePosition = Lib.mousePosition;
         // 取得した位置へ移動する
-        cat.Motion.gotoXY(mousePosition)
+        this.Event.broadcast('MOUSE_CLICK', mousePosition);
     });
+
     // 旗が押されたときの動作(ネコ)
     cat.Event.whenFlag(async function( this:S3Sprite ){
         this.Motion.gotoXY({x:0, y:0});
     });
+
+    // メッセージ(MOUSE_CLICK)を受け取ったときの動作
+    cat.Event.whenBroadcastReceived('MOUSE_CLICK', 
+        async function(this:S3Sprite, mousePosition:S3Point){
+            this.Motion.gotoXY(mousePosition)
+        }
+    );
+
 }
