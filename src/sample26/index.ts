@@ -174,7 +174,7 @@ Pg.setting = async function setting() {
 
     // 旗が押されたときの動作
     sprite.Event.whenFlag(async function*(this:S3Sprite){
-
+        // スプライトに登録されている画像の名前を配列として取り出す
         const SpriteImageNames = this.Image.names();
 
         // ずっと繰り返す
