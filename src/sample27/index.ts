@@ -1,0 +1,131 @@
+/**
+ * sample27
+ * ネコが色にさわったらスコアアップ
+ */
+import {Pg, Lib} from "tscratch3likejs/s3lib-importer";
+import type {S3PlayGround} from "@typeJS/s3PlayGround";
+import type {S3Stage} from "@typeJS/s3Stage";
+import type {S3Sprite} from "@typeJS/s3Sprite";
+import type {S3Monitors} from "@typeJS/s3Monitors";
+
+Pg.title = "【Sample27】色に触ればカウントアップ ※雲(薄い水色), 植物(オレンジ色)"
+
+const Jurassic01:string = "Jurassic01";
+const Chill:string = "Chill";
+const Rip:string = "Rip";
+const Cat01:string = "Cat01";
+const Cat02:string = "Cat02";
+const MonitorNameSCORE:string = 'SCORE';
+
+let stage: S3Stage;
+let cat: S3Sprite
+let monitors: S3Monitors;
+let score = 0;
+const AssetHost = "https://amami-harhid.github.io/scratch3likejslib/web";
+
+Pg.preload = async function preload(this:S3PlayGround) {
+    this.Image.load('../../assets/Jurassic.svg', Jurassic01 );
+    this.Sound.load(AssetHost+'/assets/Chill.wav', Chill );
+    this.Image.load(AssetHost+'/assets/cat.svg', Cat01 );
+    this.Image.load(AssetHost+'/assets/cat2.svg', Cat02 );
+    this.Sound.load('../../assets/Rip.wav', Rip );
+}
+Pg.prepare = async function prepare() {
+
+    // ステージを作る
+    stage = new Lib.Stage();
+    // ステージに背景を追加
+    await stage.Image.add( Jurassic01 );
+    // Chill を追加
+    await stage.Sound.add( Chill );
+
+    // スプライト(ball)を作る
+    cat = new Lib.Sprite("cat");
+    // コスチュームを追加
+    await cat.Image.add( Cat01 );
+    await cat.Image.add( Cat02 );
+    await cat.Sound.add( Rip );
+
+    monitors = new Lib.Monitors();
+    monitors.add(MonitorNameSCORE);
+    monitors.get(MonitorNameSCORE).setPosition({x:5, y:20});
+    monitors.get(MonitorNameSCORE).label = "スコア";
+    monitors.get(MonitorNameSCORE).value = 0;
+}
+
+Pg.setting = async function setting() {
+
+    /**
+     * 旗を押されたときの動き
+     * STARTメッセージを送る
+     */
+    stage.Event.whenFlag(async function(this:S3Stage){
+        // メッセージを送る
+        this.Event.broadcast('START');
+    });
+
+    /**
+     * メッセージ(START)を受け取ったときの動き
+     */
+    stage.Event.whenBroadcastReceived('START', async function*(this:S3Stage){
+        // 音量 10
+        await this.Sound.setOption(Lib.SoundOption.VOLUME, 10);
+        // ずっと繰り返す
+        for(;;){
+            // 終わるまで音を鳴らす
+            await this.Sound.playUntilDone(Chill);
+            yield;
+        }
+    })
+
+    /**
+     * メッセージ(START)を受け取ったときの動き
+     * マウスカーソルへ向かって進む
+     */
+    cat.Event.whenBroadcastReceived('START', async function*(this:S3Sprite){
+        // ずっと繰り返し、マウスカーソルへ向いて進む
+        for(;;){
+            // マウスカーソルへ向く
+            this.Motion.pointToMouse();
+            // 進む
+            this.Motion.moveSteps(5);
+            yield;
+        }
+    });
+
+    /**
+     * メッセージ(START)を受け取ったときの動き
+     * 色に触れたらスコアアップする
+     */
+    cat.Event.whenBroadcastReceived('START', async function*(this:S3Sprite){
+        const ColorCloud = '#aadcdc'; // 雲の色、薄い水色 
+        const ColorPlantOrange = '#e6781e';// オレンジ色の植物
+        // ずっと繰り返す
+        for(;;){
+            // オレンジの植物の色にふれたとき
+            if(await this.Sensing.isTouchingToColor(ColorPlantOrange)){
+                //カウントアップ
+                monitors.get(MonitorNameSCORE).value = ++score;
+                // 音を鳴らす
+                this.Sound.play( Rip );
+                // オレンジの植物の色にふれている間、待つ
+                while(await this.Sensing.isTouchingToColor(ColorPlantOrange)){
+                    yield;
+                }
+            }
+            // 雲にふれたとき
+            if(await this.Sensing.isTouchingToColor(ColorCloud)){
+                //カウントアップ
+                monitors.get(MonitorNameSCORE).value = ++score;
+                // 音を鳴らす
+                this.Sound.play( Rip );
+                // 雲の色にふれている間、待つ
+                while(await this.Sensing.isTouchingToColor(ColorCloud)){
+                    yield;
+                }
+            }
+            yield;
+        }
+    });
+
+}
