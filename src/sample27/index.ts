@@ -8,7 +8,7 @@ import type {S3Stage} from "@typeJS/s3Stage";
 import type {S3Sprite} from "@typeJS/s3Sprite";
 import type {S3Monitors} from "@typeJS/s3Monitors";
 
-Pg.title = "【Sample27】色に触ればカウントアップ ※雲(薄い水色), 植物(オレンジ色)"
+Pg.title = "【Sample27】色に触れたときカウントアップ ※雲(薄い水色), 植物(オレンジ色)"
 
 const Jurassic01:string = "Jurassic01";
 const Chill:string = "Chill";
@@ -113,7 +113,7 @@ Pg.setting = async function setting() {
                     yield;
                 }
             }
-            // 雲にふれたとき
+            // 雲の色にふれたとき
             if(await this.Sensing.isTouchingToColor(ColorCloud)){
                 //カウントアップ
                 monitors.get(MonitorNameSCORE).value = ++score;
