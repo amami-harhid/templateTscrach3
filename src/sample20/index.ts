@@ -10,7 +10,7 @@
 import {Pg, Lib} from "tscratch3likejs/s3lib-importer";
 import type {S3PlayGround} from "@typeJS/s3PlayGround";
 import type {S3Stage} from "@typeJS/s3Stage";
-import type {S3Sprite} from "@typeJS/s3Sprite";
+import type {S3Sprite, SayProperty} from "@typeJS/s3Sprite";
 
 Pg.title = "【Sample20】二匹のネコ、メッセージを送信受信して会話"
 
@@ -59,7 +59,7 @@ Pg.prepare = async function prepare() {
 // イベント定義処理
 Pg.setting = async function setting() {
     
-    const BubbleScale = {scale:{x:100,y:100}};
+    const BubbleScale:SayProperty = {scale:{w:100,h:100}};
 
     stage.Event.whenFlag( async function(this: S3Stage) {
         // 1秒待つ

@@ -89,7 +89,7 @@ Pg.setting = async function setting() {
     // クローンされたときの動作(ネコ)
     cat.Control.whenCloned(async function*(this:S3Sprite){
         this.Motion.gotoXY({x:100, y:-100}); // 位置
-        this.Looks.setSize({x:50, y:50}); // 大きさを縦横50%
+        this.Looks.setSize({w:50, h:50}); // 大きさを縦横50%
         this.Looks.setEffect(Lib.ImageEffective.COLOR, 50); //色の効果
         this.life = 5000; // 約5秒
         this.Looks.show(); // 表示する

@@ -145,7 +145,7 @@ Pg.prepare = async function prepare() {
 
     await sprite.Sound.add( Rip );
     // 縦横 200%のサイズにする
-    sprite.Looks.setSize({x:200, y:200}); 
+    sprite.Looks.setSize({w:200, h:200}); 
 
 }
 

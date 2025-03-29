@@ -105,19 +105,19 @@ Pg.setting = async function setting() {
             // ずっと繰り返す(入れ子)
             for(;;){
                 // サイズを指定した量だけ変える（減らす）
-                this.Looks.changeSizeBy({x:-CHANGE_SIZE, y: -CHANGE_SIZE});
+                this.Looks.changeSizeBy({w:-CHANGE_SIZE, h: -CHANGE_SIZE});
                 const scale = this.Looks.getSize();
                 // サイズが決めた値より小さくなったとき繰り返しを抜ける
-                if(scale.x < SCALE.MIN) break;
+                if(scale.w < SCALE.MIN) break;
                 yield;
             }
             // ずっと繰り返す(入れ子)
             for(;;){
                 // サイズを指定した量だけ変える（増やす）
-                this.Looks.changeSizeBy({x: +CHANGE_SIZE, y: +CHANGE_SIZE});
+                this.Looks.changeSizeBy({w: +CHANGE_SIZE, h: +CHANGE_SIZE});
                 const scale = this.Looks.getSize();
                 // サイズが決めた値より大きくなったとき繰り返しを抜ける
-                if(scale.x > SCALE.MAX) break;
+                if(scale.w > SCALE.MAX) break;
                 yield;
             }
             // フキダシ 終わりのとき
@@ -182,7 +182,7 @@ Pg.setting = async function setting() {
     // 旗が押されたときの動作(ネコ２)
     cat2.Event.whenFlag( async function*( this: S3Sprite ) {
         // 大きさ 60 %
-        const scale = {x: 60, y:60};
+        const scale = {w: 60, h:60};
         // ずっと繰り返す
         for(;;){
             // フキダシテキスト配列からランダムな要素を取り出す

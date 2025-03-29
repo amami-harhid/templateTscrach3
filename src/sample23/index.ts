@@ -134,7 +134,7 @@ Pg.setting = async function setting() {
 
     let blockCount = 0;
     block.Event.whenFlag( async function*(this:S3Sprite){
-        this.Looks.setSize({x:50, y:50});
+        this.Looks.setSize({w:50, h:50});
         const pos = this.Motion.getCurrentPosition();
         const demension = this.Looks.drawingDimensions();
         blockCount = 0;

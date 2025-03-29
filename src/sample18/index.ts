@@ -44,7 +44,7 @@ Pg.prepare = async function prepare() {
     await cross.Image.add( Cross01 );
     await cross.Image.add( Cross02 );
     await cross.Sound.add( Pew );
-    cross.Looks.setSize({x:100,y:100});
+    cross.Looks.setSize({w:100,h:100});
     // 座標y を ステージの高さの半分×0.6だけ下げる 
     cross.Motion.setY(-Lib.stageHeight/2 * 0.6); 
 }
@@ -109,7 +109,7 @@ Pg.setting = async function setting() {
     // クローンが作られたときの動作(十字)
     cross.Control.whenCloned( async function( this: S3Sprite ){
         // サイズを 20%にしておく
-        const size:SizeProperty = {x:20, y:20};
+        const size:SizeProperty = {w:20, h:20};
         this.Looks.setSize(size);
         // 上方向にしておく
         this.Motion.pointInDirection(0);

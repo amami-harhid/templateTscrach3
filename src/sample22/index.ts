@@ -1,7 +1,7 @@
 import {Pg, Lib} from "tscratch3likejs/s3lib-importer";
 import type {S3PlayGround} from "@typeJS/s3PlayGround";
 import type {S3Stage} from "@typeJS/s3Stage";
-import type {S3Sprite} from "@typeJS/s3Sprite";
+import type {S3Sprite, SizeProperty} from "@typeJS/s3Sprite";
 
 Pg.title = "【Sample22】スピーチ機能：「お話しを終わるまで待つ」を続ける"
 
@@ -24,7 +24,8 @@ Pg.prepare = async function prepare(this:S3PlayGround) {
     stage = new Lib.Stage();
     await stage.Image.add( Jurassic );
     await stage.Sound.add( Chill );
-    cat = new Lib.Sprite("Cat", {scale:{x:200,y:200}});//サイズを２倍にしています
+    const scale: SizeProperty = {w:200,h:200};
+    cat = new Lib.Sprite("Cat", {scale: scale});//サイズを２倍にしています
     await cat.Image.add( Cat );
 }
 

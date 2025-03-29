@@ -44,7 +44,7 @@ Pg.prepare = async function() {
     cross = new Lib.Sprite("Cross");
     await cross.Image.add( Cross01 );
     await cross.Image.add( Cross02 );
-    cross.Looks.setSize({x:300,y:300});
+    cross.Looks.setSize({w:300, h:300});
     // 蝶を作る
     butterfly = new Lib.Sprite("Butterfly");
     await butterfly.Image.add( Butterfly01 );
@@ -102,7 +102,7 @@ Pg.setting = async function() {
                 // 取得した位置へ蝶を移動させる
                 butterfly.Motion.gotoXY(mousePosition);
                 // 蝶のサイズを 縦横 15% にする
-                const scale = {x: 15, y: 15}
+                const scale = {w: 15, h: 15}
                 butterfly.Looks.setSize(scale);
                 // ランダムな方向へ蝶を向ける
                 butterfly.Motion.pointInDirection(Lib.randomDirection);
