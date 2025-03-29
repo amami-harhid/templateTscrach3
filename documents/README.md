@@ -401,6 +401,110 @@ Sprite.Event.broadcast(messageId: string, arg1, arg2, arg3, ・・・);
 ```typescript
 await Sprite.Event.broadcastAndWait(messageId: string, arg1, arg2, arg3, ・・・);
 ```
+## Control  ( 制御 )
+
+#### wait () seconds   ( 〇秒待つ )
+```typescript
+// seconds秒待つ
+await Sprite.Control.wait( seconds : number); 
+```
+#### repeat ()   ( 〇回繰り返す )
+```typescript
+// 10 回繰り返すの例
+for( const _ of Lib.Iterator(10)) {
+    // 繰り返し処理を書く
+    yield; // 最終行は yield とする
+}
+```
+
+#### forever   ( ずっと繰り返す )
+```typescript
+for(;;) {
+    // 繰り返し処理を書く
+    yield; // 最終行は yield とする
+}
+```
+```typescript
+while(true) {
+    // 繰り返し処理を書く
+    yield; // 最終行は yield とする
+}
+```
+#### if () then    ( もし〇なら )
+```typescript
+// 変数 count が 10と等しい場合の例
+if( count == 10 ){
+    // 条件成立時の処理を書く
+}
+```
+#### if () then else   ( もし〇なら、でなければ )
+```typescript
+// 変数 count が 10と等しい場合の例
+if( count == 10 ){
+    // 条件成立時の処理を書く
+}else{
+    // 条件不成立時の処理を書く
+}
+```
+#### wait until ()   ( 〇まで待つ )
+```typescript
+// 変数 count が 10になるまで待つ、の例
+await Sprite.Control.waitUntil( ()=>count==10);
+```
+#### repeat until ()   ( 〇まで繰り返す )
+```typescript
+// 変数 count が 10になるまで繰り返す、の例
+for(;;){
+    if( count == 10 ){
+        break;
+    }
+    // 繰り返しの処理を書く
+}
+```
+#### while ()   ( 〇の間、繰り返す ): turbowarpのブロック
+```typescript
+// 変数 count が 10である間繰り返す、の例
+while( count == 10 ){
+    // 繰り返しの処理を書く
+}
+```
+#### stop all  ( 全てを止める )
+```typescript
+Pg.Control.stopAll();
+```
+#### stop this script  ( このスクリプトを止める )
+```typescript
+// 工事中
+```
+#### stop other script in sprite ( スプライトの他の処理を止める )
+```typescript
+// 工事中
+```
+#### when I start as a clone ( クローンされたとき )
+```typescript
+Sprite.Control.whenCloned( async function(this:S3Sprite){
+    // クローンされたときの処理を書く
+});
+```
+#### create clone of ()  ( 〇のクローンをつくる )
+```typescript
+await Sprite.Control.clone();
+```
+#### delete this clone  ( このクローンを削除する )
+```typescript
+await Sprite.Control.remove();
+```
+## Sensing  ( 調べる )
+
+#### Touching mouse pointer  ( マウスポインターに触れている )
+```typescript
+if( Sprite.Sensing.isMouseTouching() ) {
+    // マウスポインターに触れているときの処理を書く
+}
+```
+
+
+
 
 
 

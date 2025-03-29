@@ -89,6 +89,9 @@ Pg.setting = async function setting() {
             this.Motion.pointToMouse();
             // 進む
             this.Motion.moveSteps(5);
+            // 現在座標を取得してログ出力
+            const {x,y} = this.Motion.getCurrentPosition();
+            console.log(`x=${x}, y=${y}`);
             yield;
         }
     });
