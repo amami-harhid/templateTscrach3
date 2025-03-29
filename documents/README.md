@@ -290,14 +290,22 @@ Sprite.Looks.goForwardLayers( layer: number );
 ```typescript
 Sprite.Looks.goBackwardLayers( layer: number );
 ```
-#### Costumes number  ( コスチュームの番号 )  【工事中】
-
-#### Costumes name  ( コスチュームの名前 )  【工事中】
-
-#### Backgrounds number  ( 背景の番号 )  【工事中】
-
-#### Backgrounds name  ( 背景の名前 )  【工事中】
-
+#### Costumes number  ( コスチュームの番号 )
+```typescript
+// 工事中
+```
+#### Costumes name  ( コスチュームの名前 )
+```typescript
+// 工事中
+```
+#### Backgrounds number  ( 背景の番号 )
+```typescript
+// 工事中
+```
+#### Backgrounds name  ( 背景の名前 ) 
+```typescript
+// 工事中
+```
 #### Size  ( 大きさ ) 
 ```typescript
 const scale = Sprite.Looks.getSize();
@@ -310,6 +318,89 @@ const size = Sprite.Looks.drawingDimensions();
 console.log(`width=${size.width}, h=${size.height}`);
 ```
 
+## Sounds ( 音 )
+
+#### Play sound ( ) until done  ( 終わるまで〇の音を鳴らす )
+```typescript
+await Sprite.Sound.playUntilDone( name : string );
+```
+#### Play sound ( )   ( 〇の音を鳴らす )
+```typescript
+Sprite.Sound.play( name : string );
+```
+
+#### Stop all sounds  (すべての音をとめる)
+```typescript
+Sprite.Sound.stop();
+```
+#### Set pitch to ( )  ( ピッチを〇にする )
+```typescript
+// ピッチを 90 にする ( デフォは 100 )
+Sprite.Sound.setOption(Lib.SoundOption.PITCH, 90);
+```
+#### Set volume to ( )  ( 音量を〇%にする )
+```typescript
+// 音量を 10%にする
+Sprite.Sound.setOption(Lib.SoundOption.VOLUME, 10);
+```
+#### Change pitch effect by ( )  ( ピッチの効果を〇ずつ変える )
+```typescript
+    // 工事中
+```
+#### Change volume by ( )  ( 音量を〇ずつ変える )
+```typescript
+    // 工事中
+```
+## Events  ( イベント )
+
+#### When flag clicked  ( 旗が押されたとき )
+```typescript
+Sprite.Event.whenFlag( async function(this:S3Sprite){
+
+});
+```
+#### When () key pressed  ( 〇キーが押されたとき )
+```typescript
+Sprite.Event.whenKeyPressed( key: string , async function(this:S3Sprite){
+
+});
+```
+#### When this sprite clicked  ( このスプライトが押されたとき )
+```typescript
+Sprite.Event.whenClicked( async function(this:S3Sprite){
+
+});
+```
+#### When backdrop switches to ()  ( 背景が〇に切り替わったとき )
+```typescript
+// 工事中
+```
+#### When loudness > ()  ( マイク音量が〇より大のとき )
+```typescript
+// マイク関連を対応する予定は無し
+```
+#### When timer > ()  ( タイマーが〇より大のとき )
+```typescript
+// 工事中
+```
+#### When I recieve 〇  ( メッセージ〇を受け取ったとき )
+```typescript
+Sprite.Event.whenBroadcastReceived( 
+                    messageId:string, 
+                    async function(this:S3Sprite, arg1, arg2, arg3・・・){
+
+    }
+);
+```
+#### broadcast 〇  ( メッセージ〇を送る )
+```typescript
+Sprite.Event.broadcast(messageId: string, arg1, arg2, arg3, ・・・);
+```
+
+#### broadcast 〇 and wait ( メッセージ〇を送って待つ )
+```typescript
+await Sprite.Event.broadcastAndWait(messageId: string, arg1, arg2, arg3, ・・・);
+```
 
 
 
