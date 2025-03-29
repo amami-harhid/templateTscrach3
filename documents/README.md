@@ -290,7 +290,25 @@ Sprite.Looks.goForwardLayers( layer: number );
 ```typescript
 Sprite.Looks.goBackwardLayers( layer: number );
 ```
+#### Costumes number  ( コスチュームの番号 )  【工事中】
 
+#### Costumes name  ( コスチュームの名前 )  【工事中】
+
+#### Backgrounds number  ( 背景の番号 )  【工事中】
+
+#### Backgrounds name  ( 背景の名前 )  【工事中】
+
+#### Size  ( 大きさ ) 
+```typescript
+const scale = Sprite.Looks.getSize();
+console.log(`w=${scale.w}, h=${scale.h}`);
+```
+
+#### 縦横表示サイズ 【Tscratch3 のみ】
+```typescript
+const size = Sprite.Looks.drawingDimensions();
+console.log(`width=${size.width}, h=${size.height}`);
+```
 
 
 
