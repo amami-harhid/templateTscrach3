@@ -1,4 +1,4 @@
-# how to use (使い方)
+# Comparison with Scratch3 ( Scratch3 との比較 )
 
 ## Motion (動き)
 
