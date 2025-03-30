@@ -496,12 +496,171 @@ await Sprite.Control.remove();
 ```
 ## Sensing  ( 調べる )
 
-#### Touching mouse pointer  ( マウスポインターに触れている )
+#### Touching edge  ( 端に触れた )
 ```typescript
-if( Sprite.Sensing.isMouseTouching() ) {
-    // マウスポインターに触れているときの処理を書く
-}
+Sprite.Sensing.isTouchingEdge() : void;
 ```
+```typescript
+sprite.Event.whenFlag( async function*(this:S3Sprite){
+    for(;;){
+        // 端に触れたとき
+        if( this.Sensing.isTouchingVirticalEdge() ) {
+            // 音を鳴らす
+            this.Sound.play(Nyaaa);
+        }
+    }
+});
+```
+
+#### Touching virtival edge  ( 左右の端に触れた )
+```typescript
+Sprite.Sensing.isTouchingVirticalEdge() : boolean;
+```
+```typescript
+sprite.Event.whenFlag( async function*(this:S3Sprite){
+    let counter = 0;
+    for(;;){
+        // 左右の端に触れたとき
+        if( this.Sensing.isTouchingVirticalEdge() ) {
+            counter += 1;
+        }
+        if( counter > 100) {
+            break;
+        }
+    }
+    console.log('100回左右の端に触れた');
+});
+```
+#### Touching virtival edge  ( 上下の端に触れた )
+```typescript
+Sprite.Sensing.isTouchingHorizontalEdge() : boolean;
+```
+```typescript
+sprite.Event.whenFlag( async function*(this:S3Sprite){
+    let counter = 0;
+    for(;;){
+        // 上下の端に触れたとき
+        if( this.Sensing.isTouchingHorizontalEdge() ) {
+            counter += 1;
+        }
+        if( counter > 100) {
+            break;
+        }
+    }
+    console.log('100回上下の端に触れた');
+});
+```
+#### Touching mouse pointer  ( マウスポインターに触れた )
+```typescript
+Sprite.Sensing.isMouseTouching() : boolean;
+```
+```typescript
+sprite.Event.whenFlag( async function*(this:S3Sprite){
+    for(;;){
+        // マウスポインターに触れたときループを抜ける
+        if( this.Sensing.isMouseTouching() ) {
+            break;
+        }
+    }
+    console.log('マウスポインターが触れた');
+});
+```
+#### Touching no mouse pointer  ( マウスポインターに触れていない )
+```typescript
+Sprite.Sensing.isNotMouseTouching() : boolean;
+```
+```typescript
+sprite.Event.whenFlag( async function*(this:S3Sprite){
+    for(;;){
+        // マウスポインターに触れていないときループを抜ける
+        if( this.Sensing.isNotMouseTouching() ) {
+            break;
+        }
+    }
+    console.log('マウスポインターが離れた');
+});
+```
+#### Touching color ()  ( 〇の色に触れた  )
+
+```typescript
+/**
+ * 相手の色に触れていることを判定する
+ * @param targetRGB #始まりのRGB文字列(#始まりの16進数)
+ */
+Sprite.Sensing.isTouchingToColor( color: string):boolean;
+```
+```typescript
+sprite.Event.whenFlag( async function*(this:S3Sprite){
+    const targetRGB = '#ff0000'; // 赤色
+    for(;;){
+        // 赤に触れたとき ループを抜ける
+        if( this.Sensing.isTouchingToColor( targetRGB ) ) {
+            break;
+        }
+    }
+});
+```
+#### Color () is touching color ()  ( 〇の色が〇の色に触れた  )
+
+```typescript
+/**
+ * 自身の色が相手の色に触れていることを判定する
+ * @param targetRGB 相手のRGB文字列 (#始まりの16進数)
+ * @param maskRGB 自身のRGB文字列 (#始まりの16進数)
+ */
+Sprite.Sensing.colorIsTouchingToColor( targetRGB: string, maskRGB: string):boolean;
+```
+```typescript
+sprite.Event.whenFlag( async function*(this:S3Sprite){
+    const targetRGB = '#ff0000'; // 赤色
+    const maskRGB = '#0000ff'; // 赤色
+    for(;;){
+        // 青色が赤色に触れたとき ループを抜ける
+        if( this.Sensing.colorIsTouchingToColor( targetRGB, maskRGB ) ) {
+            break;
+        }
+    }
+});
+```
+#### Distance to mouse pointer  ( マウスポインターまでの距離  )
+```typescript
+// 工事中
+```
+#### Distance to target sprite  ( 他のスプライトまでの距離  )
+```typescript
+// 工事中
+```
+#### Ask () and wait   ( 〇と聞いて待つ  )
+```typescript
+// 工事中
+Entity.Sensing.askAndWait( question : string ) : Promise<string>;
+```
+```typescript
+sprite.Event.whenFlag( async function*(this:S3Sprite){
+    const question = '難しさはどれにする? ( 1:やさしい, 2:ふつう, 3:むずかしい)';
+    let answer;
+    for(;;){
+        answer = await this.Sensing.askAndWait( question );
+        if(answer == '1' || answer == '2' || answer == '3' ) {
+            break;
+        }
+        yield;
+    }
+    console.log(`答えは 『${answer}』だよ`)
+});
+```
+#### Key () pressed    ( キー〇が押された )
+```typescript
+/**
+ * キーが押された？
+ * @param key キーの名前
+ */
+Entity.Sensing.isKeyDown( question : string ) : boolean;
+```
+
+
+
+
 
 
 
