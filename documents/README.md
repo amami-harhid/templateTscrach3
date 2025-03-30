@@ -657,6 +657,16 @@ sprite.Event.whenFlag( async function*(this:S3Sprite){
  */
 Entity.Sensing.isKeyDown( question : string ) : boolean;
 ```
+```typescript
+sprite.Event.whenFlag( async function*(this:S3Sprite){
+    for(;;){
+        if(this.Sensing.isKeyDown( 'Space' )){
+            // 弾を発射するメッセージを送る
+            this.Event.broadcast('SHOT');
+        }
+    }
+});
+```
 
 
 
