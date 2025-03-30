@@ -95,7 +95,7 @@ Pg.setting = async function setting() {
     });
     ball.Event.whenBroadcastReceived('Start', async function*(this:S3Sprite){
         while(true){
-            if(this.Sensing.isTouchingTarget(block)){
+            if(this.Sensing.isTouchingToSprite(block)){
                 this.Motion.turnRightDegrees( Lib.getRandomValueInRange(-5, 5)+180 );
             }
             yield;
@@ -103,7 +103,7 @@ Pg.setting = async function setting() {
     });
     ball.Event.whenBroadcastReceived('Start', async function*(this:S3Sprite){
         for(;;){
-            if( this.Sensing.isTouchingTarget(paddle)){
+            if( this.Sensing.isTouchingToSprite(paddle)){
                 this.Motion.turnRightDegrees( Lib.getRandomValueInRange(-2, 2)+180 );
                 this.Motion.moveSteps(BallSpeed*2);
                 await this.Control.wait(0.2); // 0.2秒待つ
@@ -113,7 +113,7 @@ Pg.setting = async function setting() {
     });
     line.Event.whenFlag(async function*(this:S3Sprite){
         for(;;){
-            if( this.Sensing.isTouchingTarget(ball)){
+            if( this.Sensing.isTouchingToSprite(ball)){
                 // Ball に触れたとき
                 this.Event.broadcast(GameOver);
                 break;
@@ -152,7 +152,7 @@ Pg.setting = async function setting() {
         blockCount+=1;
         this.Looks.show();
         while(true){
-            if(this.Sensing.isTouchingTarget(ball)){
+            if(this.Sensing.isTouchingToSprite(ball)){
                 score += 1;
                 this.Sound.play(Pew);
                 this.Looks.hide();

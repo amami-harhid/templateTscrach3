@@ -660,12 +660,26 @@ Entity.Sensing.isKeyDown( question : string ) : boolean;
 ```typescript
 sprite.Event.whenFlag( async function*(this:S3Sprite){
     for(;;){
-        if(this.Sensing.isKeyDown( 'Space' )){
+        if(this.Sensing.isKeyDown( Lib.Keyboard.SPACE )){
             // 弾を発射するメッセージを送る
             this.Event.broadcast('SHOT');
         }
     }
 });
+```
+```typescript
+/** スペースキー */
+Lib.Keyboard.SPACE
+/** 左矢印キー */
+Lib.Keyboard.LEFT
+/** 右矢印キー */
+Lib.Keyboard.RIGHT
+/** 上向き矢印キー */
+Lib.Keyboard.UP
+/** 下向き矢印キー */
+Lib.Keyboard.DOWN
+/** エスケープキー */
+Lib.Keyboard.ESCAPE
 ```
 
 

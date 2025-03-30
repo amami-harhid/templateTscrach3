@@ -79,11 +79,11 @@ Pg.setting = async function setting() {
         // ずっと繰り返す
         for(;;){
             // キー(右矢印)が押されているとき
-            if(Lib.keyIsDown('RightArrow')){
+            if(Lib.keyIsDown(Lib.Keyboard.RIGHT)){
                 this.Motion.moveSteps(MoveSteps);
             }
             // キー(左矢印)が押されているとき
-            if(Lib.keyIsDown('LeftArrow')){
+            if(Lib.keyIsDown(Lib.Keyboard.LEFT)){
                 this.Motion.moveSteps(-MoveSteps);
             }
             yield;
@@ -95,13 +95,13 @@ Pg.setting = async function setting() {
         // ずっと繰り返す
         for(;;){
             // キー(スペース)が押されているとき
-            if(Lib.keyIsDown('Space')){
+            if(Lib.keyIsDown(Lib.Keyboard.SPACE)){
                 // 音を鳴らす
                 this.Sound.play(Pew);
                 // クローンを作る
                 await this.Control.clone();
                 //次をコメントアウトしているときは キー押下中連続してクローン作る  
-                //await this.Control.waitWhile( ()=>Lib.keyIsDown('Space'));
+                //await this.Control.waitWhile( ()=>Lib.keyIsDown(Lib.Keyboard.SPACE));
             }
             yield;
         }
