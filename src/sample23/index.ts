@@ -49,15 +49,15 @@ Pg.prepare = async function prepare() {
     ball.Looks.setSize(50, 50);
     paddle = new Lib.Sprite("paddle");
     await paddle.Image.add( Paddle );
-    paddle.Motion.setXY(0, -140);
+    paddle.Motion.gotoXY(0, -140);
     block = new Lib.Sprite( "block");
     await block.Image.add( Block );
     await block.Sound.add(Pew);
-    block.Motion.setXY(-220,180);
+    block.Motion.gotoXY(-220,180);
     block.Looks.hide();
     line = new Lib.Sprite( "line" );
     await line.Image.add( Line );
-    line.Motion.setXY(0, -180);
+    line.Motion.gotoXY(0, -180);
     title = new Lib.Sprite("title");
     await title.Image.add(YouWon);
     await title.Image.add(GameOver);
@@ -73,7 +73,7 @@ Pg.setting = async function setting() {
         }
     });
     ball.Event.whenFlag(async function(this:S3Sprite){
-        this.Motion.setXY(0,-100);
+        this.Motion.gotoXY(0,-100);
     });
     
     const BallSpeed = 10;
@@ -81,7 +81,7 @@ Pg.setting = async function setting() {
     ball.Event.whenBroadcastReceived('Start', async function*(this:S3Sprite){
         score = 0;
         this.Motion.pointInDirection(InitDirection);
-        this.Motion.setXY(0,-100);
+        this.Motion.gotoXY(0,-100);
         await this.Control.waitUntil(()=>Lib.anyKeyIsDown());
         for(;;){
             this.Motion.moveSteps(BallSpeed);
@@ -125,7 +125,7 @@ Pg.setting = async function setting() {
         while(true){
             const mousePos = Lib.mousePosition;
             const selfPosition = this.Motion.getCurrentPosition();
-            this.Motion.moveTo(mousePos.x, selfPosition.y);
+            this.Motion.gotoXY(mousePos.x, selfPosition.y);
             //const ballPosition = ball.Motion.getCurrentPosition();
             //this.Motion.moveTo(ballPosition.x, selfPosition.y);
             yield;

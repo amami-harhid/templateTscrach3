@@ -32,7 +32,7 @@ Pg.prepare = async function prepare() {
     await stage.Image.add( Jurassic );
     await stage.Sound.add( Chill );
     cat = new Lib.Sprite("Cat");
-    cat.Motion.gotoXY( {x:0, y:0} );
+    cat.Motion.gotoXY( 0, 0 );
     await cat.Image.add( Cat );
 }
 // イベント定義処理
@@ -52,7 +52,7 @@ Pg.setting = async function setting() {
     // 旗が押されたときの動作(ネコ)
     cat.Event.whenFlag( async function(this: S3Sprite){
         // (0,0)へ移動する
-        this.Motion.gotoXY({x:0, y:0});
+        this.Motion.gotoXY( 0, 0 );
     });
 
     // 進む速さ

@@ -37,7 +37,7 @@ Pg.prepare = async function prepare() {
     await cat.Image.add( Cat2 );
     await cat.Sound.add( Mya );
     // 位置の初期化
-    cat.Motion.gotoXY({x:0, y:0});
+    cat.Motion.gotoXY( 0, 0 );
     // 向きの初期化
     cat.Motion.pointInDirection( 40 );
 }
@@ -59,7 +59,7 @@ Pg.setting = async function setting() {
     // 旗が押されたときの動作(ネコ)
     cat.Event.whenFlag( async function(this:S3Sprite){
         // 位置の初期化
-        this.Motion.gotoXY({x:0, y:0});
+        this.Motion.gotoXY( 0, 0 );
         // 向きの初期化
         this.Motion.pointInDirection( 40 );
     });

@@ -24,7 +24,7 @@ let score = 0;
 const AssetHost = "https://amami-harhid.github.io/scratch3likejslib/web";
 
 Pg.preload = async function preload(this:S3PlayGround) {
-    this.Image.load('../../assets/Jurassic.svg', Jurassic01 );
+    this.Image.load(AssetHost+'/assets/Jurassic.svg', Jurassic01 );
     this.Sound.load(AssetHost+'/assets/Chill.wav', Chill );
     this.Image.load(AssetHost+'/assets/cat.svg', Cat01 );
     this.Image.load(AssetHost+'/assets/cat2.svg', Cat02 );
@@ -83,6 +83,7 @@ Pg.setting = async function setting() {
      * マウスカーソルへ向かって進む
      */
     cat.Event.whenBroadcastReceived('START', async function*(this:S3Sprite){
+        this.Sensing.resetTimer();
         // ずっと繰り返し、マウスカーソルへ向いて進む
         for(;;){
             // マウスカーソルへ向く
@@ -91,7 +92,14 @@ Pg.setting = async function setting() {
             this.Motion.moveSteps(5);
             // 現在座標を取得してログ出力
             const {x,y} = this.Motion.getCurrentPosition();
-            console.log(`x=${x}, y=${y}`);
+            const mx = this.Sensing.mouseX;
+            const my = this.Sensing.mouseY;
+            console.log(`x=${x}, y=${y}, mx=${mx},my=${my}`);
+            if(this.Sensing.isMouseDown()) {
+                const timer = this.Sensing.timer;
+                console.log('マウスダウン検出 timer='+timer);
+                //break;
+            }
             yield;
         }
     });
@@ -107,6 +115,7 @@ Pg.setting = async function setting() {
         for(;;){
             // オレンジの植物の色にふれたとき
             if(await this.Sensing.isTouchingToColor(ColorPlantOrange)){
+                this.Sensing.resetTimer();
                 //カウントアップ
                 monitors.get(MonitorNameSCORE).value = ++score;
                 // 音を鳴らす
@@ -118,6 +127,7 @@ Pg.setting = async function setting() {
             }
             // 雲の色にふれたとき
             if(await this.Sensing.isTouchingToColor(ColorCloud)){
+                this.Sensing.resetTimer();
                 //カウントアップ
                 monitors.get(MonitorNameSCORE).value = ++score;
                 // 音を鳴らす

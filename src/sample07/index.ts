@@ -50,7 +50,7 @@ Pg.setting = async function setting() {
     // 旗が押されたときの動作(ネコ)
     cat.Event.whenFlag( async function(this:S3Sprite){
         // (0,0)へ移動
-        this.Motion.gotoXY({x:0, y:0});
+        this.Motion.gotoXY( 0, 0 );
         // 向き=90
         this.Motion.pointInDirection( 90 );
     });

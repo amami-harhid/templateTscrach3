@@ -33,7 +33,7 @@ Pg.prepare = async function prepare() {
     cat = new Lib.Sprite("Cat");
     await cat.Image.add( Cat );
     await cat.Sound.add( Mya );
-    cat.Motion.gotoXY({x:200, y:150});
+    cat.Motion.gotoXY( 200, 150 );
     cat.Motion.pointInDirection( 90 );
 }
 // イベント定義処理
@@ -54,7 +54,7 @@ Pg.setting = async function setting() {
     // 旗が押されたときの動作(ネコ)
     cat.Event.whenFlag( async function(this:S3Sprite) {
         // 位置初期化
-        this.Motion.gotoXY({x:200, y:150});
+        this.Motion.gotoXY( 200, 150 );
         // 向き初期化
         this.Motion.pointInDirection( 90 );
         // 音量 20
@@ -88,7 +88,7 @@ Pg.setting = async function setting() {
     const steps = 10;
     // クローンされたときの動作(ネコ)
     cat.Control.whenCloned(async function*(this:S3Sprite){
-        this.Motion.gotoXY({x:100, y:-100}); // 位置
+        this.Motion.gotoXY( 100, -100 ); // 位置
         this.Looks.setSize({w:50, h:50}); // 大きさを縦横50%
         this.Looks.setEffect(Lib.ImageEffective.COLOR, 50); //色の効果
         this.life = 5000; // 約5秒

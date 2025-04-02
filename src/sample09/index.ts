@@ -53,7 +53,7 @@ Pg.setting = async function setting() {
     // 旗が押されたときの動作(ネコ)
     cat.Event.whenFlag( async function(this:S3Sprite){
         // 初期化
-        this.Motion.gotoXY({x:0, y:0});  // 配置中央
+        this.Motion.gotoXY( 0, 0 );  // 配置中央
         this.Motion.pointInDirection( 90 );  // 向き90度
         // ネコの音を 音量=20 とする
         await this.Sound.setOption( Lib.SoundOption.VOLUME, 20);

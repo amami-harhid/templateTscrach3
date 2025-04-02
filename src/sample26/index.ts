@@ -167,7 +167,7 @@ Pg.setting = async function setting() {
     // 即時に動く動作
     sprite.Event.whenRightNow(async function(this:S3Sprite){
         // 初期設定
-        this.Motion.setXY(0,0);
+        this.Motion.gotoXY( 0, 0 );
         // 表示
         this.Looks.show();
     });

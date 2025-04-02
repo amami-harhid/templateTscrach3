@@ -43,19 +43,19 @@ Pg.prepare = async function prepare() {
     // ネコ１を作る
     cat1 = new Lib.Sprite("Cat1");
     await cat1.Image.add( Cat );
-    cat1.Motion.gotoXY({x:-Lib.stageWidth/4, y:+Lib.stageHeight/4 });
+    cat1.Motion.gotoXY( -Lib.stageWidth/4, +Lib.stageHeight/4 );
     cat1.Looks.setEffect(Lib.ImageEffective.COLOR, 50);
     cat1.Motion.setRotationStyle( Lib.RotationStyle.LEFT_RIGHT );
 
     // ネコ２を作る
     cat2 = new Lib.Sprite("Cat2");
     await cat2.Image.add( Cat );
-    cat2.Motion.gotoXY({x:0, y:0 });
+    cat2.Motion.gotoXY( 0, 0 );
 
     // ネコ３を作る
     cat3 = new Lib.Sprite("Cat3");
     await cat3.Image.add( Cat );
-    cat3.Motion.gotoXY({x:Lib.stageWidth /4, y:-Lib.stageHeight/4 });
+    cat3.Motion.gotoXY( Lib.stageWidth /4, -Lib.stageHeight/4 );
     cat3.Looks.setEffect( Lib.ImageEffective.COLOR, 10);
     cat3.Motion.setRotationStyle( Lib.RotationStyle.DONT_ROTATE );
 }
@@ -83,11 +83,11 @@ Pg.setting = async function setting() {
             // 待つ
             await this.Control.wait(WAIT_TIME);
             // ネコ１：横、縦の位置を ステージの -1/4, +1/4 にする
-            cat1.Motion.gotoXY({x:-Lib.stageWidth/4, y:+Lib.stageHeight/4 });
+            cat1.Motion.gotoXY( -Lib.stageWidth/4, +Lib.stageHeight/4 );
             // ネコ２：横、縦の位置を (0,0)にする
-            cat2.Motion.gotoXY({x:0, y:0 });
+            cat2.Motion.gotoXY( 0, 0 );
             // ネコ３：横、縦の位置を ステージの +1/4, -1/4 にする
-            cat3.Motion.gotoXY({x:Lib.stageWidth/4, y:-Lib.stageHeight/4 });
+            cat3.Motion.gotoXY( Lib.stageWidth/4, -Lib.stageHeight/4 );
             yield;
         }
     });

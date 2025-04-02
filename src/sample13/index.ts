@@ -68,7 +68,7 @@ Pg.setting = async function() {
     // 旗が押されたときの動作(ネコ)
     cat.Event.whenFlag(async function( this:S3Sprite ){
         // (0,0)へ移動する
-        this.Motion.gotoXY({x:0, y:0});
+        this.Motion.gotoXY( 0, 0 );
     });
 
     // メッセージ(MOUSE_CLICK)を受け取ったときの動作

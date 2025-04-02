@@ -4,149 +4,158 @@
 
 #### Move () Steps ( 〇 歩動かす )
 ```typescript
-Sprite.Motion.moveSteps( step : number );
+S3Sprite.Motion.moveSteps( step : number ) :void;
 ```
 #### Turn Right () degrees ( 右方向へ 〇度回す )
 
 ```typescript
-Sprite.Motion.turnRightDegrees( degree : number );
+Sprite.Motion.turnRightDegrees( degree : number ): void;
 ```
 
 #### Turn Left () degrees ( 左方向へ 〇度回す )
 
 ```typescript
-Sprite.Motion.turnLeftDegrees( degree : number );
+S3S3Sprite.Motion.turnLeftDegrees( degree : number ): void;
 ```
 
 #### Go to randam position ( どこかの場所へ行く )
 
 ```typescript
-Sprite.Motion.gotoRandomPosition();
+S3Sprite.Motion.gotoRandomPosition():void;
 ```
 
 #### Go to mouse position ( マウスのポインターへ行く)
 
 ```typescript
-Sprite.Motion.gotoMousePosition();
+S3Sprite.Motion.gotoMousePosition() : void;
 ```
 
 #### Go to other sprite position ( スプライトの場所へ行く )
 
 ```typescript
-Sprite.Motion.gotoSprite( otherSprite: S3Sprite );
+S3Sprite.Motion.gotoSprite( otherSprite: S3Sprite ) :void;
 ```
 
 #### Go to x:(), y:()  ( x座標を〇、y座標を〇にする )
 
 ```typescript
-Sprite.Motion.gotoXY( x: number, y: number );
+S3Sprite.Motion.gotoXY( x: number, y: number ) : void;
 ```
-
+#### Glide ()secs to x:(), y:() ( 〇秒で x座標を〇に,y座標を〇に変える)
 ```typescript
-Sprite.Motion.moveXY( x: number, y: number );
+S3Sprite.Motion.glideToPosition(secs, mousePosition.x, mousePosition.y): Promise<void>;
 ```
-
 ```typescript
-Sprite.Motion.setXY( x: number, y: number );
-```
-
-#### Glide ()secs to x:(), y:() ( 〇秒で x:〇,y:〇の場所へ行く)
-
-```typescript
-await Sprite.Motion.glideToPosition(secs:number, x:number, y:number);
+await sprite.Motion.glideToPosition(secs:number, x:number, y:number);
 ```
 
 #### Glide ()secs to random position ( 〇秒でどこかの場所へ行く)
+```typescript
+S3Sprite.Motion.glideToPosition(secs, mousePosition.x, mousePosition.y): Promise<void>;
+```
 
 ```typescript
 const secs = 1.0; // 1秒
 const randomPoint = Lib.randomPoint;
-await Sprite.Motion.glideToPosition(secs, randomPoint.x, randomPoint.y);
+await sprite.Motion.glideToPosition(secs, randomPoint.x, randomPoint.y);
 ```
 
 #### Glide ()secs to mouse pointer ( 〇秒でマウスのポインターへ行く)
 
 ```typescript
+S3Sprite.Motion.glideToPosition(secs, mousePosition.x, mousePosition.y): Promise<void>;
+```
+```typescript
 const secs = 1.0; // 1秒
 const mousePosition = Lib.mousePosition;
-await Sprite.Motion.glideToPosition(secs, mousePosition.x, mousePosition.y);
+await sprite.Motion.glideToPosition(secs, mousePosition.x, mousePosition.y);
 ```
 
 #### Point in derection() ( 〇度に向ける )
 
 ```typescript
-Sprite.Motion.pointInDerection( degree: number );
+S3Sprite.Motion.pointInDerection( degree: number ): void;
 ```
 
 #### Point towards mouse pointer ( マウスポインターへ向ける)
 
 ```typescript
-Sprite.Motion.pointToMouse();
+S3Sprite.Motion.pointToMouse() : void;
 ```
 
 #### Point towards other sprite ( 他のスプライトへ向ける)
 
 ```typescript
-Sprite.Motion.pointToTarget( otherSprite: S3Sprite );
+S3Sprite.Motion.pointToTarget( otherSprite: S3Sprite ) : void;
 ```
 
 #### Change x by ()  ( x座標を〇ずつ変える )
 
 ```typescript
-Sprite.Motion.changeX( x: number);
+S3Sprite.Motion.changeX( x: number) : void;
 ```
 
 #### Set x to ()  ( x座標を 〇にする )
 
 ```typescript
-Sprite.Motion.setX( x: number );
+S3Sprite.Motion.setX( x: number ) : void;
 ```
 
 #### Change y by ()  ( y座標を〇ずつ変える )
 
 ```typescript
-Sprite.Motion.changeY( y: number);
+S3Sprite.Motion.changeY( y: number) : void;
 ```
 
 #### Set y to ()  ( y座標を 〇にする )
 
 ```typescript
-Sprite.Motion.setY( y: number );
+S3Sprite.Motion.setY( y: number ) : void;
 ```
 
 #### If on edge, bounce  (もし端についたら跳ね返る)
 
 ```typescript
-Sprite.Motion.ifOnEdgeBounds();
+S3Sprite.Motion.ifOnEdgeBounds() : void;
 ```
 
 #### Set rotation style ()  ( 回転方法を〇にする )
 
 ```typescript
 // 左右のみ
-Sprite.Motion.setRotationStyle( Lib.RotationStyle.LEFT_RIGHT );
+S3Sprite.Motion.setRotationStyle( Lib.RotationStyle.LEFT_RIGHT ) : void;
 // 回転しない
-Sprite.Motion.setRotationStyle( Lib.RotationStyle.DONT_ROTATE );
+S3Sprite.Motion.setRotationStyle( Lib.RotationStyle.DONT_ROTATE ) : void;
 // 自由に回転
-Sprite.Motion.setRotationStyle( Lib.RotationStyle.ALL_AROUND );
+S3Sprite.Motion.setRotationStyle( Lib.RotationStyle.ALL_AROUND ) : void;
 ```
 
 #### x position ( x座標 )
 
 ```typescript
-const {x} = Sprite.Motion.getCurrentPosition();
+S3Sprite.Motion.getCurrentPosition() : {x:number, y:number};
+```
+
+```typescript
+const {x} = sprite.Motion.getCurrentPosition();
 ```
 
 #### y position ( y座標 )
-
 ```typescript
-const {y} = Sprite.Motion.getCurrentPosition();
+S3Sprite.Motion.getCurrentPosition() : {x:number, y:number};
+```
+```typescript
+const {y} = sprite.Motion.getCurrentPosition();
 ```
 
 #### derection  ( 向き )
 
 ```typescript
-const derection = Sprite.Motion.getCurrentDirection();
+S3Sprite.Motion.getCurrentDirection() : number;
+```
+
+```typescript
+const derection:number = Sprite.Motion.getCurrentDirection();
 ```
 
 ## Looks ( 見た目 )
@@ -154,7 +163,10 @@ const derection = Sprite.Motion.getCurrentDirection();
 #### Say () for () seconds ( ◎◎と〇秒言う )
 
 ```typescript
-await Sprite.Looks.sayForSecs( text: string, secs: number);
+S3Sprite.Looks.sayForSecs( text: string, secs: number) : Promise<void>;
+```
+```typescript
+S3Sprite.Looks.sayForSecs( text: string, secs: number, option: {scale: {w:number, h:number}}) : Promise<void>;
 ```
 ```typescript
 const scale = {w: 60, h:60};
@@ -162,51 +174,61 @@ await Sprite.Looks.sayForSecs( text: string, secs: number, {scale: scale} );
 ```
 #### Say ()  ( ◎◎と言う )
 ```typescript
-Sprite.Looks.say( text: string );
+S3Sprite.Looks.say( text: string ) : void;
+```
+```typescript
+S3Sprite.Looks.say( text: string, option: {scale: {w:number, h:number}} ) : void;
 ```
 ```typescript
 const scale = {w: 60, h:60};
-await Sprite.Looks.say( text: string, {scale: scale} );
+sprite.Looks.say( text: string, {scale: scale} );
 ```
 
 #### Think () for () seconds ( ◎◎と〇秒考える )
 
 ```typescript
-await Sprite.Looks.thinkForSecs( text: string, secs: number);
+S3Sprite.Looks.thinkForSecs( text: string, secs: number): Promise<void>;
+```
+```typescript
+S3Sprite.Looks.thinkForSecs( text: string, secs: number, option: {scale:{w:number,h:number}}): Promise<void>;
 ```
 ```typescript
 const scale = {w: 60, h:60};
-await Sprite.Looks.thinkForSecs( text: string, secs: number, {scale: scale} );
+await sprite.Looks.thinkForSecs( text: string, secs: number, {scale: scale} );
 ```
 #### Think ()  ( ◎◎と考える )
 ```typescript
-Sprite.Looks.think( text: string );
+S3Sprite.Looks.think( text: string ) : void;
+```
+```typescript
+S3Sprite.Looks.think( text: string, option: {scale:{w:number,h:number}} ) : void;
 ```
 ```typescript
 const scale = {w: 60, h:60};
-await Sprite.Looks.think( text: string, {scale: scale} );
+sprite.Looks.think( text: string, {scale: scale} );
 ```
 #### Switch costume to ()  (コスチュームを〇にする)
 
 ```typescript
-Sprite.Looks.switchCostume( constumeName: string );
+S3Sprite.Looks.switchCostume( constumeName: string ) : void;
 ```
 
 #### Next costume  (次のコスチュームにする)
 
 ```typescript
-Sprite.Looks.nextCostume();
+S3Sprite.Looks.nextCostume() : void;
 ```
-#### Switch background to ()  ( 背景を〇にする ) 【工事中】
+#### Switch backdrop to ()  ( 背景を〇にする )
 
 ```typescript
-Sprite.Looks.switchBackground( backgroundName: string );
+S3Entity.Looks.switchBackdrop( backdropName: string ) : void;
 ```
-#### Next background  (次の背景にする)【工事中】
+#### Next backdrop  (次の背景にする)
 
 ```typescript
-Sprite.Looks.nextBackground();
+S3Entity.Looks.nextBackdrop() : void;
 ```
+
 #### Change size by ()  ( 大きさを 〇ずつ変える)
 
 ```typescript
@@ -374,7 +396,19 @@ Sprite.Event.whenClicked( async function(this:S3Sprite){
 #### When backdrop switches to ()  ( 背景が〇に切り替わったとき )
 ```typescript
 // 工事中
+const backdropName = 'Jurassic';
+sprite.Event.whenBackdropSwitches( backdropName, async function(this:S3Sprite){
+    // 背景が切り替わったときの処理
+});
 ```
+```typescript
+// 工事中
+const backdropName = 'Jurassic';
+stage.Event.whenBackdropSwitches( backdropName, async function(this:S3Stage){
+    // 背景が切り替わったときの処理
+});
+```
+
 #### When loudness > ()  ( マイク音量が〇より大のとき )
 ```typescript
 // マイク関連を対応する予定は無し
@@ -632,7 +666,6 @@ sprite.Event.whenFlag( async function*(this:S3Sprite){
 ```
 #### Ask () and wait   ( 〇と聞いて待つ  )
 ```typescript
-// 工事中
 Entity.Sensing.askAndWait( question : string ) : Promise<string>;
 ```
 ```typescript
@@ -653,6 +686,12 @@ sprite.Event.whenFlag( async function*(this:S3Sprite){
 ```typescript
 /**
  * キーが押された？
+ * @param key キーの名前
+ */
+Entity.Sensing.isKeyDown( question : string ) : boolean;
+
+/**
+ * キーが押されていない？
  * @param key キーの名前
  */
 Entity.Sensing.isKeyDown( question : string ) : boolean;
@@ -681,9 +720,67 @@ Lib.Keyboard.DOWN
 /** エスケープキー */
 Lib.Keyboard.ESCAPE
 ```
+#### mouse down   ( マウスが押された )
+```typescript
+Entity.Sensing.isMouseDown() : boolean
+```
+```typescript
+sprite.Event.whenFlag( async function*(this:S3Sprite){
+    for(;;){
+        if( this.Sensing.isMouseDown()){
+            console.log('マウスダウン検出');
+        }
+        yield;
+    }
+});
+```
 
+#### mouse x, mouse y   ( マウスのx座標、y座標 )
+```typescript
+Entity.Sensing.mouseX : number
+```
+```typescript
+Entity.Sensing.mouseY : number
+```
+```typescript
+// スプライトの位置をマウスの位置にする。
+sprite.Event.whenFlag( async function*(this:S3Sprite){
+    for(;;){
+        const mouseX = this.Sensing.mouseX;
+        const mouseY = this.Sensing.mouseY;
+        this.Motion.setXY( mouseX, mouseY );
+        yield;
+    }
+});
 
+```
+## Set drag mode draggable  ( ドラッグ可能にする )
+```typescript
+提供予定なし
+```
 
+## Loudness   ( マイク音量 )
+```typescript
+提供予定なし
+```
+
+## timer  ( タイマー )
+```typescript
+Entity.Sensing.resetTimer(): void;
+Entity.Sensing.timer : number;
+```
+```typescript
+// スプライトの位置をマウスの位置にする。
+sprite.Event.whenFlag( async function*(this:S3Sprite){
+    this.Sensing.resetTimer(); // タイマー初期化
+    for(;;){
+        if(this.Sensing.timer > 1000) { //1000 ms 経過したとき
+            break;
+        }
+        yield;
+    }
+    this.Sensing.stopTimer(); // タイマー終了
+});
 
 
 

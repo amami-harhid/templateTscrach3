@@ -100,7 +100,7 @@ Pg.setting = async function() {
                 // マウス位置を取得する
                 const mousePosition = Lib.mousePosition;
                 // 取得した位置へ蝶を移動させる
-                butterfly.Motion.gotoXY(mousePosition);
+                butterfly.Motion.gotoXY(mousePosition.x, mousePosition.y);
                 // 蝶のサイズを 縦横 15% にする
                 const scale = {w: 15, h: 15}
                 butterfly.Looks.setSize(scale);

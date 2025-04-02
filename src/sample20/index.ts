@@ -47,14 +47,14 @@ Pg.prepare = async function prepare() {
     cat.Motion.setRotationStyle( Lib.RotationStyle.LEFT_RIGHT );
     await cat.Image.add( Cat1 );
     await cat.Image.add( Cat2 );
-    cat.Motion.moveTo({x: -150, y: 0});
+    cat.Motion.gotoXY( -150, 0 );
     cat.Motion.pointInDirection( 90 );
     cat2 = new Lib.Sprite("Cat2");
     cat2.Motion.setRotationStyle( Lib.RotationStyle.LEFT_RIGHT );
     await cat2.Image.add( Cat1 );
     await cat2.Image.add( Cat2 );
     cat2.Motion.pointInDirection( -90 );
-    cat2.Motion.moveTo({x: 150, y: 0});
+    cat2.Motion.gotoXY( 150, 0 );
 }
 // イベント定義処理
 Pg.setting = async function setting() {

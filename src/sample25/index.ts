@@ -51,7 +51,7 @@ Pg.setting = async function setting() {
      * ボールの位置を中心にする
      */
     ball.Event.whenFlag(async function(this:S3Sprite){
-        this.Motion.setXY(0,0);
+        this.Motion.gotoXY( 0, 0 );
     });
     /**
      * 旗を押されたとき
@@ -94,7 +94,7 @@ Pg.setting = async function setting() {
         }
     });
     ball.Event.whenFlag(async function(this:S3Sprite){
-        this.Motion.setXY(0,0);
+        this.Motion.gotoXY( 0, 0 );
     });
 
     /**

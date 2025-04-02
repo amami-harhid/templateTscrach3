@@ -38,7 +38,7 @@ Pg.prepare = async function prepare() {
     // コスチュームを追加
     await ball.Image.add( BallA );
     // 大きさを 横120%,縦120% にする
-    ball.Looks.setSize(120, 120);
+    ball.Looks.setSize( 120, 120 );
 }
 
 Pg.setting = async function setting() {
@@ -67,7 +67,7 @@ Pg.setting = async function setting() {
         }
     });
     ball.Event.whenFlag(async function(this:S3Sprite){
-        this.Motion.setXY(0,0);
+        this.Motion.gotoXY( 0, 0 );
     });
 
     /**

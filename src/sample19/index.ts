@@ -43,7 +43,7 @@ Pg.prepare = async function prepare() {
     await cat2.Image.add( Cat1 );
     await cat2.Image.add( Cat2 );
     cat2.Motion.pointInDirection(115);
-    cat2.Motion.moveTo({x: -20, y: -120});
+    cat2.Motion.gotoXY( -20, -120 );
 }
 // イベント定義処理
 Pg.setting = async function setting() {
