@@ -44,13 +44,19 @@ Pg.setting = async function setting() {
      * 旗を押されたときの動き
      * STARTメッセージを送る
      */
-    cat.Event.whenFlag(async function(this:S3Sprite){
-        await this.Looks.sayForSecs('ステージやネコをクリックすると質問をするよ',2);
-        await this.Looks.sayForSecs('連続してクリックすると前回の質問応答の後に質問が続くよ',2);
-        await this.Looks.sayForSecs('答えはコンソールへ出力するよ',2);
+    cat.Event.whenFlag(async function*(this:S3Sprite){
+        await this.Looks.sayForSecs('ステージやネコをクリックすると質問をするよ',1);
+        await this.Looks.sayForSecs('連続してクリックすると前回の質問応答の後に質問が続くよ',1);
+        await this.Looks.sayForSecs('答えはコンソールへ出力するよ',1);
         this.Looks.say('');
         // メッセージを送る
         this.Event.broadcast('START');
+        // ずっと繰り返す
+        for(;;){
+            // 向きを +1 する
+            this.Motion.Direction.degree += 1;
+            yield;
+        }
     });
 
     /**

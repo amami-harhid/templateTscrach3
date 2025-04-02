@@ -242,7 +242,7 @@ const size = {w: 200, h:200};
 Sprite.Looks.setSize( size );
 ```
 
-#### Change () effect by ()  ( 画像の効果を〇ずつ変える )
+#### Change () effect by ()  ( 画像の効果〇を〇ずつ変える )
 
 ```typescript
 // 色の効果
@@ -493,6 +493,7 @@ for(;;){
         break;
     }
     // 繰り返しの処理を書く
+    yield;
 }
 ```
 #### while ()   ( 〇の間、繰り返す ): turbowarpのブロック
@@ -500,6 +501,7 @@ for(;;){
 // 変数 count が 10である間繰り返す、の例
 while( count == 10 ){
     // 繰り返しの処理を書く
+    yield;
 }
 ```
 #### stop all  ( 全てを止める )
@@ -542,6 +544,7 @@ sprite.Event.whenFlag( async function*(this:S3Sprite){
             // 音を鳴らす
             this.Sound.play(Nyaaa);
         }
+        yield;
     }
 });
 ```
@@ -561,6 +564,7 @@ sprite.Event.whenFlag( async function*(this:S3Sprite){
         if( counter > 100) {
             break;
         }
+        yield;
     }
     console.log('100回左右の端に触れた');
 });
@@ -580,6 +584,7 @@ sprite.Event.whenFlag( async function*(this:S3Sprite){
         if( counter > 100) {
             break;
         }
+        yield;
     }
     console.log('100回上下の端に触れた');
 });
@@ -595,6 +600,7 @@ sprite.Event.whenFlag( async function*(this:S3Sprite){
         if( this.Sensing.isMouseTouching() ) {
             break;
         }
+        yield;
     }
     console.log('マウスポインターが触れた');
 });
@@ -610,6 +616,7 @@ sprite.Event.whenFlag( async function*(this:S3Sprite){
         if( this.Sensing.isNotMouseTouching() ) {
             break;
         }
+        yield;
     }
     console.log('マウスポインターが離れた');
 });
@@ -631,6 +638,7 @@ sprite.Event.whenFlag( async function*(this:S3Sprite){
         if( this.Sensing.isTouchingToColor( targetRGB ) ) {
             break;
         }
+        yield;
     }
 });
 ```
