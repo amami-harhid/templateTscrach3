@@ -80,7 +80,7 @@ Pg.setting = async function setting() {
         // STARTを受け取ったら クリックの動きを始める
         this.Event.whenClicked(async function(this:S3Stage){
             const answer = await this.Sensing.askAndWait('ステージから質問をするよ');
-            console.log(`ステージからの質問への答えは 『${answer}』でした`);
+            await this.Event.broadcastAndWait('ANSWER', answer, "ステージ");
         });
     });
 
@@ -91,9 +91,18 @@ Pg.setting = async function setting() {
         // STARTを受け取ったら クリックの動きを始める
         this.Event.whenClicked(async function(this:S3Sprite){
             const answer = await this.Sensing.askAndWait('ネコから質問をするよ');
-            console.log(`ネコからの質問への答えは 『${answer}』でした`);
+            await this.Event.broadcastAndWait('ANSWER', answer, "ネコ");
         });
     });
 
+    /**
+     * ANSWERを受け取ったときの動き（ネコ） 
+     */ 
+    cat.Event.whenBroadcastReceived('ANSWER', async function(this:S3Sprite, answer:string, from:string){
+        // 1秒間、答えを考える。
+        const message = `${from}の質問への答えは 『${answer}』でした`;
+        console.log(message);
+        await this.Looks.thinkForSecs(message, 1);
+    });
 
 }
