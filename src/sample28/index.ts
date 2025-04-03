@@ -13,6 +13,7 @@ Pg.title = "【Sample28】質問をする(ネコをクリック、ステージ�
 const Jurassic01:string = "Jurassic01";
 const Chill:string = "Chill";
 const Cat01:string = "Cat01";
+const Cat02:string = "Cat02";
 
 let stage: S3Stage;
 let cat: S3Sprite
@@ -22,6 +23,7 @@ Pg.preload = async function preload(this:S3PlayGround) {
     this.Image.load(AssetHost+'/assets/Jurassic.svg', Jurassic01 );
     this.Sound.load(AssetHost+'/assets/Chill.wav', Chill );
     this.Image.load(AssetHost+'/assets/cat.svg', Cat01 );
+    this.Image.load('./assets/blackCat.svg', Cat02 );
 }
 Pg.prepare = async function prepare() {
 
@@ -36,6 +38,7 @@ Pg.prepare = async function prepare() {
     cat = new Lib.Sprite("cat");
     // コスチュームを追加
     await cat.Image.add( Cat01 );
+    await cat.Image.add( Cat02 );
 }
 
 Pg.setting = async function setting() {
@@ -45,6 +48,7 @@ Pg.setting = async function setting() {
      * STARTメッセージを送る
      */
     cat.Event.whenFlag(async function*(this:S3Sprite){
+        this.Looks.switchCostume(Cat01);
         await this.Looks.sayForSecs('ステージやネコをクリックすると質問をするよ',1);
         await this.Looks.sayForSecs('連続してクリックすると前回の質問応答の後に質問が続くよ',1);
         await this.Looks.sayForSecs('答えはコンソールへ出力するよ',1);
@@ -96,6 +100,35 @@ Pg.setting = async function setting() {
     });
 
     /**
+     * STARTを受け取ったときの動き（ネコ） 
+     */ 
+    cat.Event.whenBroadcastReceived('START', async function*(this:S3Sprite){
+        this.Looks.switchCostume(Cat02);
+        this.Looks.Size.w = -100;
+        for(;;){
+            for(const _ of Lib.Iterator(20)){
+                this.Looks.Size.w += 10;
+                if(this.Looks.Size.w < 0) {
+                    this.Looks.switchCostume(Cat02);
+                }else{
+                    this.Looks.switchCostume(Cat01);
+                }
+                yield;
+            }
+            for(const _ of Lib.Iterator(20)){
+                this.Looks.Size.w -= 10;
+                if(this.Looks.Size.w < 0) {
+                    this.Looks.switchCostume(Cat02);
+                }else{
+                    this.Looks.switchCostume(Cat01);
+                }
+                yield;
+            }
+            yield;
+        }
+    });
+    
+    /**
      * ANSWERを受け取ったときの動き（ネコ） 
      */ 
     cat.Event.whenBroadcastReceived('ANSWER', async function(this:S3Sprite, answer:string, from:string){
@@ -104,5 +137,4 @@ Pg.setting = async function setting() {
         console.log(message);
         await this.Looks.thinkForSecs(message, 1);
     });
-
 }
