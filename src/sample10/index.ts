@@ -91,7 +91,7 @@ Pg.setting = async function setting() {
         this.Motion.gotoXY( 100, -100 ); // 位置
         this.Looks.setSize({w:50, h:50}); // 大きさを縦横50%
         this.Looks.setEffect(Lib.ImageEffective.COLOR, 50); //色の効果
-        this.life = 5000; // 約5秒
+        
         this.Looks.show(); // 表示する
         // ずっと繰り返す
         for(;;){
@@ -111,15 +111,16 @@ Pg.setting = async function setting() {
     });
     // クローンされたときの動作(ネコ)
     cat.Control.whenCloned(async function*(this:S3Sprite){
+        this.life = 5000; // 約5秒
         // ずっと繰り返す
         for(;;){
             if(this.life < 0){ // ライフがゼロより小さくなったとき
+                // このクローンを削除する
+                this.Control.remove();
                 break; // 「ずっと繰り返す」を抜ける
             }
             yield;
         }
-        // このクローンを削除する
-        this.Control.remove();
     });
 
 }
