@@ -16,13 +16,10 @@ Pg.preload = function(this:S3PlayGround) {
 // 事前準備処理
 Pg.prepare = async function() {
     stage = new Lib.Stage();
+    await stage.Image.add( Jurassic );
 }
 
 // イベント定義処理
 Pg.setting = function() {
     
-    // すぐに実行（旗が押される前）
-    stage.Event.whenRightNow(async function(this:S3Stage){
-        await this.Image.add( Jurassic );
-    })
 };

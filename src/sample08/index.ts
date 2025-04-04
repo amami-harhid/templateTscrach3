@@ -78,23 +78,23 @@ Pg.setting = async function setting() {
         }
     });
 
-    // ネコが進む速さ
-    const catStep = 5;
     // 旗が押されたときの動作(ネコ)
     cat.Event.whenFlag( async function*(this:S3Sprite){
+        // ネコが進む速さ
+        const catStep = 5;
         // 音量=50
         await this.Sound.setOption( Lib.SoundOption.VOLUME, 50);
         // ずっと繰り返す
         for(;;){
             // ネコが進む
             this.Motion.moveSteps(catStep);
-            // もし端に触れたら跳ね返る
-            this.Motion.ifOnEdgeBounds();
             // もし端に触れていたら
             if(this.Sensing.isTouchingEdge()){
                 // ネコの音を鳴らす
                 this.Sound.play(Mya);
             }
+            // もし端に触れたら跳ね返る
+            this.Motion.ifOnEdgeBounds();
             yield;
         }
     });

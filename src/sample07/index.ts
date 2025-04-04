@@ -44,8 +44,6 @@ Pg.setting = async function setting() {
             yield;
         }
     });
-    // 歩く速さ
-    const catStep = 5;
 
     // 旗が押されたときの動作(ネコ)
     cat.Event.whenFlag( async function(this:S3Sprite){
@@ -57,6 +55,8 @@ Pg.setting = async function setting() {
 
     // 旗が押されたときの動作(ネコ)
     cat.Event.whenFlag( async function*(this:S3Sprite){
+        // 歩く速さ
+        const catStep = 5;
         // ずっと繰り返す。
         for(;;){
             // 進む
