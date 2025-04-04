@@ -82,7 +82,12 @@ Pg.setting = async function setting() {
         score = 0;
         this.Motion.pointInDirection(InitDirection);
         this.Motion.gotoXY(0,-100);
+        // フキダシを出す
+        this.Looks.say('何かのキーを押すと始まるよ');
+        // 何かキーが押されるまで待つ
         await this.Control.waitUntil(()=>Lib.anyKeyIsDown());
+        // フキダシを消す
+        this.Looks.say('');
         for(;;){
             this.Motion.moveSteps(BallSpeed);
             this.Motion.ifOnEdgeBounds();
@@ -145,7 +150,7 @@ Pg.setting = async function setting() {
                 yield;
             }
             yield;
-        }
+        }        
         this.Event.broadcast('Start');
     });
     block.Control.whenCloned(async function*(this:S3Sprite){

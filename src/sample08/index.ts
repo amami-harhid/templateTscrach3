@@ -62,6 +62,8 @@ Pg.setting = async function setting() {
         this.Motion.gotoXY( 0, 0 );
         // 向きの初期化
         this.Motion.pointInDirection( 40 );
+        // コスチューム
+        this.Looks.switchCostume(Cat1);
     });
 
     // 旗が押されたときの動作(ネコ)
