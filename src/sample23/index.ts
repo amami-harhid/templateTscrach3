@@ -65,6 +65,7 @@ Pg.prepare = async function prepare() {
 }
 
 Pg.setting = async function setting() {
+    // 緑の旗が押されたときの動作
     stage.Event.whenFlag(async function*(this:S3Stage){
         await this.Sound.setOption(Lib.SoundOption.VOLUME, 5);
         for(;;){
@@ -72,6 +73,7 @@ Pg.setting = async function setting() {
             yield;
         }
     });
+    // 緑の旗が押されたときの動作
     ball.Event.whenFlag(async function(this:S3Sprite){
         this.Motion.gotoXY(0,-100);
         this.Looks.setSize(50, 50);
@@ -79,6 +81,7 @@ Pg.setting = async function setting() {
     
     const BallSpeed = 10;
     const InitDirection = 25;
+    // メッセージ(Start)を受け取ったときの動作
     ball.Event.whenBroadcastReceived('Start', async function*(this:S3Sprite){
         score = 0;
         this.Motion.pointInDirection(InitDirection);
@@ -114,6 +117,7 @@ Pg.setting = async function setting() {
     ball.Event.whenBroadcastReceived('ballTouch', async function(this:S3Sprite){
         this.Motion.turnRightDegrees( Lib.getRandomValueInRange(-5, 5)+180 );
     });
+    // 緑の旗が押されたときの動作
     line.Event.whenFlag(async function*(this:S3Sprite){
         this.Motion.gotoXY(0, -180);
         for(;;){
@@ -127,9 +131,11 @@ Pg.setting = async function setting() {
             yield;
         }
     });
+    // 緑の旗が押されたときの動作
     paddle.Event.whenFlag(async function(this:S3Sprite){
         this.Motion.gotoXY(0, -140);
     })
+    // メッセージ(Start)を受け取ったときの動作
     paddle.Event.whenBroadcastReceived('Start', async function*(this:S3Sprite){
         while(true){
             const mousePos = Lib.mousePosition;
@@ -138,11 +144,13 @@ Pg.setting = async function setting() {
             yield;
         }
     });
+    // メッセージ(GameOver)を受け取ったときの動作
     paddle.Event.whenBroadcastReceived('GameOver', async function(this:S3Sprite){
         this.Control.stopOtherScripts();
     });
 
     let blockCount = 0;
+    // 緑の旗が押されたときの動作
     block.Event.whenFlag( async function*(this:S3Sprite){
         this.Looks.hide();
         this.Looks.setSize({w:50, h:50});
@@ -162,6 +170,7 @@ Pg.setting = async function setting() {
         }        
         this.Event.broadcast('Start');
     });
+    // クローンされたときの動作
     block.Control.whenCloned(async function*(this:S3Sprite){
         this.Looks.show();
         while(true){
@@ -178,14 +187,17 @@ Pg.setting = async function setting() {
             yield;
         }
     });
+    // 緑の旗が押されたときの動作
     title.Event.whenFlag(async function(this:S3Sprite){
         this.Looks.hide();
     })
+    // メッセージ(YouWon)を受け取ったときの動作
     title.Event.whenBroadcastReceived(YouWon, async function(this:S3Sprite){
         this.Looks.switchCostume(YouWon);
         this.Looks.show();
         Pg.Control.stopAll();
     });
+    // メッセージ(GameOver)を受け取ったときの動作
     title.Event.whenBroadcastReceived(GameOver, async function(this:S3Sprite){
         this.Looks.switchCostume(GameOver);
         this.Looks.show();
