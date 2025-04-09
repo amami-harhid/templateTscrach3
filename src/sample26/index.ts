@@ -164,12 +164,16 @@ Pg.setting = async function setting() {
         }
     });
     
-    // 即時に動く動作
-    sprite.Event.whenRightNow(async function(this:S3Sprite){
+    // 旗が押されたときの動作
+    sprite.Event.whenFlag(async function(this:S3Sprite){
         // 初期設定
         this.Motion.gotoXY( 0, 0 );
+        // サイズ
+        this.Looks.setSize( 200, 200 ); 
         // 表示
         this.Looks.show();
+        // 回転しない
+        this.Motion.setRotationStyle(Lib.RotationStyle.DONT_ROTATE);
     });
 
     // 旗が押されたときの動作

@@ -47,23 +47,17 @@ Pg.prepare = async function prepare() {
 Pg.setting = async function setting() {
 
     /**
-     * 旗を押されたとき
-     * ボールの位置を中心にする
-     */
-    ball.Event.whenFlag(async function(this:S3Sprite){
-        this.Motion.gotoXY( 0, 0 );
-    });
-    /**
-     * 旗を押されたとき
+     * 旗を押されたときの動作
      * 音を追加して、STARTメッセージを送る
      */
     stage.Event.whenFlag(async function(this:S3Stage){
+        this.Looks.switchBackdrop(Jurassic01);
         await this.Control.wait(1);
         this.Event.broadcast('START');
     });
 
     /**
-     * START を受け取ったとき
+     * START を受け取ったときの動作
      * ずっと繰返し音を鳴らす
      */
     stage.Event.whenBroadcastReceived('START', async function*(this:S3Stage){
@@ -71,15 +65,15 @@ Pg.setting = async function setting() {
         for(;;){
 
             await this.Control.wait(1);
-            this.Looks.switchBackdrop(Jurassic01);
-            await this.Control.wait(1);
             this.Looks.switchBackdrop(Jurassic02);
+            await this.Control.wait(1);
+            this.Looks.switchBackdrop(Jurassic01);
             yield;
         }
     });
 
     /**
-     * START を受け取ったとき
+     * START を受け取ったときの動作
      * ずっと繰返し音を鳴らす
      */
     stage.Event.whenBroadcastReceived('START', async function*(this:S3Stage){
@@ -93,12 +87,14 @@ Pg.setting = async function setting() {
             yield;
         }
     });
+    // 緑の旗が押されたときの動作
     ball.Event.whenFlag(async function(this:S3Sprite){
         this.Motion.gotoXY( 0, 0 );
+        this.Looks.setSize(120, 120);
     });
 
     /**
-     * START を受け取ったとき
+     * START を受け取ったときの動作
      * 上下に動かす
      */
     ball.Event.whenBroadcastReceived('START', async function*(this:S3Sprite){
@@ -124,7 +120,7 @@ Pg.setting = async function setting() {
         }
     });
     /**
-     * START を受け取ったとき
+     * START を受け取ったときの動作
      * 左右に動かす
      */
     ball.Event.whenBroadcastReceived('START', async function*(this:S3Sprite){
