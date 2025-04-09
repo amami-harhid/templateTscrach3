@@ -49,12 +49,14 @@ Pg.prepare = async function prepare() {
     await cat.Image.add( Cat2 );
     cat.Motion.gotoXY( -150, 0 );
     cat.Motion.pointInDirection( 90 );
+    cat.Looks.hide();
     cat2 = new Lib.Sprite("Cat2");
     cat2.Motion.setRotationStyle( Lib.RotationStyle.LEFT_RIGHT );
     await cat2.Image.add( Cat1 );
     await cat2.Image.add( Cat2 );
     cat2.Motion.pointInDirection( -90 );
     cat2.Motion.gotoXY( 150, 0 );
+    cat2.Looks.hide();
 }
 // イベント定義処理
 Pg.setting = async function setting() {
@@ -81,6 +83,12 @@ Pg.setting = async function setting() {
         // 退場する
         this.Event.broadcast(MessageTAIJYO);
 
+    });
+    // 緑の旗が押されたときの動作
+    cat.Event.whenFlag(async function(this:S3Sprite){
+        this.Motion.gotoXY( -150, 0 );
+        this.Motion.pointInDirection( 90 );
+        this.Looks.show();
     });
     // MessageCat1Say を受け取る。引数は受け取らずに 上下に変化させるだけ。
     cat.Event.whenBroadcastReceived(MessageCat1Say, async function*(this:S3Sprite) {
@@ -119,6 +127,12 @@ Pg.setting = async function setting() {
             yield;
         }
         self.Looks.hide(); 
+    });
+    // 緑の旗が押されたときの動作
+    cat2.Event.whenFlag(async function(this:S3Sprite){
+        this.Motion.pointInDirection( -90 );
+        this.Motion.gotoXY( 150, 0 );
+        this.Looks.show();
     });
     // MessageTAIJYO を受け取る。引数を受け取り、フキダシを表示したあと、退場する
     cat2.Event.whenBroadcastReceived(MessageTAIJYO, async function*(this:S3Sprite) {

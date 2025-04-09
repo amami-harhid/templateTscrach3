@@ -73,7 +73,7 @@ Pg.setting = async function setting() {
     // タッチされたときの動作(ネコ)
     cat.Event.whenClicked( async function (this:S3Sprite) {
         // スプライトをクリックしたらクローンを作る
-        await this.Control.clone();
+        this.Control.clone();
     });
 
     const catStep = 10;

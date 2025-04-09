@@ -64,10 +64,13 @@ Pg.setting = async function() {
             yield;
         }
     });
-
     const ChangeDirection = 1;
     // 旗が押されたときの動作(十字)
     cross.Event.whenFlag( async function*( this: S3Sprite ){
+        // 位置の初期化
+        cross.Motion.gotoXY(0, 0);
+        // サイズを３倍にする
+        cross.Looks.setSize(300, 300);
         // ずっと繰り返す
         for(;;){
             // 右へ回転する
@@ -97,21 +100,47 @@ Pg.setting = async function() {
         for(;;){
             // マウスカーソルに触ったとき( this は cross である)
             if ( this.Sensing.isMouseTouching() ) {
-                // マウス位置を取得する
-                const mousePosition = Lib.mousePosition;
-                // 取得した位置へ蝶を移動させる
-                butterfly.Motion.gotoXY(mousePosition.x, mousePosition.y);
-                // 蝶のサイズを 縦横 15% にする
-                const scale = {w: 15, h: 15}
-                butterfly.Looks.setSize(scale);
-                // ランダムな方向へ蝶を向ける
-                butterfly.Motion.pointInDirection(Lib.randomDirection);
                 // 蝶のクローンを作る
-                await butterfly.Control.clone();
+                butterfly.Control.clone();
                 // 下をコメントアウトすると、十字にさわっている間は クローンを作り続ける
                 // 下を生かすと、十字に触ったときにクローンを作るが、次には進まない
                 //await Libs.waitUntil( this.isNotMouseTouching, this); // 「マウスポインターが触らない」迄待つ。
-                await this.Control.wait(0.01); // 100ミリ秒待つ。 <== クローン発生する間隔
+                await this.Control.wait(0.1); // 100ミリ秒待つ。 <== クローン発生する間隔
+            }
+            yield;
+        }
+    });
+    // 旗が押されたときの動作（蝶）
+    butterfly.Event.whenFlag(async function(this:S3Sprite){
+        this.Looks.hide();
+    })
+    // 蝶がクローンされたときの動作
+    butterfly.Control.whenCloned( async function*( this: S3Sprite ) {
+        const clone: S3Sprite = this;
+        // マウス位置を取得する
+        const mousePosition = Lib.mousePosition;
+        // 取得した位置へ蝶を移動させる
+        clone.Motion.gotoXY(mousePosition.x, mousePosition.y);
+        // 蝶のサイズを 縦横 15% にする
+        clone.Looks.setSize(15, 15);
+        // ランダムな方向へ蝶を向ける
+        clone.Motion.pointInDirection(Lib.randomDirection);
+        // ミリ秒。クローンが生きている時間。（およその時間）
+        clone.life = 5000; 
+        // 表示する
+        clone.Looks.show();
+    });
+    // 蝶がクローンされたときの動作
+    butterfly.Control.whenCloned( async function*( this: S3Sprite ) {
+        // this がクローンであることを明示するために 変数cloneに入れる
+        const clone: S3Sprite = this;
+        // ずっと繰り返す
+        for(;;){
+            // lifeが尽きたら『繰り返し』を抜ける
+            if(clone.life < 0 ){
+                // このクローンを削除する
+                this.Control.remove();
+                break;
             }
             yield;
         }
@@ -119,7 +148,7 @@ Pg.setting = async function() {
     // 蝶がクローンされたときの動作
     butterfly.Control.whenCloned( async function*( this: S3Sprite ) {
         // this がクローンであることを明示するために 変数cloneに入れる
-        const clone = this;
+        const clone: S3Sprite = this;
         // ずっと繰り返す
         for(;;){
             // lifeが尽きたら『繰り返し』を抜ける
@@ -129,30 +158,25 @@ Pg.setting = async function() {
             // 次のコスチュームへ切り替える
             this.Looks.nextCostume();
             // コスチューム切り替えが速すぎないように少しだけ待つ
-            await clone.Control.wait(0.05);// <-- yieldにする場合は 1 fpsを待つ
+            await clone.Control.wait(0.05);
             yield;
         }
     });
     // 蝶がクローンされたときの動作
     butterfly.Control.whenCloned( async function*( this: S3Sprite ) {
         // this がクローンであることを明示するために 変数cloneに入れる
-        const clone = this;
-        // 表示する
-        clone.Looks.show();
-        clone.life = 5000; // ミリ秒。クローンが生きている時間。（およその時間）
+        const clone: S3Sprite = this;
         // ずっと繰り返す
         for(;;){
             // ランダムな位置を取得する
             const randomPoint = Lib.randomPoint;
             // 取得した位置へ１秒で移動する
-            await this.Motion.glideToPosition(5, randomPoint.x, randomPoint.y);
+            await clone.Motion.glideToPosition(5, randomPoint.x, randomPoint.y);
             // lifeが尽きたら『繰り返し』を抜ける
-            if( this.life < 0) {
+            if( clone.life < 0) {
                 break;
             }        
             yield;
         }
-        // このクローンを削除する
-        clone.Control.remove();
     });
 }

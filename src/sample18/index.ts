@@ -9,7 +9,7 @@
 import {Pg, Lib} from "tscratch3likejs/s3lib-importer";
 import type {S3PlayGround} from "@typeJS/s3PlayGround";
 import type {S3Stage} from "@typeJS/s3Stage";
-import type {S3Sprite, SizeProperty} from "@typeJS/s3Sprite";
+import type {S3Sprite} from "@typeJS/s3Sprite";
 
 Pg.title = "【Sample18】左右矢印でシップが左右に動き、スペースキーで弾を発射。"
 
@@ -45,6 +45,8 @@ Pg.prepare = async function prepare() {
     await cross.Image.add( Cross02 );
     await cross.Sound.add( Pew );
     cross.Looks.setSize({w:100,h:100});
+    // 座標x を ステージの真ん中にする 
+    cross.Motion.setX(0); 
     // 座標y を ステージの高さの半分×0.6だけ下げる 
     cross.Motion.setY(-Lib.stageHeight/2 * 0.6); 
 }
@@ -63,19 +65,27 @@ Pg.setting = async function setting() {
         }
     });
     // 旗が押されたときの動作(十字)
-    cross.Event.whenFlag(async function( this: S3Sprite ){
-        // 音量=10
-        await this.Sound.setOption( Lib.SoundOption.VOLUME, 10 );
+    cross.Event.whenFlag(async function*( this: S3Sprite ){
+        // 向き初期化
+        this.Motion.pointInDirection( 90 );
+        // 黒いコスチューム
+        this.Looks.switchCostume(Cross01);
+        // サイズを 100%にする
+        this.Looks.setSize({w:100,h:100});
+        // 座標x を ステージの真ん中にする 
+        this.Motion.setX(0); 
+        // 座標y を ステージの高さの半分×0.6だけ下げる 
+        this.Motion.setY(-Lib.stageHeight/2 * 0.6); 
+        // 音量=200
+        await this.Sound.setOption( Lib.SoundOption.VOLUME, 200 );
         // ピッチ=150 (再生速度をあげる = 音を短く高く)
-        await this.Sound.setOption( Lib.SoundOption.PITCH, 150 );
+        await this.Sound.setOption( Lib.SoundOption.PITCH, -150 );
     });
 
     // 進む速さ
     const MoveSteps = 15;
     // 旗が押されたときの動作(十字)
     cross.Event.whenFlag( async function*( this: S3Sprite ){
-        // 向き初期化
-        this.Motion.pointInDirection( 90 );
         // ずっと繰り返す
         for(;;){
             // キー(右矢印)が押されているとき
@@ -95,11 +105,11 @@ Pg.setting = async function setting() {
         // ずっと繰り返す
         for(;;){
             // キー(スペース)が押されているとき
-            if(Lib.keyIsDown(Lib.Keyboard.SPACE)){
+            if(Lib.keyIsDown(Lib.Keyboard.SPACE)){ 
                 // 音を鳴らす
                 this.Sound.play(Pew);
                 // クローンを作る
-                await this.Control.clone();
+                //this.Control.clone();
                 //次をコメントアウトしているときは キー押下中連続してクローン作る  
                 //await this.Control.waitWhile( ()=>Lib.keyIsDown(Lib.Keyboard.SPACE));
             }
@@ -109,8 +119,7 @@ Pg.setting = async function setting() {
     // クローンが作られたときの動作(十字)
     cross.Control.whenCloned( async function( this: S3Sprite ){
         // サイズを 20%にしておく
-        const size:SizeProperty = {w:20, h:20};
-        this.Looks.setSize(size);
+        this.Looks.setSize(20, 20);
         // 上方向にしておく
         this.Motion.pointInDirection(0);
         // スプライトの大きさを取得（高さのみ）
@@ -144,7 +153,7 @@ Pg.setting = async function setting() {
         // 音量 50
         await this.Sound.setOption( Lib.SoundOption.VOLUME, 50 );
         // ピッチ 50 ( 低音にする )
-        await this.Sound.setOption( Lib.SoundOption.PITCH, 50 );
+        await this.Sound.setOption( Lib.SoundOption.PITCH, -50 );
         // ずっと繰り返す
         for(;;){
             // 右へ回転する

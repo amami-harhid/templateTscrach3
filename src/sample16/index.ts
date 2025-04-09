@@ -51,6 +51,8 @@ Pg.prepare = async function prepare() {
     cat2 = new Lib.Sprite("Cat2");
     await cat2.Image.add( Cat );
     cat2.Motion.gotoXY( 0, 0 );
+    cat2.Looks.setEffect(Lib.ImageEffective.COLOR, 0);
+    cat2.Motion.setRotationStyle( Lib.RotationStyle.ALL_AROUND );
 
     // ネコ３を作る
     cat3 = new Lib.Sprite("Cat3");
@@ -82,14 +84,46 @@ Pg.setting = async function setting() {
         for(;;){
             // 待つ
             await this.Control.wait(WAIT_TIME);
-            // ネコ１：横、縦の位置を ステージの -1/4, +1/4 にする
-            cat1.Motion.gotoXY( -Lib.stageWidth/4, +Lib.stageHeight/4 );
-            // ネコ２：横、縦の位置を (0,0)にする
-            cat2.Motion.gotoXY( 0, 0 );
-            // ネコ３：横、縦の位置を ステージの +1/4, -1/4 にする
-            cat3.Motion.gotoXY( Lib.stageWidth/4, -Lib.stageHeight/4 );
+            await this.Event.broadcastAndWait('INIT');
             yield;
         }
+    });
+    // 旗が押されたときの動作（ネコ１）
+    cat1.Event.whenFlag(async function(this:S3Sprite){
+        // ネコ１：横、縦の位置を ステージの -1/4, +1/4 にする
+        this.Motion.gotoXY( -Lib.stageWidth/4, +Lib.stageHeight/4 );
+        this.Looks.setEffect(Lib.ImageEffective.COLOR, 50);
+        this.Motion.setRotationStyle( Lib.RotationStyle.LEFT_RIGHT );
+        this.Motion.Direction.degree = 90;
+    });
+    // メッセージ(INIT)を受け取ったときの動作（ネコ１）
+    cat1.Event.whenBroadcastReceived('INIT', async function(this:S3Sprite){
+        // ネコ１：横、縦の位置を ステージの -1/4, +1/4 にする
+        this.Motion.gotoXY( -Lib.stageWidth/4, +Lib.stageHeight/4 );
+    });
+    // 旗が押されたときの動作（ネコ２）
+    cat2.Event.whenFlag(async function(this:S3Sprite){
+        this.Motion.gotoXY( 0, 0 );
+        this.Looks.setEffect(Lib.ImageEffective.COLOR, 0);
+        this.Motion.setRotationStyle( Lib.RotationStyle.ALL_AROUND );
+        this.Motion.Direction.degree = 90;
+    });
+    // メッセージ(INIT)を受け取ったときの動作（ネコ２）
+    cat2.Event.whenBroadcastReceived('INIT', async function(this:S3Sprite){
+        // ネコ２：横、縦の位置を (0,0)にする
+        this.Motion.gotoXY( 0, 0 );
+    });
+    // 旗が押されたときの動作（ネコ３）
+    cat3.Event.whenFlag(async function(this:S3Sprite){
+        this.Motion.gotoXY( Lib.stageWidth/4, -Lib.stageHeight/4 );
+        this.Looks.setEffect( Lib.ImageEffective.COLOR, 10);
+        this.Motion.setRotationStyle( Lib.RotationStyle.DONT_ROTATE );
+        this.Motion.Direction.degree = 90;
+    });
+    // メッセージ(INIT)を受け取ったときの動作（ネコ３）
+    cat3.Event.whenBroadcastReceived('INIT', async function(this:S3Sprite){
+        // ネコ３：横、縦の位置を ステージの +1/4, -1/4 にする
+        this.Motion.gotoXY( Lib.stageWidth/4, -Lib.stageHeight/4 );
     });
 
     // 進む速さ

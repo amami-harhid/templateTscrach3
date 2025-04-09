@@ -23,7 +23,7 @@ import type {S3Stage} from "@typeJS/s3Stage";
 import type {S3Sprite} from "@typeJS/s3Sprite";
 
 
-Pg.title = "【Sample21】スピーチ機能：ネコに触る、タッチするとお話しをす"
+Pg.title = "【Sample21】スピーチ機能：ネコに触る、タッチするとお話しをする"
 
 const Jurassic:string = "Jurassic";
 const Chill:string = "Chill";

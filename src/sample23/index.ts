@@ -83,7 +83,7 @@ Pg.setting = async function setting() {
         this.Motion.pointInDirection(InitDirection);
         this.Motion.gotoXY(0,-100);
         // フキダシを出す
-        this.Looks.say('何かのキーを押すと始まるよ');
+        this.Looks.say('パドルはマウスで動くよ。何かのキーを押すと始まるよ');
         // 何かキーが押されるまで待つ
         await this.Control.waitUntil(()=>Lib.anyKeyIsDown());
         // フキダシを消す
@@ -146,7 +146,7 @@ Pg.setting = async function setting() {
         for(let y=0; y<3; y++){
             for(let x=0; x<10; x++){
                 const blkPos = { x: pos.x + x*demension.width, y: pos.y + (-y)*demension.height };
-                await this.Control.clone({position: blkPos});
+                this.Control.clone({position: blkPos});
                 yield;
             }
             yield;

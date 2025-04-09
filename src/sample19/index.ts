@@ -50,6 +50,8 @@ Pg.setting = async function setting() {
 
     // 旗が押されたときの動作(ステージ)
     stage.Event.whenFlag( async function(this:S3Stage) {
+        bubble.exit = false;
+        bubble2.exit = false;
         await this.Control.wait(20); // 20秒たったらバブルループを終わらせる。
         bubble.exit = true;
         bubble2.exit = true;
@@ -59,17 +61,16 @@ Pg.setting = async function setting() {
     const WALK_STEP = 1;
     // 旗が押されたときの動作(ネコ)
     cat.Event.whenFlag( async function*( this: S3Sprite ) {
+        // 位置の設定
+        this.Motion.gotoXY( 0, 0 );
+        // 向きの設定
+        this.Motion.pointInDirection(75);
         // ずっと繰り返す
         for(;;){
             // もし端に着いたら跳ね返る
             this.Motion.ifOnEdgeBounds();
             // 進む
             this.Motion.moveSteps(WALK_STEP);
-            // フキダシが終わりになったら
-            if( bubble.exit === true) {
-                // 繰り返しを抜ける
-                break;
-            }
             yield;
         }
     });
@@ -84,11 +85,6 @@ Pg.setting = async function setting() {
             this.Looks.nextCostume();
             // ちょっとだけ待つ
             await this.Control.wait(0.1)
-            // フキダシ 終わりのとき
-            if( bubble.exit === true) {
-                // 繰り返しを抜ける
-                break;
-            }
             yield;
         }
     });
@@ -120,11 +116,6 @@ Pg.setting = async function setting() {
                 if(scale.w > SCALE.MAX) break;
                 yield;
             }
-            // フキダシ 終わりのとき
-            if( bubble.exit === true) {
-                // 繰り返しを抜ける
-                break;
-            }
             yield;
         }
     });
@@ -151,12 +142,14 @@ Pg.setting = async function setting() {
                 this.Looks.think(text);
 
             }
-            // フキダシ 終わりのとき
+            // フキダシが終わりになったら
             if( bubble.exit === true) {
                 // 空文字で「言う」( ==> フキダシ消える )
                 this.Looks.say();
-                // 繰り返しを抜ける
-                break;
+                // 他のスクリプトを止める
+                this.Control.stopOtherScripts();
+                // このスクリプトを止める
+                this.Control.stopThisScript();
             }
             // 少しだけまつ
             await this.Control.wait(0.5);
@@ -165,17 +158,16 @@ Pg.setting = async function setting() {
     });
     // 旗が押されたときの動作(ネコ２)
     cat2.Event.whenFlag( async function*( this: S3Sprite ) {
+        // 位置の設定
+        this.Motion.gotoXY( -20, -120 );
+        // 向きの設定
+        this.Motion.pointInDirection( 115 );
         // ずっと繰り返す
         for(;;){
             // もし端に着いたら跳ね返る
             this.Motion.ifOnEdgeBounds();
             // 進む
             this.Motion.moveSteps(WALK_STEP);
-            // フキダシ 終わりのとき
-            if( bubble.exit === true) {
-                // 繰り返しを抜ける
-                break;
-            }
             yield;
         }
     });
@@ -193,6 +185,10 @@ Pg.setting = async function setting() {
             if( bubble2.exit === true) {
                 // 空文字で「言う」( ==> フキダシ消える )
                 this.Looks.say();
+                // 他のスクリプトを止める
+                this.Control.stopOtherScripts();
+                // このスクリプトを止める
+                this.Control.stopThisScript();
                 // 繰り返しを抜ける
                 break;
             }
