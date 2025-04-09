@@ -74,6 +74,7 @@ Pg.setting = async function setting() {
     });
     ball.Event.whenFlag(async function(this:S3Sprite){
         this.Motion.gotoXY(0,-100);
+        this.Looks.setSize(50, 50);
     });
     
     const BallSpeed = 10;
@@ -98,14 +99,7 @@ Pg.setting = async function setting() {
             yield;
         }
     });
-    ball.Event.whenBroadcastReceived('Start', async function*(this:S3Sprite){
-        while(true){
-            if(this.Sensing.isTouchingToSprite(block)){
-                this.Motion.turnRightDegrees( Lib.getRandomValueInRange(-5, 5)+180 );
-            }
-            yield;
-        }
-    });
+    // メッセージ(Start)を受け取ったときの動作
     ball.Event.whenBroadcastReceived('Start', async function*(this:S3Sprite){
         for(;;){
             if( this.Sensing.isTouchingToSprite(paddle)){
@@ -116,36 +110,51 @@ Pg.setting = async function setting() {
             yield;
         }
     });
+    // メッセージ(ballTouch)を受け取ったときの動作
+    ball.Event.whenBroadcastReceived('ballTouch', async function(this:S3Sprite){
+        this.Motion.turnRightDegrees( Lib.getRandomValueInRange(-5, 5)+180 );
+    });
     line.Event.whenFlag(async function*(this:S3Sprite){
+        this.Motion.gotoXY(0, -180);
         for(;;){
             if( this.Sensing.isTouchingToSprite(ball)){
                 // Ball に触れたとき
                 this.Event.broadcast(GameOver);
+                // このスクリプトを止める
+                this.Control.stopThisScript();
                 break;
             }
             yield;
         }
     });
+    paddle.Event.whenFlag(async function(this:S3Sprite){
+        this.Motion.gotoXY(0, -140);
+    })
     paddle.Event.whenBroadcastReceived('Start', async function*(this:S3Sprite){
         while(true){
             const mousePos = Lib.mousePosition;
             const selfPosition = this.Motion.getCurrentPosition();
             this.Motion.gotoXY(mousePos.x, selfPosition.y);
-            //const ballPosition = ball.Motion.getCurrentPosition();
-            //this.Motion.moveTo(ballPosition.x, selfPosition.y);
             yield;
         }
+    });
+    paddle.Event.whenBroadcastReceived('GameOver', async function(this:S3Sprite){
+        this.Control.stopOtherScripts();
     });
 
     let blockCount = 0;
     block.Event.whenFlag( async function*(this:S3Sprite){
+        this.Looks.hide();
         this.Looks.setSize({w:50, h:50});
+        this.Motion.gotoXY(-220,180);
+
         const pos = this.Motion.getCurrentPosition();
-        const demension = this.Looks.drawingDimensions();
+        const dimension = this.Looks.drawingDimensions();
         blockCount = 0;
         for(let y=0; y<3; y++){
             for(let x=0; x<10; x++){
-                const blkPos = { x: pos.x + x*demension.width, y: pos.y + (-y)*demension.height };
+                const blkPos = { x: pos.x + x*dimension.width, y: pos.y + (-y)*dimension.height };
+                blockCount+=1;
                 this.Control.clone({position: blkPos});
                 yield;
             }
@@ -154,22 +163,21 @@ Pg.setting = async function setting() {
         this.Event.broadcast('Start');
     });
     block.Control.whenCloned(async function*(this:S3Sprite){
-        blockCount+=1;
         this.Looks.show();
         while(true){
             if(this.Sensing.isTouchingToSprite(ball)){
                 score += 1;
+                this.Event.broadcast('ballTouch');
                 this.Sound.play(Pew);
                 this.Looks.hide();
-                break;
+                if(score == blockCount) {
+                    this.Event.broadcast(YouWon);
+                    this.Control.stopThisScript();
+                }
             }    
             yield;
         }
-        if(score == blockCount) {
-            this.Event.broadcast(YouWon);
-        }
-        this.Control.remove();
-    })
+    });
     title.Event.whenFlag(async function(this:S3Sprite){
         this.Looks.hide();
     })
