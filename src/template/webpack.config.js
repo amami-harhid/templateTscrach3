@@ -1,3 +1,8 @@
+
+/**
+ * Dont modify this file.
+ * このファイルは変更禁止です。
+ */
 const path = require('path');
 const currentDir = __dirname;
 const simpleDirName = currentDir.replace(/\\/g,'/').replace(/^.+\//, '');

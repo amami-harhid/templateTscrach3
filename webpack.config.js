@@ -1,5 +1,8 @@
+/**
+ * Dont modify this file.
+ * このファイルは変更禁止です。
+ */
 const path = require('path');
-
 module.exports = {
     entry: {
         'main': './index.ts',

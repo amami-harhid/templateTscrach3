@@ -17,7 +17,7 @@ srcディレクトリの下に サブディレクトリを作成し、サブデ�
 
 ## build
 
-npm webpack --mode development
+npx webpack --mode development
 
 ## viewing
 
