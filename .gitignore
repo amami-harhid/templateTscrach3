@@ -4,6 +4,10 @@ src/*
 !template
 !index.html
 
+# build/*
+build/*
+!template
+
 # Logs
 logs
 *.log
