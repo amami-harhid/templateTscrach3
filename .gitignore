@@ -8,6 +8,14 @@ src/*
 build/*
 !template
 
+# assets
+assets/*
+!cat.svg
+!Cat.wav
+!cat2.svg
+!Chill.wav
+!white.svg
+
 # Logs
 logs
 *.log
