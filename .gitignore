@@ -1,5 +1,8 @@
-# src/sample*
-src/sample*
+# src/*
+src/*
+!common
+!template
+!index.html
 
 # Logs
 logs
