@@ -2,13 +2,7 @@
 /* eslint-disable no-undef */
 const fs = require('fs');
 const { execSync } = require('child_process');
-console.log(process.argv.length);
-console.log(`process.argv[0]=${process.argv[0]}`);
-console.log(`process.argv[1]=${process.argv[1]}`);
-console.log(`process.argv[2]=${process.argv[2]}`);
 
-
-//process.exit(0);
 if(process.argv.length < 3 ) {
     console.log('パラメータが不足しています(フォルダ名)');
     process.exit(1);
@@ -17,7 +11,6 @@ if(process.argv.length < 3 ) {
 const dir = process.argv[2];
 const absolutePath = fs.realpathSync('./');
 const srcPath = `${absolutePath}/src/${dir}`;
-console.log(srcPath);
 if( !fs.existsSync( srcPath )) {
     console.log('srcフォルダの中に指定フォルダがありません');
     process.exit(1);
