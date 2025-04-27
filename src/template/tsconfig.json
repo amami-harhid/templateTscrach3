@@ -1,8 +1,0 @@
-/**
- * Dont modify this file.
- * このファイルは変更禁止です。
- */
-{
-  "extends": "../../tsconfig",
-  "include": ["./*.ts"],
-}

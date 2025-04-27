@@ -1,24 +1,24 @@
 {
-  "name": "scratch3ts",
-  "version": "1.0.0",
-  "main": "index.js",
+  "name": "template_tscratch3js",
+  "version": "0.0.6",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "amami-harhid",
   "license": "AGPL-3.0-only",
-  "type": "commonjs",
-  "description": "",
+  "description": "template of tscratch3js",
+  "dependencies": {
+    "@amami-harhid/scratch3likejslib": "^0.0.4",
+    "@amami-harhid/tscratch3likejs": "^0.0.6"
+  },
   "devDependencies": {
-    "@eslint/js": "^9.22.0",
+    "@eslint/js": "^9.25.1",
+    "child_process": "^1.0.2",
     "@types/node": "^22.13.4",
-    "eslint": "^9.22.0",
-    "glob": "^10.4.5",
-    "globals": "^16.0.0",
-    "ts-loader": "^9.5.2",
-    "tscratch3likejs": "github:amami-harhid/tscratch3likejs",
+    "eslint": "^9.25.1",
+    "glob": "^11.0.2",
+    "parcel": "^2.14.4",
     "typescript": "^5.7.3",
-    "typescript-eslint": "^8.26.0",
-    "webpack-cli": "^6.0.1"
+    "typescript-eslint": "^8.31.0"
   }
 }
