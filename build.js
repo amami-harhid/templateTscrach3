@@ -1,24 +1,37 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
+/* eslint-disable no-undef */
 const fs = require('fs');
-const {glob} = require('glob');
 const { execSync } = require('child_process');
+console.log(process.argv.length);
+console.log(`process.argv[0]=${process.argv[0]}`);
+console.log(`process.argv[1]=${process.argv[1]}`);
+console.log(`process.argv[2]=${process.argv[2]}`);
 
-const entries = glob.sync('./src/**/index.ts');
+
+//process.exit(0);
+if(process.argv.length < 3 ) {
+    console.log('パラメータが不足しています(フォルダ名)');
+    process.exit(1);
+}
+
+const dir = process.argv[2];
 const absolutePath = fs.realpathSync('./');
-const npxWebpack = "npx webpack --mode development"
-const dirArr = [];
-try{
-    for(const _entry of entries){
-        const directory = _entry.replace('src\\','').replace(/\\.*.ts$/,'');
-        dirArr.push(directory);
-    }
-    dirArr.sort();
-    for(const _dir of dirArr){
-        console.log(_dir)
-        const workingDir = absolutePath+'/src/'+_dir;
-        process.chdir(workingDir);
-        execSync(npxWebpack);
-    }
-    
-}catch(e){
-    throw e;
+const srcPath = `${absolutePath}/src/${dir}`;
+console.log(srcPath);
+if( !fs.existsSync( srcPath )) {
+    console.log('srcフォルダの中に指定フォルダがありません');
+    process.exit(1);
+}
+if( !fs.existsSync( srcPath+"/index.html" )) {
+    console.log('指定フォルダの中にindex.htmlがありません');
+    process.exit(1);
+}
+const open = (process.argv.length > 3)? process.argv[3] : '';
+if( open == '--open') {
+    const npxParcel = `npx parcel ./src/${dir}/index.html --open`;
+    execSync(npxParcel);
+
+} else {
+    const npxParcel = `npx parcel build ./src/${dir}/index.html --public-url ./ --dist-dir ./build/${dir}`
+    execSync(npxParcel);
 }
