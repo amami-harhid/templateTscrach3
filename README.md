@@ -68,12 +68,20 @@ Pg.setting = async function() {
 ## コンパイルとブラウザ表示
 プロジェクトトップで実行する
 ```
-npx parcel src/〇〇〇/index.html --open
+node ./parcel.js [フォルダ名] --open
+
+例： node ./parcel.js practice01 --open
+これが実行される。
+npx parcel src/practice01/index.html --open
 ```
 ## ビルドする(後でブラウザ表示する)
 プロジェクトトップで実行する
 ```
-npx parcel build src/〇〇〇/index.html --public-url ./ --dist-dir ./build/〇〇〇
+node ./parcel.js [フォルダ名] 
+
+例： node ./parcel.js practice01
+これが実行される。
+npx parcel build src/practice01/index.html --public-url ./ --dist-dir ./build/practice01
 ```
 `build/〇〇〇`フォルダ内にビルドされる。
 
