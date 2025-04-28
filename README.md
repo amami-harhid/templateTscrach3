@@ -33,8 +33,8 @@ export {Jurassic, Chill, AssetHost};
 ### index.ts
 ```typescript
 /**
- * sample27
- * ネコが色にさわったらスコアアップ
+ * practice001
+ * ネコが指定した色にさわったらスコアアップ
  */
 import {Jurassic, Chill, AssetHost} from './scripts/constants';
 import {Pg, Lib} from "@amami-harhid/tscratch3likejs/s3lib-importer";
@@ -60,7 +60,7 @@ Pg.setting = async function() {
         for(;;){
             // 終わるまで音を鳴らす
             await this.Sound.playUntilDone(Chill);
-            yield;
+            yield; // fps=30とするために少し待つ仕組み
         }
     })
 }
