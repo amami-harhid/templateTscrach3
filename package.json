@@ -9,6 +9,7 @@
   "description": "template of tscratch3js",
   "devDependencies": {
     "@eslint/js": "^9.25.1",
+    "@tscratch3/tscratch3likejs": "^1.0.0-alpha.7",
     "@types/node": "^22.13.4",
     "child_process": "^1.0.2",
     "eslint": "^9.25.1",
@@ -18,7 +19,6 @@
     "typescript-eslint": "^8.31.0"
   },
   "dependencies": {
-    "@tscratch3/scratch3likejslib": "^1.0.0-alpha.1",
-    "@tscratch3/tscratch3likejs": "^1.0.0-alpha.2"
+    "@tscratch3/scratch3likejslib": "^1.0.0-alpha.4"
   }
 }
