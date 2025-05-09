@@ -1,6 +1,6 @@
 {
   "name": "template_tscratch3js",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -9,16 +9,22 @@
   "description": "template of tscratch3js",
   "devDependencies": {
     "@eslint/js": "^9.25.1",
-    "@tscratch3/tscratch3likejs": "^1.0.0-alpha.7",
+    "@tscratch3/tscratch3likejs": "^1.0.0-alpha.8",
     "@types/node": "^22.13.4",
     "child_process": "^1.0.2",
     "eslint": "^9.25.1",
     "glob": "^11.0.2",
     "parcel": "^2.14.4",
+    "parcel-namer-custom": "^0.2.0",
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.31.0"
   },
-  "dependencies": {
-    "@tscratch3/scratch3likejslib": "^1.0.0-alpha.4"
+  "parcel-namer-custom" : {
+    "src/index.pug$": "[name].[type]",
+    ".(pug|html)$": "[name].[type]",
+    ".(js|ts)$": "[name].[type]",
+    ".scss$": "[dir]/[name].[type]",
+    ".(jpg|gif|png|webp|svg)$": "[dir]/[name].[type]",
+    ".jsx?$": "scripts/[name].[hash].[type]"
   }
 }
