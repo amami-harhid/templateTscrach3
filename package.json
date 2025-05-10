@@ -1,6 +1,6 @@
 {
   "name": "template_tscratch3js",
-  "version": "1.0.0-alpha.03",
+  "version": "1.0.0-alpha.04",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -18,5 +18,9 @@
     "parcel-namer-custom": "^0.2.0",
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.31.0"
+  },
+  "parcel-namer-custom": {
+    ".html$": "[name].[type]",
+    ".(js|ts)$": "[name].[type]"
   }
 }
