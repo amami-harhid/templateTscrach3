@@ -26,6 +26,6 @@ if( open == '--open') {
 
 } else {
     // set the log level (choices: "none", "error", "warn", "info", "verbose")
-    const npxParcel = `npx parcel build ./src/${dir}/index.html --public-url ./ --dist-dir ./build/${dir} --no-content-hash --log-level info`
+    const npxParcel = `npx parcel build ./src/${dir}/index.html --public-url ./ --dist-dir ./build/${dir}`
     execSync(npxParcel);
 }
