@@ -1,6 +1,6 @@
 {
   "name": "template_tscratch3js",
-  "version": "1.0.0-alpha.05",
+  "version": "1.0.0-alpha.06",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -9,7 +9,7 @@
   "description": "template of tscratch3js",
   "devDependencies": {
     "@eslint/js": "^9.25.1",
-    "@tscratch3/tscratch3likejs": "^1.0.0-alpha.12",
+    "@tscratch3/tscratch3likejs": "^1.0.0-alpha.14",
     "@types/node": "^22.13.4",
     "child_process": "^1.0.2",
     "eslint": "^9.25.1",
