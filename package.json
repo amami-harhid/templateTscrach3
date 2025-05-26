@@ -1,6 +1,6 @@
 {
   "name": "template_tscratch3js",
-  "version": "1.0.0-alpha.07",
+  "version": "1.0.0-alpha.08",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

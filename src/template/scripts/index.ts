@@ -1,11 +1,11 @@
  
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import {Pg, Lib} from "@tscratch3/tscratch3likejs/s3lib-importer";
-import type {S3PlayGround} from "@typeS3/s3PlayGround"; 
+import type {S3PlayGround} from "@typeJS/s3PlayGround"; 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import type {S3Stage} from "@typeS3/s3Stage";
+import type {S3Stage} from "@typeJS/s3Stage";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import type {S3Sprite} from "@typeS3/s3Sprite";
+import type {S3Sprite} from "@typeJS/s3Sprite";
 
 Pg.title = "タイトル";
 

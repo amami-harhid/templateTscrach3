@@ -11,7 +11,7 @@
     "moduleResolution": "node",
     "baseUrl": "./",
     "paths": {
-      "@typeS3/*": ["./node_modules/@tscratch3/tscratch3likejs/types/scratchjs/*"],
+      "@typeJS/*": ["./node_modules/@tscratch3/tscratch3likejs/types/scratchjs/*"],
     },
     "sourceMap": true,
     "outDir": "./build",
